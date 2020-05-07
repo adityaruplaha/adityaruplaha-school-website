@@ -110,8 +110,9 @@ $table = 'xii_sc_a_attendance';
         <table>
             <tr>
                 <td>Class</td>
-                <td>1</td>
-                <td>0</td>
+                <td class='green' style="text-align: center;">P</td>
+                <td class='red' style="text-align: center;">A</td>
+                <td style="text-align: center;">Attendance %</td>
             </tr>
             <?php
 
@@ -126,15 +127,25 @@ $table = 'xii_sc_a_attendance';
                 if (!$r2) {
                     die("Query to show fields from table failed. Error Code: E_A02.");
                 }
-                $el = 0;
-                while ($data_pt = $r2->fetch_row()) {
-                    if ($el > 1) {
-                        break;
-                    }
-                    foreach ($data_pt as $cell) {
-                        echo "<td>" . $cell . "</td>";
-                    }
-                    $el++;
+                $rows = $r2->fetch_all();
+                if (!isset($rows[1])) {
+                    echo "<td colspan=3 style=\"text-align: center;\"><b>NO DATA</b></td>";
+                    continue;
+                }
+                $p = $rows[0][0];
+                $a = $rows[1][0];
+                $n = floatval($p) / (floatval($p) + floatval($a)) * 100;
+                echo "<td style=\"text-align: center;\">" . $p . "</td>";
+                echo "<td style=\"text-align: center;\">" . $a . "</td>";
+                if ($n > 80) {
+                    $n = number_format($n, 2);
+                    echo "<td class ='green' style='text-align: center;'>{$n}%</td>";
+                } elseif ($n > 50) {
+                    $n = number_format($n, 2);
+                    echo "<td class ='yellow' style='text-align: center;'>{$n}%</td>";
+                } else {
+                    $n = number_format($n, 2);
+                    echo "<td class ='red' style='text-align: center;'>{$n}%</td>";
                 }
                 echo "</tr>";
                 $r2->free();
