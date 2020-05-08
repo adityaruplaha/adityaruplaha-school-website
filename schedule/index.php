@@ -1,17 +1,19 @@
 <?php
 
-require '../defs.php';
+require '../classes.php';
 
 date_default_timezone_set("Asia/Kolkata");
 
-$db_host = 'localhost';
-$db_user = 'prog_access';
-$db_pwd = '';
+use ScA\Classes\Day;
 
-$database = 'school';
-$table = 'xii_sc_a_ptrello';
+use const ScA\DB;
+use const ScA\DB_HOST;
+use const ScA\DB_PWD;
+use const ScA\DB_USER;
 
-$conn = new mysqli($db_host, $db_user, $db_pwd, $database);
+use const ScA\Classes\SCHEDULE_BEAUTY_TABULATED;
+
+$conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
 
 // Check connection
 if ($conn->connect_error) {
@@ -22,7 +24,7 @@ $d = date("Y-m-d", strtotime("yesterday"));
 
 // Query
 $result = $conn->query("SELECT `Date`, `PrivateTrello`
-    FROM {$table} WHERE `Date` >= '{$d}'");
+    FROM xii_sc_a_ptrello WHERE `Date` >= '{$d}'");
 
 if (!$result) {
     die("Query to show fields from table failed");

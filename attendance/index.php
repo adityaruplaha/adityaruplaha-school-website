@@ -1,11 +1,21 @@
 <?php
-require '../defs.php';
-require 'attepn.php';
+require '../classes.php';
+require '../student.php';
 
 $lim_days = isset($_GET['lim_days']) ? $_GET['lim_days'] : 0;
 $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
 
 $table = 'xii_sc_a_attendance';
+
+use ScA\Classes\SchedClass;
+
+use const ScA\DB;
+use const ScA\DB_HOST;
+use const ScA\DB_PWD;
+use const ScA\DB_USER;
+
+use const ScA\Classes\SCHEDULE_BEAUTY_MULTILINE;
+use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
 
 ?>
 
@@ -193,17 +203,18 @@ $table = 'xii_sc_a_attendance';
         echo "<th>Total</th>";
         echo "<th>Attendance %</th>";
         echo "</tr>";
-        while ($row = process_student($result->fetch_assoc())) {
+        while ($row = $result->fetch_assoc()) {
+            $att = (new \ScA\Student\Student($row['Name']))->get_attendance_data();
             echo "<tr>";
             echo "<td style='text-align: center;'>{$row['Serial No.']}</td>";
             echo "<td>{$row['Name']}</td>";
-            $p = str_pad($row['P'], 2, '0', STR_PAD_LEFT);
+            $p = str_pad($att['P'], 2, '0', STR_PAD_LEFT);
             echo "<td style='text-align: center;'>{$p}</td>";
-            $a = str_pad($row['A'], 2, '0', STR_PAD_LEFT);
+            $a = str_pad($att['A'], 2, '0', STR_PAD_LEFT);
             echo "<td style='text-align: center;'>{$a}</td>";
-            $t = str_pad($row['Total'], 2, '0', STR_PAD_LEFT);
+            $t = str_pad($att['Total'], 2, '0', STR_PAD_LEFT);
             echo "<td style='text-align: center;'>{$t}</td>";
-            $n = round($row['Attendance %'] * 100, 2);
+            $n = round($att['Attendance %'] * 100, 2);
             if ($n > 75) {
                 $n = number_format($n, 2);
                 echo "<td class ='green' style='text-align: center;'>{$n}%</td>";
