@@ -1,13 +1,29 @@
 <?php
 
-$db_host = 'localhost';
-$db_user = 'prog_access';
-$db_pwd = '';
+require_once "../login.php";
+require_once "../teacher/defs.php";
 
-$database = 'school';
+use \ScA\Student\TGLogin\TGLogin;
+use \ScA\Teacher;
+
+$is_logged_in = (TGLogin::from_cookie() != NULL) || (Teacher\is_logged_in());
+
+if (!$is_logged_in) {
+    header("Location: ../?nauth");
+    exit;
+}
+
+
+require_once "../defs.php";
+
+use const ScA\DB;
+use const ScA\DB_HOST;
+use const ScA\DB_PWD;
+use const ScA\DB_USER;
+
 $table = 'xii_sc_a_assignments';
 
-$conn = new mysqli($db_host, $db_user, $db_pwd, $database);
+$conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
 
 // Check connection
 if ($conn->connect_error) {

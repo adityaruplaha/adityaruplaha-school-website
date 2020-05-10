@@ -1,13 +1,28 @@
 <?php
 
-$db_host = 'localhost';
-$db_user = 'prog_access';
-$db_pwd = '';
+require_once "../login.php";
+require_once "../teacher/defs.php";
 
-$database = 'school';
-$table = 'xii_sc_a_resources';
+use \ScA\Student\TGLogin\TGLogin;
+use \ScA\Teacher;
 
-$conn = new mysqli($db_host, $db_user, $db_pwd, $database);
+$is_logged_in = (TGLogin::from_cookie() != NULL) || (Teacher\is_logged_in());
+
+if (!$is_logged_in) {
+    header("Location: ../?nauth");
+    exit;
+}
+
+require_once "../defs.php";
+
+use const ScA\DB;
+use const ScA\DB_HOST;
+use const ScA\DB_PWD;
+use const ScA\DB_USER;
+
+$table = "xii_sc_a_resources";
+
+$conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
 
 // Check connection
 if ($conn->connect_error) {
@@ -30,11 +45,11 @@ $SUBCODES = array(
 
 $RES = array();
 foreach ($SUBCODES as $sub => $v) {
-    $result = $conn->query("SELECT COUNT(`Name`) FROM {$table} WHERE `Subject` = '{$sub}'");
+    $result = $conn->query("SELECT LPAD(COUNT(`Name`), 2, 0) FROM {$table} WHERE `Subject` = '{$sub}'");
     if (!$result) {
         die("Query to show fields from table failed.");
     }
-    $RES[$sub] = $result->fetch_array(MYSQLI_NUM)[0][0];
+    $RES[$sub] = $result->fetch_row()[0];
 }
 ?>
 
@@ -52,6 +67,18 @@ foreach ($SUBCODES as $sub => $v) {
 
     <h1 align='center'>XII Sc A - Resources</h1>
     <hr />
+    <p align='center'>
+        <i>
+            <?php
+            date_default_timezone_set("Asia/Kolkata");
+            echo "Report generated on " . date("d M Y h:i:sa") . " IST."
+            ?>
+            <br />
+            <br />
+            Click on the subject header to see resources from that subject.
+        </i>
+        <hr />
+    </p>
 
     <div>
         <table class='nav'>
@@ -121,19 +148,7 @@ foreach ($SUBCODES as $sub => $v) {
     ?>
 
 
-    <footer align='center'>
-        <hr />
-        <br />
-        <i>
-            <?php
-            date_default_timezone_set("Asia/Kolkata");
-            echo "Report generated on " . date("d M Y h:i:sa") . " IST."
-            ?>
-            <br />
-            <br />
-            Click on the subject header to see resources from that subject.
-        </i>
-    </footer>
+
 </body>
 
 </html>

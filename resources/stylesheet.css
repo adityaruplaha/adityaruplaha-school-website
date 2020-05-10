@@ -31,8 +31,7 @@ table {
 
 table.nav {
 	float: left;
-	border-style: none;
-	border-right-style: solid;
+	border-style: solid;
 	color: #BFBFBF;
 	margin: 3px;
 }

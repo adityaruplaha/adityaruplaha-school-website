@@ -117,3 +117,15 @@ button {
 	padding: 14px 25px;
 	font-size: 23px;
 }
+
+fieldset {
+	background-color: #222222;
+	font-family: "Arial", "Courier", "Letter Gothic";
+	color: #BBBBBB;
+	border-radius: 10px;
+	border-style: solid;
+	padding: 13px 22px;
+	font-size: 16px;
+	text-align: center;
+	vertical-align: center;
+}

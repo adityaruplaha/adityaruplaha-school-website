@@ -1,15 +1,18 @@
 <?php
 
-require '../defs.php';
+require_once '../defs.php';
+require_once '../classes.php';
 
-$db_host = 'localhost';
-$db_user = 'prog_access';
-$db_pwd = '';
+use ScA\Classes\SchedClass;
 
-$database = 'school';
+use const ScA\DB;
+use const ScA\DB_HOST;
+use const ScA\DB_PWD;
+use const ScA\DB_USER;
+
 $table = 'xii_sc_a_attendance';
 
-$conn = new mysqli($db_host, $db_user, $db_pwd, $database);
+$conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
 
 // Check connection
 if ($conn->connect_error) {

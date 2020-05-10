@@ -1,6 +1,20 @@
 <?php
-require '../classes.php';
-require '../student.php';
+
+require_once "../login.php";
+require_once "../teacher/defs.php";
+
+use \ScA\Student\TGLogin\TGLogin;
+use \ScA\Teacher;
+
+$is_logged_in = (TGLogin::from_cookie() != NULL) || (Teacher\is_logged_in());
+
+if (!$is_logged_in) {
+    header("Location: ../?nauth");
+    exit;
+}
+
+require_once '../classes.php';
+require_once '../student.php';
 
 $lim_days = isset($_GET['lim_days']) ? $_GET['lim_days'] : 0;
 $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
