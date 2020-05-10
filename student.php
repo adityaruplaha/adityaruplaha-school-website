@@ -2,12 +2,12 @@
 
 namespace ScA\Student;
 
-require "defs.php";
+require_once "defs.php";
 
-use const ScA\DB;
-use const ScA\DB_HOST;
-use const ScA\DB_PWD;
-use const ScA\DB_USER;
+use const \ScA\DB;
+use const \ScA\DB_HOST;
+use const \ScA\DB_PWD;
+use const \ScA\DB_USER;
 
 use Exception;
 
@@ -70,7 +70,7 @@ class Student
         return $result;
     }
 
-    private function check()
+    public function check()
     {
         if (!$this->tgid) {
             $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);

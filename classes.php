@@ -2,7 +2,7 @@
 
 namespace ScA\Classes;
 
-require "defs.php";
+require_once "defs.php";
 
 use const ScA\DB;
 use const ScA\DB_HOST;

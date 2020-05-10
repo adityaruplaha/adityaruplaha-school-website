@@ -1,8 +1,9 @@
 <?php
 
-namespace ScA;
+namespace ScA {
 
-const DB_HOST = 'localhost';
-const DB_USER = 'prog_access';
-const DB_PWD = '';
-const DB = 'school';
+    const DB_HOST = 'localhost';
+    const DB_USER = 'prog_access';
+    const DB_PWD = '';
+    const DB = 'school';
+}
