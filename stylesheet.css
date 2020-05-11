@@ -8,6 +8,19 @@ div {
 	padding: 10px 3px;
 }
 
+div.head {
+	padding: 5px 3px;
+	font-size: 20px;
+	text-align: right;
+}
+
+table.head {
+	padding: 5px 3px;
+	font-size: 20px;
+	text-align: right;
+	width: 100%;
+}
+
 p {
 	text-align: center;
 	padding: 10px 3px;
@@ -61,17 +74,16 @@ a.insecure:hover {
 	padding: 11px 22px;
 }
 
-table {
-	margin: auto;
+table.nav {
+	margin-left: auto;
+	margin-right: auto;
 	border-style: none;
 	color: #BFBFBF;
-	width: 100%;
-	margin: 3px;
-	table-layout: fixed;
+	width: 60%;
 	font-size: 26px;
 }
 
-td {
+table.nav td {
 	vertical-align: middle;
 	padding: 10px 15px;
 	border-style: none;
@@ -85,8 +97,8 @@ h1 {
 }
 
 hr {
-	color: #888888;
-	fill: #888888;
+	color: #505050;
+	fill: #5c5c5c;
 }
 
 button:hover {

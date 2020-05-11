@@ -36,7 +36,7 @@ class Student
     /**
      * Get attendance data in the form {Name, Attendance % (float b/w 0 and 1), P (int), A (int), Total (int)}.
      *  
-     * @return array Adssociative array 
+     * @return array Associative array 
      * 
      */
     public function get_attendance_data()
@@ -68,6 +68,19 @@ class Student
         $result['Total'] = $net;
 
         return $result;
+    }
+
+    /**
+     * Is the student a Trello member?
+     *  
+     * @return bool
+     * 
+     */
+    public function on_trello()
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT OnTrello FROM xii_sc_a_accounts WHERE `Name` = '{$this->name}'");
+        return $r->fetch_row()[0] == 'Yes';
     }
 
     public function check()

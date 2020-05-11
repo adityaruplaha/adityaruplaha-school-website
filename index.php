@@ -1,12 +1,15 @@
 <?php
 
 require_once "login.php";
+require_once "student.php";
 require_once "teacher/defs.php";
 
 use \ScA\Student\TGLogin\TGLogin;
 use \ScA\Teacher;
 
-$is_logged_in = (TGLogin::from_cookie() != NULL) || (Teacher\is_logged_in());
+$s = TGLogin::from_cookie();
+$is_teacher = Teacher\is_logged_in();
+$is_logged_in = ($s != NULL) || $is_student;
 
 ?>
 <!DOCTYPE html>
@@ -22,11 +25,68 @@ $is_logged_in = (TGLogin::from_cookie() != NULL) || (Teacher\is_logged_in());
 <body>
     <h1>XII Sc A - Class Portal</h1>
     <hr />
+    <?php
+
+    if ($s) {
+        $stu = new \ScA\Student\Student(NULL, $s->id);
+        if ($stu->on_trello()) {
+
+            $greet = "";
+            $n = $stu->name;
+
+            // Just some fun.
+            switch ($n) {
+                case "Himanshu Singh":
+                    $greet = "Adaab Ola zenaab.";
+                    break;
+                case "Sankalan Baidya":
+                    $greet = "Oh hey there Gkl.";
+                    break;
+                case "Debarya Bannerjee":
+                    $greet = "Hi Dedbarya.";
+                    break;
+                case "Adityarup Laha":
+                    $greet = "Welcome, Supreme Leader.";
+                    break;
+                default:
+                    $greet = "Hello, {$n}.";
+            }
+
+            echo "
+            <table class='head'>
+            <tr>
+            <td style='text-align: left;'><a href='/go/?url=https://trello.com/b/GsKINBwD/'>Open Bulletin Board: Private</a></td>
+            <td>{$greet} <a href='loginhandler.php?logout'>Logout</a></td>
+            </tr>
+            </table>
+            <hr/>
+            ";
+        } else {
+            echo "
+            <div class='head'>
+            Hello, {$stu->name}. <a href='loginhandler.php?logout'>Logout</a>
+            </div>
+            <hr/>
+            ";
+        }
+    } elseif ($is_teacher) {
+        echo "
+        <table class='head'>
+        <tr>
+        <td style='text-align: left;'><a href='teacher/'>Open Teachers' Portal</a></td>
+        <td>Hello, Teacher.</td>
+        </tr>
+        </table>
+        <hr/>
+        ";
+    }
+
+    ?>
     <div>
         <?php
 
         $logged_in_str = "
-    <table>
+    <table class='nav'>
     <tr>
         <td><a href='name_list/'>Name List</a></td>
         <td><a href='contact/'>Contact Teachers</a></td>
@@ -52,16 +112,6 @@ $is_logged_in = (TGLogin::from_cookie() != NULL) || (Teacher\is_logged_in());
     </tr>
     <tr>
         <td colspan=\"2\"><br /></td>
-    </tr>
-    <tr>
-        <td colspan=\"2\">
-            <a href='teacher/'>Open Teachers' Portal</a>
-        </td>
-    </tr>
-    <tr>
-        <td colspan=\"2\">
-            <a href='loginhandler.php?logout'>Logout</a>
-        </td>
     </tr>
 </table>";
 
