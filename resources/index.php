@@ -20,7 +20,7 @@ use const ScA\DB_HOST;
 use const ScA\DB_PWD;
 use const ScA\DB_USER;
 
-$table = "xii_sc_a_resources";
+$table = "resources";
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
 

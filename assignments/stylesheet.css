@@ -31,8 +31,7 @@ table {
 
 table.nav {
 	float: left;
-	border-style: none;
-	border-right-style: solid;
+	border-style: solid;
 	color: #BFBFBF;
 	margin: 3px;
 }
@@ -102,10 +101,4 @@ a:active {
 	color: rgb(116, 207, 162);
 	font: bold;
 	text-decoration: none;
-}
-
-footer {
-	width: 100%;
-	position: absolute;
-	bottom: 17px;
 }

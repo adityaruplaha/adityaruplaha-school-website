@@ -49,7 +49,7 @@ class SchedClass
             $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
             $d = date("Y-m-d", $timestamp);
             $t = date("H:i:s", $timestamp);
-            $r = $conn->query("SELECT Trello FROM xii_sc_a_classes WHERE `Date` = '{$d}' AND `Time` = '{$t}' AND `Subject` = '{$subject}'");
+            $r = $conn->query("SELECT Trello FROM classes WHERE `Date` = '{$d}' AND `Time` = '{$t}' AND `Subject` = '{$subject}'");
             if ($r) {
                 $this->trello = $r->fetch_row()[0];
             }
@@ -148,11 +148,11 @@ class SchedClass
             foreach ($filter as $sub) {
                 array_push($ar, "`Subject` = '{$sub}'");
             }
-            $r = $conn->query("SELECT * FROM `xii_sc_a_classes` WHERE Date = '{$d}' AND (" . implode(" OR ", $ar) . ") ORDER BY `Date` ASC, `Time` ASC, `Subject` ASC");
+            $r = $conn->query("SELECT * FROM `classes` WHERE Date = '{$d}' AND (" . implode(" OR ", $ar) . ") ORDER BY `Date` ASC, `Time` ASC, `Subject` ASC");
         } else {
-            $r = $conn->query("SELECT * FROM `xii_sc_a_classes` WHERE Date = '{$d}' ORDER BY `Date` ASC, `Time` ASC, `Subject` ASC");
+            $r = $conn->query("SELECT * FROM `classes` WHERE Date = '{$d}' ORDER BY `Date` ASC, `Time` ASC, `Subject` ASC");
         }
-        $r = $conn->query("SELECT * FROM `xii_sc_a_classes` WHERE Date = '{$d}'");
+        $r = $conn->query("SELECT * FROM `classes` WHERE Date = '{$d}'");
         return array_map(["ScA\Classes\SchedClass", "from_array"], $r->fetch_all(MYSQLI_ASSOC));
     }
 
@@ -177,9 +177,9 @@ class SchedClass
             foreach ($filter as $sub) {
                 array_push($ar, "`Subject` = '{$sub}'");
             }
-            $r = $conn->query("SELECT * FROM `xii_sc_a_classes` WHERE Date BETWEEN '{$from}' AND '{$to}' AND (" . implode(" OR ", $ar) . ") ORDER BY `Date` ASC, `Time` ASC, `Subject` ASC");
+            $r = $conn->query("SELECT * FROM `classes` WHERE Date BETWEEN '{$from}' AND '{$to}' AND (" . implode(" OR ", $ar) . ") ORDER BY `Date` ASC, `Time` ASC, `Subject` ASC");
         } else {
-            $r = $conn->query("SELECT * FROM `xii_sc_a_classes` WHERE Date BETWEEN '{$from}' AND '{$to}' ORDER BY `Date` ASC, `Time` ASC, `Subject` ASC");
+            $r = $conn->query("SELECT * FROM `classes` WHERE Date BETWEEN '{$from}' AND '{$to}' ORDER BY `Date` ASC, `Time` ASC, `Subject` ASC");
         }
         return array_map(["ScA\Classes\SchedClass", "from_array"], $r->fetch_all(MYSQLI_ASSOC));
     }
@@ -237,7 +237,6 @@ class Day
 {
     public $date;
     public $trello;
-    public $classes;
 
     public function __construct($date, $trello = NULL)
     {
@@ -246,7 +245,7 @@ class Day
         if ($trello == NULL) {
             $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
             $d = date("Y-m-d", $date);
-            $r = $conn->query("SELECT PrivateTrello FROM xii_sc_a_ptrello WHERE `Date` = '{$d}'");
+            $r = $conn->query("SELECT PrivateTrello FROM days WHERE `Date` = '{$d}'");
             if ($r) {
                 $this->trello = $r->fetch_row()[0];
             }
@@ -258,6 +257,15 @@ class Day
     public function get_classes($conn, $filter = [])
     {
         return SchedClass::get_classes_on($conn, $this->date, $filter);
+    }
+
+    public function get_upload_data($conn)
+    {
+        $d = date("Y-m-d", $this->date);
+        $r = $conn->query("SELECT UploadedBy, UploadComplete, UploadCycle FROM days WHERE `Date` = '{$d}'");
+        $row = $r->fetch_assoc();
+        $r->free();
+        return $row;
     }
 
     /**
@@ -284,10 +292,10 @@ class Day
      */
     public static function last_day($conn)
     {
-        $r1 = $conn->query("SELECT MAX(`Date`) FROM xii_sc_a_ptrello");
+        $r1 = $conn->query("SELECT MAX(`Date`) FROM days");
         $d1 = strtotime($r1->fetch_row()[0]);
         $r1->free();
-        $r2 = $conn->query("SELECT MAX(`Date`) FROM xii_sc_a_classes");
+        $r2 = $conn->query("SELECT MAX(`Date`) FROM classes");
         $d2 = strtotime($r2->fetch_row()[0]);
         $r2->free();
         return min($d1, $d2);

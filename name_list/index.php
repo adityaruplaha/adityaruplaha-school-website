@@ -20,23 +20,23 @@ if (!$is_logged_in) {
     <meta charset="utf-8">
     <title>XII Sc A - Student Details</title>
     <script>
-        /* Define function for escaping user input to be treated as 
+    /* Define function for escaping user input to be treated as 
     a literal string within a regular expression */
-        function escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        }
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
 
-        /* Define functin to find and replace specified term with replacement string */
-        function replaceAll(str, term, replacement) {
-            return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
-        }
+    /* Define functin to find and replace specified term with replacement string */
+    function replaceAll(str, term, replacement) {
+        return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
+    }
 
-        function clean() {
-            document.body.innerHTML = replaceAll(document.body.innerHTML, "<td>pe</td>", "<td>Physical Education</td>");
-            document.body.innerHTML = replaceAll(document.body.innerHTML, "<td>bn</td>", "<td>Bengali</td>");
-            document.body.innerHTML = replaceAll(document.body.innerHTML, "<td>hi</td>", "<td>Hindi</td>");
-            document.body.innerHTML = replaceAll(document.body.innerHTML, "<th>ExtraSub</th>", "<th>Subject Chosen</th>");
-        }
+    function clean() {
+        document.body.innerHTML = replaceAll(document.body.innerHTML, "<td>pe</td>", "<td>Physical Education</td>");
+        document.body.innerHTML = replaceAll(document.body.innerHTML, "<td>bn</td>", "<td>Bengali</td>");
+        document.body.innerHTML = replaceAll(document.body.innerHTML, "<td>hi</td>", "<td>Hindi</td>");
+        document.body.innerHTML = replaceAll(document.body.innerHTML, "<th>ExtraSub</th>", "<th>Subject Chosen</th>");
+    }
     </script>
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
 </head>
@@ -59,7 +59,7 @@ if (!$is_logged_in) {
     }
 
     // Query
-    $result = $conn->query("SELECT LPAD(row_number() over ( order by Name), 2, 0) `Serial No.`, Name, ExtraSub FROM xii_sc_a");
+    $result = $conn->query("SELECT LPAD(row_number() over ( order by Name), 2, 0) `Serial No.`, Name, ExtraSub FROM info");
     if (!$result) {
         die("Query to show fields from table failed");
     }

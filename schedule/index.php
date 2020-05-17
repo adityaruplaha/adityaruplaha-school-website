@@ -37,7 +37,7 @@ $d = date("Y-m-d", strtotime("yesterday"));
 
 // Query
 $result = $conn->query("SELECT `Date`, `PrivateTrello`
-    FROM xii_sc_a_ptrello WHERE `Date` >= '{$d}'");
+    FROM days WHERE `Date` >= '{$d}'");
 
 if (!$result) {
     die("Query to show fields from table failed");
@@ -54,7 +54,7 @@ $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
 </head>
 
-<body onload="beautify()">
+<body>
 
     <h1 align='center'>XII Sc A - Class Schedule</h1>
     <hr />
@@ -77,13 +77,15 @@ $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
             <?php
 
             while ($day = Day::from_array($result->fetch_assoc())) {
+                $u = $day->get_upload_data($conn);
+                $ub = ($u["UploadedBy"] ? $u["UploadedBy"] : "");
                 $cl = $day->get_classes($conn, $subjects);
                 $n = count($cl);
                 $cl1 = array_shift($cl);
                 echo "<tr>";
                 echo "<td rowspan={$n}>" . date("d F Y (D)", $day->date) . "</td>";
                 print($cl1->beautify(SCHEDULE_BEAUTY_TABULATED));
-                echo "<td rowspan={$n}><a href=\"" . $day->trello . "\">" . $day->trello . "</a></td>";
+                echo "<td rowspan={$n} style='text-align: center;'><a href=\"" . $day->trello . "\">" . $day->trello . "</a><br/><br/><b>Upload By: {$ub}</b></td>";
                 echo "</tr>";
                 foreach ($cl as $c) {
                     echo "<tr>";

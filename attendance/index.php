@@ -19,7 +19,7 @@ require_once '../student.php';
 $lim_days = isset($_GET['lim_days']) ? $_GET['lim_days'] : 0;
 $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
 
-$table = 'xii_sc_a_attendance';
+$table = 'attendance';
 
 use ScA\Classes\SchedClass;
 
@@ -146,7 +146,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
                 echo "<tr>";
                 echo "<td>" . $class->beautify(SCHEDULE_BEAUTY_SINGLELINE) . "</td>";
                 $col = $class->as_colname('`');
-                $sql = "SELECT LPAD(COUNT(Name), 2, 0) FROM xii_sc_a_attendance GROUP BY {$col} ORDER BY {$col} DESC";
+                $sql = "SELECT LPAD(COUNT(Name), 2, 0) FROM attendance GROUP BY {$col} ORDER BY {$col} DESC";
                 $r2 = $conn->query($sql);
                 if (!$r2) {
                     die("Query to show fields from table failed. Error Code: E_A02.");

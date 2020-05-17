@@ -21,7 +21,7 @@ use const ScA\DB_HOST;
 use const ScA\DB_PWD;
 use const ScA\DB_USER;
 
-$table = 'xii_sc_a_assignments';
+$table = 'assignments';
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
 
@@ -50,7 +50,7 @@ foreach ($SUBCODES as $sub => $v) {
     if (!$result) {
         die("Query to show fields from table failed.");
     }
-    $ASS[$sub] = $result->fetch_array(MYSQLI_NUM)[0][0];
+    $ASS[$sub] = $result->fetch_row()[0];
 }
 ?>
 
@@ -68,6 +68,18 @@ foreach ($SUBCODES as $sub => $v) {
 
     <h1 align='center'>XII Sc A - Assignments</h1>
     <hr />
+    <p align='center'>
+        <i>
+            <?php
+            date_default_timezone_set("Asia/Kolkata");
+            echo "Report generated on " . date("d M Y h:i:sa") . " IST."
+            ?>
+            <br />
+            <br />
+            Click on the subject header to see resources from that subject.
+        </i>
+        <hr />
+    </p>
 
     <div>
         <table class='nav'>
@@ -135,21 +147,6 @@ foreach ($SUBCODES as $sub => $v) {
     }
 
     ?>
-
-
-    <footer align='center'>
-        <hr />
-        <br />
-        <i>
-            <?php
-            date_default_timezone_set("Asia/Kolkata");
-            echo "Report generated on " . date("d M Y h:i:sa") . " IST."
-            ?>
-            <br />
-            <br />
-            Click on the subject header to see assignments from that subject.
-        </i>
-    </footer>
 </body>
 
 </html>

@@ -2,6 +2,10 @@
 
 namespace ScA\Student;
 
+const STUDENT_ATTENDANCE = 0b001;
+const STUDENT_BASIC = 0b010;
+const STUDENT_CONTACT = 0b100;
+
 require_once "defs.php";
 
 use const \ScA\DB;
@@ -34,6 +38,27 @@ class Student
     }
 
     /**
+     * Get info merged from component functions as set by flags (use | to select multiple).
+     *  
+     * @return array|null Associative array or NULL if no data is matched for some reason.
+     * 
+     */
+    public function get_info($flags)
+    {
+        $info = [];
+        if ($flags & STUDENT_ATTENDANCE) {
+            $info = array_merge($info, $this->get_attendance_data());
+        }
+        if ($flags & STUDENT_BASIC) {
+            $info = array_merge($info, $this->get_basic_info());
+        }
+        if ($flags & STUDENT_CONTACT) {
+            $info = array_merge($info, $this->get_contact_info());
+        }
+        return $info;
+    }
+
+    /**
      * Get attendance data in the form {Name, Attendance % (float b/w 0 and 1), P (int), A (int), Total (int)}.
      *  
      * @return array Associative array 
@@ -42,7 +67,7 @@ class Student
     public function get_attendance_data()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT * FROM xii_sc_a_attendance WHERE `Name` = '{$this->name}'");
+        $r = $conn->query("SELECT * FROM attendance WHERE `Name` = '{$this->name}'");
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();
@@ -71,6 +96,38 @@ class Student
     }
 
     /**
+     * Get info in the form {Name, ExtraSub, Status}.
+     *  
+     * @return array|null Associative array 
+     * 
+     */
+    public function get_basic_info()
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT Name, ExtraSub, Status FROM info WHERE `Name` = '{$this->name}'");
+        $row = $r->fetch_assoc();
+        $r->free();
+        $conn->close();
+        return $row;
+    }
+
+    /**
+     * Get info in the form {Name, EMail, Mobile, Mobile2}.
+     *  
+     * @return array|null Associative array 
+     * 
+     */
+    public function get_contact_info()
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT Name, EMail, Mobile, Mobile2 FROM info WHERE `Name` = '{$this->name}'");
+        $row = $r->fetch_assoc();
+        $r->free();
+        $conn->close();
+        return $row;
+    }
+
+    /**
      * Is the student a Trello member?
      *  
      * @return bool
@@ -79,7 +136,7 @@ class Student
     public function on_trello()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT OnTrello FROM xii_sc_a_accounts WHERE `Name` = '{$this->name}'");
+        $r = $conn->query("SELECT OnTrello FROM accounts WHERE `Name` = '{$this->name}'");
         return $r->fetch_row()[0] == 'Yes';
     }
 
@@ -87,7 +144,7 @@ class Student
     {
         if (!$this->tgid) {
             $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-            $r = $conn->query("SELECT Telegram_UserID FROM xii_sc_a_accounts WHERE `Name` = '{$this->name}'");
+            $r = $conn->query("SELECT Telegram_UserID FROM accounts WHERE `Name` = '{$this->name}'");
             if ($r) {
                 if ($row = $r->fetch_row()) {
                     $this->tgid = $row[0];
@@ -104,7 +161,7 @@ class Student
         }
         if (!$this->name) {
             $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-            $r = $conn->query("SELECT Name FROM xii_sc_a_accounts WHERE `Telegram_UserID` = {$this->tgid}");
+            $r = $conn->query("SELECT Name FROM accounts WHERE `Telegram_UserID` = {$this->tgid}");
             if ($r) {
                 if ($row = $r->fetch_row()) {
                     $this->name = $row[0];
@@ -121,7 +178,7 @@ class Student
         }
 
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT Name FROM xii_sc_a_accounts WHERE `Name` = '{$this->name}' AND `Telegram_UserID` = {$this->tgid}");
+        $r = $conn->query("SELECT Name FROM accounts WHERE `Name` = '{$this->name}' AND `Telegram_UserID` = {$this->tgid}");
         $this->is_valid = $r->fetch_row() ? true : false;
         return $this->is_valid;
     }
