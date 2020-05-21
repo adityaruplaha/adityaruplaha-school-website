@@ -14,6 +14,7 @@ use const \ScA\DB_PWD;
 use const \ScA\DB_USER;
 
 use Exception;
+use ScA\Classes\SchedClass;
 
 class Student
 {
@@ -38,36 +39,55 @@ class Student
     }
 
     /**
-     * Get info merged from component functions as set by flags (use | to select multiple).
+     * Get info merged from component functions as set by flags (use `|` to select multiple).
      *  
+     * @param int flags
+     * @param array passargs Arguments to pass to respective functions as: `{"STUDENT_ATTENDANCE" => [...], ...}`
+     * 
      * @return array|null Associative array or NULL if no data is matched for some reason.
      * 
      */
-    public function get_info($flags)
+    public function get_info($flags, $passargs = [])
     {
         $info = [];
         if ($flags & STUDENT_ATTENDANCE) {
-            $info = array_merge($info, $this->get_attendance_data());
+            $arg = isset($passargs["STUDENT_ATTENDANCE"]) ? $passargs["STUDENT_ATTENDANCE"] : [];
+            $info = array_merge($info, $this->get_attendance_data(...$arg));
         }
         if ($flags & STUDENT_BASIC) {
-            $info = array_merge($info, $this->get_basic_info());
+            $arg = isset($passargs["STUDENT_BASIC"]) ? $passargs["STUDENT_BASIC"] : [];
+            $info = array_merge($info, $this->get_basic_info(...$arg));
         }
         if ($flags & STUDENT_CONTACT) {
-            $info = array_merge($info, $this->get_contact_info());
+            $arg = isset($passargs["STUDENT_CONTACT"]) ? $passargs["STUDENT_CONTACT"] : [];
+            $info = array_merge($info, $this->get_contact_info(...$arg));
         }
         return $info;
     }
 
     /**
      * Get attendance data in the form {Name, Attendance % (float b/w 0 and 1), P (int), A (int), Total (int)}.
+     * 
+     * @param array $classes Array of `SchedClass` objects.
      *  
      * @return array Associative array 
      * 
      */
-    public function get_attendance_data()
+    public function get_attendance_data($classes = [])
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT * FROM attendance WHERE `Name` = '{$this->name}'");
+        $r = NULL;
+        if (!$classes) {
+            $classes = SchedClass::get_classes_from($conn, strtotime("2020-04-03"));
+        }
+        $cols = [];
+        foreach ($classes as $class) {
+            if ($class->status == 'All OK') {
+                array_push($cols, $class->as_colname('`'));
+            }
+        }
+        $s = implode(', ', $cols);
+        $r = $conn->query("SELECT {$s} FROM attendance WHERE `Name` = '{$this->name}'");
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();
@@ -96,7 +116,7 @@ class Student
     }
 
     /**
-     * Get info in the form {Name, ExtraSub, Status}.
+     * Get info in the form `{Name, ExtraSub, Status}`.
      *  
      * @return array|null Associative array 
      * 

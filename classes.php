@@ -32,6 +32,7 @@ class SchedClass
     public $timestamp;
     public $subject;
     public $trello;
+    public $status;
 
     /**
      * Construct a new SchedClass.
@@ -40,11 +41,12 @@ class SchedClass
      * @param string $subject Subject code.
      * @param string $trello Trello ShortURL.
      */
-    public function __construct($timestamp, $subject, $trello = NULL)
+    public function __construct($timestamp, $subject, $trello = NULL, $status = NULL)
     {
         $this->timestamp = $timestamp;
         $this->subject = $subject;
         $this->trello = $trello;
+        $this->status = $status;
         if ($trello == NULL) {
             $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
             $d = date("Y-m-d", $timestamp);
@@ -52,6 +54,17 @@ class SchedClass
             $r = $conn->query("SELECT Trello FROM classes WHERE `Date` = '{$d}' AND `Time` = '{$t}' AND `Subject` = '{$subject}'");
             if ($r) {
                 $this->trello = $r->fetch_row()[0];
+            }
+            $r->free();
+            $conn->close();
+        }
+        if ($status == NULL) {
+            $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+            $d = date("Y-m-d", $timestamp);
+            $t = date("H:i:s", $timestamp);
+            $r = $conn->query("SELECT Status FROM classes WHERE `Date` = '{$d}' AND `Time` = '{$t}' AND `Subject` = '{$subject}'");
+            if ($r) {
+                $this->status = $r->fetch_row()[0];
             }
             $r->free();
             $conn->close();
@@ -64,7 +77,8 @@ class SchedClass
             "Date" => date("Y-m-d", $this->timestamp),
             "Time" => date("H:i:s", $this->timestamp),
             "Subject" => $this->subject,
-            "Trello" => $this->trello
+            "Trello" => $this->trello,
+            "Status" => $this->status
         ];
     }
 
@@ -78,6 +92,49 @@ class SchedClass
     public function as_colname($encloseby = '`')
     {
         return $encloseby . date("Y-m-d", $this->timestamp) . '_' . $this->subject . $encloseby;
+    }
+
+    /**
+     * Get attendance data in the form {P (int), A (int), E (int), % (float b/w 0 and 1)}.
+     * 
+     * @param mysqli $conn Connection to use.
+     *  
+     * @return array Associative array 
+     * 
+     */
+    public function get_attendance_data($conn)
+    {
+        switch ($this->status) {
+            case "Attendance Missing":
+                return "NO DATA";
+                break;
+            case "Skip Attendance":
+                return "EXEMPTED";
+                break;
+            case "Cancelled":
+                return "CANCELLED";
+                break;
+            default:
+                break;
+        }
+        $col = $this->as_colname('`');
+        $sql = "SELECT COUNT(Name) FROM attendance GROUP BY {$col} ORDER BY {$col} DESC";
+        $r2 = $conn->query($sql);
+        if (!$r2) {
+            die("Query to show fields from table failed. Error Code: E_A02.");
+        }
+        $rows = $r2->fetch_all();
+        $p = intval($rows[0][0]);
+        $a = intval($rows[1][0]);
+        $n = (isset($rows[2]) ? intval($rows[2][0]) : 0);
+        $percentage = floatval($p) / (floatval($p) + floatval($a));
+        $r2->free();
+        return [
+            "P" => $p,
+            "A" => $a,
+            "E" => $n,
+            "%" => $percentage
+        ];
     }
 
     /**
@@ -111,9 +168,9 @@ class SchedClass
      * @param string $subject Subject code.
      * @param string $trello Trello ShortURL.
      */
-    public static function from_strs($date, $time, $subject, $trello = NULL)
+    public static function from_strs($date, $time, $subject, $trello = NULL, $status = NULL)
     {
-        return new SchedClass(strtotime($date . ' ' . $time), $subject, $trello);
+        return new SchedClass(strtotime($date . ' ' . $time), $subject, $trello, $status);
     }
 
     /**
@@ -126,7 +183,7 @@ class SchedClass
      */
     public static function from_array($arr)
     {
-        return SchedClass::from_strs($arr["Date"], $arr["Time"], $arr["Subject"], $arr["Trello"]);
+        return SchedClass::from_strs($arr["Date"], $arr["Time"], $arr["Subject"], $arr["Trello"], $arr["Status"]);
     }
 
     /**
@@ -139,7 +196,7 @@ class SchedClass
      * @return array Array of SchedClass.
      * 
      */
-    function get_classes_on($conn, $d, $filter = array())
+    public static function get_classes_on($conn, $d, $filter = array())
     {
         $d = date("Y-m-d", $d);
         $r = NULL;
@@ -152,7 +209,6 @@ class SchedClass
         } else {
             $r = $conn->query("SELECT * FROM `classes` WHERE Date = '{$d}' ORDER BY `Date` ASC, `Time` ASC, `Subject` ASC");
         }
-        $r = $conn->query("SELECT * FROM `classes` WHERE Date = '{$d}'");
         return array_map(["ScA\Classes\SchedClass", "from_array"], $r->fetch_all(MYSQLI_ASSOC));
     }
 
@@ -167,7 +223,7 @@ class SchedClass
      * @return array Array of SchedClass.
      * 
      */
-    function get_classes_between($conn, $from, $to, $filter = array())
+    public static function get_classes_between($conn, $from, $to, $filter = array())
     {
         $from = date("Y-m-d", $from);
         $to = date("Y-m-d", $to);

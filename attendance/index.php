@@ -145,36 +145,31 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             foreach ($classes as $class) {
                 echo "<tr>";
                 echo "<td>" . $class->beautify(SCHEDULE_BEAUTY_SINGLELINE) . "</td>";
-                $col = $class->as_colname('`');
-                $sql = "SELECT LPAD(COUNT(Name), 2, 0) FROM attendance GROUP BY {$col} ORDER BY {$col} DESC";
-                $r2 = $conn->query($sql);
-                if (!$r2) {
-                    die("Query to show fields from table failed. Error Code: E_A02.");
-                }
-                $rows = $r2->fetch_all();
-                if (!isset($rows[1])) {
-                    echo "<td colspan=3 style=\"text-align: center;\"><b>NO DATA</b></td>";
+                $r = $class->get_attendance_data($conn);
+                if (!is_array($r)) {
+                    echo "<td colspan=3 style=\"text-align: center;\"><b>" . $r . "</b></td>";
                     continue;
                 }
-                $p = $rows[0][0];
-                $a = $rows[1][0];
-                $n = floatval($p) / (floatval($p) + floatval($a)) * 100;
+                $p = str_pad("{$r['P']}", 2, '0', STR_PAD_LEFT);
+                $a = str_pad("{$r['A']}", 2, '0', STR_PAD_LEFT);
+                $n = $r["%"] * 100;
                 echo "<td style=\"text-align: center;\">" . $p . "</td>";
                 echo "<td style=\"text-align: center;\">" . $a . "</td>";
                 if ($n > 80) {
                     $n = number_format($n, 2);
+                    $n = str_pad($n, 2, '0', STR_PAD_LEFT);
                     echo "<td class ='green' style='text-align: center;'>{$n}%</td>";
                 } elseif ($n > 50) {
                     $n = number_format($n, 2);
+                    $n = str_pad($n, 2, '0', STR_PAD_LEFT);
                     echo "<td class ='yellow' style='text-align: center;'>{$n}%</td>";
                 } else {
                     $n = number_format($n, 2);
+                    $n = str_pad($n, 2, '0', STR_PAD_LEFT);
                     echo "<td class ='red' style='text-align: center;'>{$n}%</td>";
                 }
                 echo "</tr>";
-                $r2->free();
             }
-            $conn->close();
 
             ?>
         </table>
@@ -183,9 +178,6 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
     <div class='tab' id='stusum' style='display: none;'>
 
         <?php
-
-
-        $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
 
         // Check connection
         if ($conn->connect_error) {
