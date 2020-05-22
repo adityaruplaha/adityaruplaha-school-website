@@ -78,14 +78,14 @@ $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
 
             while ($day = Day::from_array($result->fetch_assoc())) {
                 $u = $day->get_upload_data($conn);
-                $ub = ($u["UploadedBy"] ? $u["UploadedBy"] : "");
+                $ub = ($u["UploadedBy"] ? "<br/><br/><b>Upload By: {$u["UploadedBy"]}</b>" : "");
                 $cl = $day->get_classes($conn, $subjects);
                 $n = count($cl);
                 $cl1 = array_shift($cl);
                 echo "<tr>";
                 echo "<td rowspan={$n}>" . date("d F Y (D)", $day->date) . "</td>";
                 print($cl1->beautify(SCHEDULE_BEAUTY_TABULATED));
-                echo "<td rowspan={$n} style='text-align: center;'><a href=\"" . $day->trello . "\">" . $day->trello . "</a><br/><br/><b>Upload By: {$ub}</b></td>";
+                echo "<td rowspan={$n} style='text-align: center;'><a href=\"" . $day->trello . "\">" . $day->trello . "</a>{$ub}</td>";
                 echo "</tr>";
                 foreach ($cl as $c) {
                     echo "<tr>";
