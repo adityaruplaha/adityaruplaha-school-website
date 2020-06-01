@@ -16,6 +16,28 @@ use const \ScA\DB_USER;
 use Exception;
 use ScA\Classes\SchedClass;
 
+class Privilege
+{
+    private const LOOKUP = [
+        0 => "Basic",
+        1 => "Member",
+        2 => "Admin",
+        3 => "Superadmin"
+    ];
+
+    public $lv;
+
+    public function __construct($str)
+    {
+        assert(in_array($str, Privilege::LOOKUP), "Invalid Privilege Level.");
+        $lv = $str;
+    }
+
+    public function get_int()
+    {
+        return array_flip(Privilege::LOOKUP)[$this->lv];
+    }
+}
 class Student
 {
     public $name;
@@ -148,16 +170,28 @@ class Student
     }
 
     /**
-     * Is the student a Trello member?
+     * Get privilege level.
+     *  
+     * @return Privilege
+     * 
+     */
+    public function privilege()
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT PrivilegeLevel FROM accounts WHERE `Name` = '{$this->name}'");
+        return new Privilege($r->fetch_row()[0]);
+    }
+
+    /**
+     * Check authorization by privilege level.
      *  
      * @return bool
      * 
      */
-    public function on_trello()
+    public function has_privileges($min_lv)
     {
-        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT OnTrello FROM accounts WHERE `Name` = '{$this->name}'");
-        return $r->fetch_row()[0] == 'Yes';
+        $check = new Privilege($min_lv);
+        return $this->privilege()->get_int() >= $check->get_int();
     }
 
     public function check()

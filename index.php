@@ -28,7 +28,7 @@ $is_logged_in = ($s != NULL) || $is_student;
 
     if ($s) {
         $stu = new \ScA\Student\Student(NULL, $s->id);
-        if ($stu->on_trello()) {
+        if ($stu->has_privileges("Member")) {
 
             $greet = "";
             $n = $stu->name;
