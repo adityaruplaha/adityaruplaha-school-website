@@ -1,20 +1,28 @@
 <?php
 
-require_once "../login.php";
-require_once "../teacher/defs.php";
+require_once "../../login.php";
+require_once "../../teacher/defs.php";
 
 use \ScA\Student\TGLogin\TGLogin;
 use \ScA\Teacher;
 
-$is_logged_in = (TGLogin::from_cookie() != NULL) || (Teacher\is_logged_in());
+$is_teacher = Teacher\is_logged_in();
+
+$s = TGLogin::from_cookie();
+if ($s != NULL) {
+    $s = new \ScA\Student\Student(NULL, $s->id);
+    if (!$s->has_privileges("Admin")) {
+        $s = NULL;
+    }
+}
+$is_logged_in = ($s != NULL) || $is_teacher;
 
 if (!$is_logged_in) {
-    header("Location: ../?nauth");
+    header("Location: ../../?nauth");
     exit;
 }
 
-
-require_once "../defs.php";
+require_once "../../defs.php";
 
 use const ScA\DB;
 use const ScA\DB_HOST;

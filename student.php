@@ -22,15 +22,17 @@ class Privilege
         0 => "Basic",
         1 => "Member",
         2 => "Admin",
-        3 => "Superadmin"
+        3 => "Super Admin"
     ];
 
     public $lv;
 
     public function __construct($str)
     {
-        assert(in_array($str, Privilege::LOOKUP), "Invalid Privilege Level.");
-        $lv = $str;
+        if (!in_array($str, Privilege::LOOKUP)) {
+            throw "Invalid Privilege Level.";
+        }
+        $this->lv = $str;
     }
 
     public function get_int()

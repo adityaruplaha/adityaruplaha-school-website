@@ -1,0 +1,55 @@
+body {
+	background-color: #222222;
+	font-family: "Arial", "Courier", "Letter Gothic";
+	color: #BBBBBB;
+}
+
+.center {
+	margin: auto;
+}
+
+.red {
+	color: #FF8888;
+	font: bold;
+}
+
+.yellow {
+	color: #d2d397;
+	font: bold;
+}
+
+table {
+	margin: auto;
+	border-style: solid;
+	color: #BFBFBF;
+	border-collapse: collapse;
+}
+
+th {
+	padding: 15px 20px;
+	border-style: solid;
+}
+
+tr {
+	border-style: solid;
+}
+
+td {
+	padding: 10px 15px;
+	border-style: none;
+}
+
+h1 {
+	margin: auto;
+	padding: 10px 0px;
+}
+
+hr {
+	color: #888888;
+	fill: #888888;
+}
+
+tr:not(:first-child):hover {
+	background-color: #414141;
+	transition: 0.1s;
+}

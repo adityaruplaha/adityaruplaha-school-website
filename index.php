@@ -9,7 +9,7 @@ use \ScA\Teacher;
 
 $s = TGLogin::from_cookie();
 $is_teacher = Teacher\is_logged_in();
-$is_logged_in = ($s != NULL) || $is_student;
+$is_logged_in = ($s != NULL) || $is_teacher;
 
 ?>
 <!DOCTYPE html>
@@ -30,31 +30,22 @@ $is_logged_in = ($s != NULL) || $is_student;
         $stu = new \ScA\Student\Student(NULL, $s->id);
         if ($stu->has_privileges("Member")) {
 
-            $greet = "";
             $n = $stu->name;
+            $greet = "Hello, {$n}.";
 
-            // Just some fun.
-            switch ($n) {
-                case "Himanshu Singh":
-                    $greet = "Adaab Ola zenaab.";
-                    break;
-                case "Sankalan Baidya":
-                    $greet = "Oh hey there Gkl.";
-                    break;
-                case "Debarya Bannerjee":
-                    $greet = "Hi Dedbarya.";
-                    break;
-                case "Adityarup Laha":
-                    $greet = "Welcome, Supreme Leader.";
-                    break;
-                default:
-                    $greet = "Hello, {$n}.";
+            $admin = "";
+            if ($stu->has_privileges("Admin")) {
+                $admin = "<br/><a href='admin/'>Open Admin Portal</a>";
             }
 
             echo "
             <table class='head'>
             <tr>
-            <td style='text-align: left;'><a href='/go/?url=https://trello.com/b/GsKINBwD/'>Open Bulletin Board: Private</a></td>
+            <td style='text-align: left;'>
+                <a href='/go/?url=https://trello.com/b/GsKINBwD/'>Open Bulletin Board: Private</a>
+                {$admin}
+            </td>            
+            <td style='width: auto;'>
             <td>{$greet} <a href='loginhandler.php?logout'>Logout</a></td>
             </tr>
             </table>
@@ -84,7 +75,23 @@ $is_logged_in = ($s != NULL) || $is_student;
     <div>
         <?php
 
+
+        $status_message = "";
+
+        if (isset($_GET["loggedout"])) {
+            $status_message = "<p><i>Logged out.</i></p>";
+        }
+
+        if (isset($_GET["loginfailed"])) {
+            $status_message = "<p class='red'><i>Failed to login.</i></p>";
+        }
+
+        if (isset($_GET["nauth"])) {
+            $status_message = "<p class='red'><i>You are not authorized to access that page.</i></p>";
+        }
+
         $logged_in_str = "
+        {$status_message}
     <table class='nav'>
     <tr>
         <td><a href='name_list/'>Name List</a></td>
@@ -113,20 +120,6 @@ $is_logged_in = ($s != NULL) || $is_student;
         <td colspan=\"2\"><br /></td>
     </tr>
 </table>";
-
-        $status_message = "";
-
-        if (isset($_GET["loggedout"])) {
-            $status_message = "<p><i>Logged out.</i></p>";
-        }
-
-        if (isset($_GET["loginfailed"])) {
-            $status_message = "<p class='red'><i>Failed to login.</i></p>";
-        }
-
-        if (isset($_GET["nauth"])) {
-            $status_message = "<p class='red'><i>Please login first.</i></p>";
-        }
 
         $not_logged_in_str = "
         {$status_message}
