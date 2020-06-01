@@ -119,6 +119,9 @@ $is_logged_in = ($s != NULL) || $is_teacher;
     <tr>
         <td colspan=\"2\"><br /></td>
     </tr>
+    <tr>
+        <td colspan=\"2\"><a href='/go/?url=https://github.com/adityaruplaha/adityaruplaha-school-website'>Browse Source Code</a></td>
+    </tr>
 </table>";
 
         $not_logged_in_str = "
