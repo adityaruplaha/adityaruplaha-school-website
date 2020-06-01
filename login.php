@@ -19,8 +19,7 @@ class TGLogin
 
     public function store()
     {
-        $secret_key = hash('sha256', BOT_API_KEY . SERVER_KEY);
-        $hash = hash_hmac('sha256', $this->id, $secret_key);
+        $hash = TGLogin::get_hash($this->id);
         setcookie("tg_id", $this->id, time() + 7 * 86400, '/sc_a/', '', true);
         setcookie("tg_id_hash", $hash, time() + 7 * 86400, '/sc_a/', '', true);
     }
@@ -81,8 +80,7 @@ class TGLogin
 
         // Check whether data is authentic.
         $id = $_COOKIE['tg_id'];
-        $secret_key = hash('sha256', BOT_API_KEY . SERVER_KEY);
-        $hash = hash_hmac('sha256', $id, $secret_key);
+        $hash = TGLogin::get_hash($id);
         if (!hash_equals($hash, $_COOKIE['tg_id_hash'])) {
             TGLogin::logout();
             return NULL;
@@ -97,5 +95,12 @@ class TGLogin
         $obj = new TGLogin();
         $obj->id = $id;
         return $obj;
+    }
+
+    protected static function get_hash($id)
+    {
+        $secret_key = hash('sha3-512', BOT_API_KEY . SERVER_KEY);
+        $hash = hash_hmac('sha3-512', $id, $secret_key);
+        return $hash;
     }
 }
