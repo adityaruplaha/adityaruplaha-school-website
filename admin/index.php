@@ -3,12 +3,8 @@
 
 require_once "../login.php";
 require_once "../student.php";
-require_once "../teacher/defs.php";
 
 use \ScA\Student\TGLogin\TGLogin;
-use \ScA\Teacher;
-
-$is_teacher = Teacher\is_logged_in();
 
 $s = TGLogin::from_cookie();
 if ($s != NULL) {
@@ -17,7 +13,7 @@ if ($s != NULL) {
         $s = NULL;
     }
 }
-$is_logged_in = ($s != NULL) || $is_teacher;
+$is_logged_in = ($s != NULL);
 
 if (!$is_logged_in) {
     header("Location: ../?nauth");
@@ -32,7 +28,6 @@ if (!$is_logged_in) {
         XII Sc A - Administrators Portal
     </title>
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </script>
 </head>
 
@@ -45,17 +40,16 @@ if (!$is_logged_in) {
                 <td><a href='actions/'>Action Log</a></td>
                 <td><a href='details/'>Student Details</a></td>
             </tr>
-            <?php
-
-            if ($s->has_privileges("Super Admin") || $is_teacher) {
-                echo "
-                <tr>
+            <tr>
+                <td><a href='trello_upload_recommendation/'>Trello Uploads Recommendations</a></td>
+                <?php
+                if ($s->has_privileges("Super Admin")) {
+                    echo "
                     <td><a href='broadcast/'>Broadcast to Telegram</a></td>
-                </tr>
                 ";
-            }
-
-            ?>
+                }
+                ?>
+            </tr>
             <tr>
                 <td colspan="2"><br /></td>
             </tr>
@@ -64,6 +58,55 @@ if (!$is_logged_in) {
                     <a href='../'>Open Students' Portal</a>
                 </td>
             </tr>
+        </table>
+    </div>
+    <hr />
+    <div>
+        <h2>Uploads requiring Attention</h2>
+        <br />
+        <table class='bordered'>
+            <tr>
+                <th>Date</th>
+                <th>URL</th>
+                <th>Status</th>
+            </tr>
+            <?php
+
+            require_once "../defs.php";
+
+            use const ScA\DB;
+            use const ScA\DB_HOST;
+            use const ScA\DB_PWD;
+            use const ScA\DB_USER;
+
+            $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);;
+
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Query
+            $result = $conn->query("SELECT * FROM days WHERE Status = 'Pending' OR Status = 'Awaiting Approval'");
+            if (!$result) {
+                die("Query to show fields from table failed");
+            }
+
+            $uploads = $result->fetch_all(MYSQLI_ASSOC);
+
+            foreach ($uploads as $upload) {
+                echo "<tr>";
+                $date = strtotime($upload["Date"]);
+                $date = strftime("%d %B %Y", $date);
+                $url = $upload["PrivateTrello"];
+                $stat = $upload["Status"];
+                echo "<td>{$date}</td>";
+                echo "<td><a href='{$url}'>{$url}</a></td>";
+                echo "<td>{$stat}</td>";
+                echo "</tr>";
+            }
+
+            ?>
         </table>
     </div>
 </body>

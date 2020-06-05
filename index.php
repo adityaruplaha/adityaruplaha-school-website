@@ -33,19 +33,12 @@ $is_logged_in = ($s != NULL) || $is_teacher;
             $n = $stu->name;
             $greet = "Hello, {$n}.";
 
-            $admin = "";
-            if ($stu->has_privileges("Admin")) {
-                $admin = "<br/><a href='admin/'>Open Admin Portal</a>";
-            }
-
             echo "
             <table class='head'>
             <tr>
             <td style='text-align: left;'>
-                <a href='/go/?url=https://trello.com/b/GsKINBwD/'>Open Bulletin Board: Private</a>
-                {$admin}
-            </td>            
-            <td style='width: auto;'>
+                <a href='member/'>Profile</a>
+            </td>
             <td>{$greet} <a href='loginhandler.php?logout'>Logout</a></td>
             </tr>
             </table>

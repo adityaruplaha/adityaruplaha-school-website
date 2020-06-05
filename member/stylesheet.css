@@ -15,7 +15,17 @@ p {
 
 .red {
 	color: #FF8888;
-	font: bold;
+	font-weight: 500;
+}
+
+.green {
+	color: #74cfa2;
+	font-weight: 500;
+}
+
+.yellow {
+	color: #e9e170;
+	font-weight: 500;
 }
 
 a:link {
@@ -50,10 +60,9 @@ table {
 	margin: auto;
 	border-style: none;
 	color: #BFBFBF;
-	width: 100%;
 	margin: 3px;
 	table-layout: fixed;
-	font-size: 26px;
+	font-size: 24px;
 }
 
 td {
@@ -62,20 +71,9 @@ td {
 	text-align: center;
 }
 
-h1, h2 {
-	margin: auto;
-	padding: 10px 0px;
-	text-align: center;
-}
-
-hr {
-	color: #888888;
-	fill: #888888;
-}
-
 table.bordered {
 	font-size: 18px;	
-	margin: auto;
+	width: 90%;
 	border-style: solid;
 	color: #BFBFBF;
 	border-collapse: collapse;
@@ -96,4 +94,25 @@ table.bordered th {
 
 table.bordered tr:first-child {
 	border-bottom-style: solid;
+}
+
+.float-child {
+	float: left;
+	margin: 4px;
+	width: 49%;
+}
+
+.center {
+	margin: auto;
+}
+
+h1, h2 {
+	margin: auto;
+	padding: 10px 0px;
+	text-align: center;
+}
+
+hr {
+	color: #888888;
+	fill: #888888;
 }

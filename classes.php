@@ -318,7 +318,7 @@ class Day
     public function get_upload_data($conn)
     {
         $d = date("Y-m-d", $this->date);
-        $r = $conn->query("SELECT UploadedBy, UploadComplete, UploadCycle FROM days WHERE `Date` = '{$d}'");
+        $r = $conn->query("SELECT UploadedBy, Status FROM days WHERE `Date` = '{$d}'");
         $row = $r->fetch_assoc();
         $r->free();
         return $row;

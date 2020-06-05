@@ -2,11 +2,8 @@
 
 namespace ScA\Student;
 
-const STUDENT_ATTENDANCE = 0b001;
-const STUDENT_BASIC = 0b010;
-const STUDENT_CONTACT = 0b100;
-
 require_once "defs.php";
+require_once "classes.php";
 
 use const \ScA\DB;
 use const \ScA\DB_HOST;
@@ -60,33 +57,6 @@ class Student
         $this->name = $name;
         $this->tgid = $tgid;
         $this->check();
-    }
-
-    /**
-     * Get info merged from component functions as set by flags (use `|` to select multiple).
-     *  
-     * @param int flags
-     * @param array passargs Arguments to pass to respective functions as: `{"STUDENT_ATTENDANCE" => [...], ...}`
-     * 
-     * @return array|null Associative array or NULL if no data is matched for some reason.
-     * 
-     */
-    public function get_info($flags, $passargs = [])
-    {
-        $info = [];
-        if ($flags & STUDENT_ATTENDANCE) {
-            $arg = isset($passargs["STUDENT_ATTENDANCE"]) ? $passargs["STUDENT_ATTENDANCE"] : [];
-            $info = array_merge($info, $this->get_attendance_data(...$arg));
-        }
-        if ($flags & STUDENT_BASIC) {
-            $arg = isset($passargs["STUDENT_BASIC"]) ? $passargs["STUDENT_BASIC"] : [];
-            $info = array_merge($info, $this->get_basic_info(...$arg));
-        }
-        if ($flags & STUDENT_CONTACT) {
-            $arg = isset($passargs["STUDENT_CONTACT"]) ? $passargs["STUDENT_CONTACT"] : [];
-            $info = array_merge($info, $this->get_contact_info(...$arg));
-        }
-        return $info;
     }
 
     /**
@@ -166,6 +136,22 @@ class Student
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
         $r = $conn->query("SELECT Name, EMail, Mobile, Mobile2 FROM info WHERE `Name` = '{$this->name}'");
         $row = $r->fetch_assoc();
+        $r->free();
+        $conn->close();
+        return $row;
+    }
+
+    /**
+     * Get info in the form {Date, PrivateTrello, Status}.
+     *  
+     * @return array|null Associative array as obtained from mysqli_result::fetch_all. 
+     * 
+     */
+    public function get_uploads_info()
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT Date, PrivateTrello, Status FROM days WHERE `UploadedBy` = '{$this->name}'");
+        $row = $r->fetch_all(MYSQLI_ASSOC);
         $r->free();
         $conn->close();
         return $row;
