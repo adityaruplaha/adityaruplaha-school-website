@@ -54,6 +54,7 @@ foreach ($SUBCODES as $sub => $v) {
 }
 ?>
 
+<!DOCTYPE html>
 <html lang='en'>
 
 <head>

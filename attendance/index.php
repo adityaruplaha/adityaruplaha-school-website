@@ -33,7 +33,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
 
 ?>
 
-
+<!DOCTYPE html>
 <html lang='en'>
 
 <head>

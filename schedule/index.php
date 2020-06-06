@@ -46,6 +46,7 @@ if (!$result) {
 $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
 
 ?>
+<!DOCTYPE html>
 <html lang='en'>
 
 <head>

@@ -14,7 +14,7 @@ if (!$is_logged_in) {
 }
 
 ?>
-<html>
+<html lang='en'>
 
 <head>
     <meta charset="utf-8">

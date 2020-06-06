@@ -40,6 +40,7 @@ if ($conn->connect_error) {
 
 ?>
 
+<!DOCTYPE html>
 <html lang='en'>
 
 <head>

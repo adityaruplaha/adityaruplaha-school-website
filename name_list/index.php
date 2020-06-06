@@ -14,7 +14,8 @@ if (!$is_logged_in) {
 }
 
 ?>
-<html>
+<!DOCTYPE html>
+<html lang='en'>
 
 <head>
     <meta charset="utf-8">
@@ -35,7 +36,8 @@ if (!$is_logged_in) {
         document.body.innerHTML = replaceAll(document.body.innerHTML, "<td>pe</td>", "<td>Physical Education</td>");
         document.body.innerHTML = replaceAll(document.body.innerHTML, "<td>bn</td>", "<td>Bengali</td>");
         document.body.innerHTML = replaceAll(document.body.innerHTML, "<td>hi</td>", "<td>Hindi</td>");
-        document.body.innerHTML = replaceAll(document.body.innerHTML, "<th>ExtraSub</th>", "<th>Subject Chosen</th>");
+        document.body.innerHTML = replaceAll(document.body.innerHTML, "<th>ExtraSub</th>",
+            "<th>Subject Chosen</th>");
     }
     </script>
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
