@@ -73,7 +73,8 @@ td {
 
 table.bordered {
 	font-size: 18px;	
-	width: 90%;
+	width: 50%;
+	margin: auto;
 	border-style: solid;
 	color: #BFBFBF;
 	border-collapse: collapse;
@@ -94,12 +95,6 @@ table.bordered th {
 
 table.bordered tr:first-child {
 	border-bottom-style: solid;
-}
-
-.float-child {
-	float: left;
-	margin: 4px;
-	width: 49%;
 }
 
 .center {

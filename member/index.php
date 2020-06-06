@@ -35,32 +35,7 @@ if (!$is_logged_in) {
 <body>
     <h1>XII Sc A - Members Portal</h1>
     <hr />
-    <div class='float-child'>
-        <h2>Uploads</h2>
-        <table class='bordered'>
-            <tr>
-                <th>Date</th>
-                <th>URL</th>
-                <th>Status</th>
-            </tr>
-            <?php
-            $uploads = $s->get_uploads_info();
-            foreach ($uploads as $upload) {
-                echo "<tr>";
-                $date = strtotime($upload["Date"]);
-                $date = strftime("%d %B %Y", $date);
-                $url = $upload["PrivateTrello"];
-                $stat = $upload["Status"];
-                echo "<td>{$date}</td>";
-                echo "<td><a href='{$url}'>{$url}</a></td>";
-                echo "<td>{$stat}</td>";
-                echo "</tr>";
-            }
-
-            ?>
-        </table>
-    </div>
-    <div class='float-child'>
+    <div>
         <h2>Details</h2><br />
         <table class='center' style="table-layout: auto;">
             <?php
@@ -137,6 +112,32 @@ if (!$is_logged_in) {
                     <a href='../'>Open Students' Portal</a>
                 </td>
             </tr>
+        </table>
+    </div>
+    <hr />
+    <div>
+        <h2>Uploads</h2><br />
+        <table class='bordered'>
+            <tr>
+                <th>Date</th>
+                <th>URL</th>
+                <th>Status</th>
+            </tr>
+            <?php
+            $uploads = $s->get_uploads_info();
+            foreach ($uploads as $upload) {
+                echo "<tr>";
+                $date = strtotime($upload["Date"]);
+                $date = strftime("%d %B %Y", $date);
+                $url = $upload["PrivateTrello"];
+                $stat = $upload["Status"];
+                echo "<td>{$date}</td>";
+                echo "<td><a href='{$url}'>{$url}</a></td>";
+                echo "<td>{$stat}</td>";
+                echo "</tr>";
+            }
+
+            ?>
         </table>
     </div>
 </body>
