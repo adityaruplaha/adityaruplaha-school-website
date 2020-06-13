@@ -29,7 +29,7 @@ if (!$is_logged_in) {
         XII Sc A - Members Portal
     </title>
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=0.75">
 </head>
 
 <body>

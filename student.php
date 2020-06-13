@@ -150,7 +150,7 @@ class Student
     public function get_uploads_info()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT Date, PrivateTrello, Status FROM days WHERE `UploadedBy` = '{$this->name}'");
+        $r = $conn->query("SELECT Date, PrivateTrello, Status FROM days WHERE `UploadedBy` = '{$this->name}' ORDER BY Date DESC");
         $row = $r->fetch_all(MYSQLI_ASSOC);
         $r->free();
         $conn->close();

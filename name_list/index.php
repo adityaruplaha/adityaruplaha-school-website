@@ -40,6 +40,7 @@ if (!$is_logged_in) {
             "<th>Subject Chosen</th>");
     }
     </script>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
 </head>
 

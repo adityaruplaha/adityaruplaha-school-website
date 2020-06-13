@@ -30,14 +30,9 @@ table {
 	border-collapse: collapse;
 }
 
-table.nav {
-	float: left;
-	margin: 3px;
-}
-
 th {
 	padding: 15px 20px;
-	border-style: solid;
+	border-style: none;
 }
 
 tr {
@@ -46,19 +41,7 @@ tr {
 
 td {
 	padding: 10px 15px;
-	border-style: solid;
-}
-
-.nav tr, td, th {
 	border-style: none;
-}
-
-.nav td, th {
-	padding: 16px 10px;
-}
-
-.nav tr:first-child {
-	border-bottom-style: solid;
 }
 
 h1 {

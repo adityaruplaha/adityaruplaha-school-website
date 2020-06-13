@@ -56,7 +56,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             if ($subjects) {
                 $subs = array();
                 foreach ($subjects as $subject) {
-                    array_push($subs, $SUBCODES[$subject]);
+                    array_push($subs, \ScA\Classes\SUBCODES[$subject]);
                 }
                 $subs = implode(', ', $subs);
                 echo "<br/>Viewing data for {$subs}.";
@@ -90,43 +90,47 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         }
 
         $classes = SchedClass::get_last_classes($conn, $lim_days, $subjects);
-        $class_s = [];
-        foreach ($classes as $class) {
-            array_push($class_s, $class->as_colname('`'));
-        }
-        $class_s = implode(", ", $class_s);
+        if ($classes) {
+            $class_s = [];
+            foreach ($classes as $class) {
+                array_push($class_s, $class->as_colname('`'));
+            }
+            $class_s = implode(", ", $class_s);
 
-        $sql = "SELECT LPAD(row_number() over ( order by Name), 2, 0) `Serial No.`, Name, "
-            . $class_s .
-            " FROM {$table}";
+            $sql = "SELECT LPAD(row_number() over ( order by Name), 2, 0) `Serial No.`, Name, "
+                . $class_s .
+                " FROM {$table}";
 
-        // Query
-        $result = $conn->query($sql);
-        if (!$result) {
-            die("Query to show fields from table failed. Error code: E_A01.");
-        }
+            // Query
+            $result = $conn->query($sql);
+            if (!$result) {
+                die("Query to show fields from table failed. Error code: E_A01.");
+            }
 
-        echo "<table border='1'><tr>";
-        print("<th>Serial No.</th>");
-        print("<th>Name</th>");
-        foreach ($classes as $class) {
-            print("<th>" . $class->beautify(SCHEDULE_BEAUTY_MULTILINE) . "</th>");
-        }
-        echo "</tr>\n";
-        // printing table rows
-        while ($row = $result->fetch_row()) {
-            echo "<tr>";
-
-            // $row is array... foreach( .. ) puts every element
-            // of $row to $cell variable
-            foreach ($row as $cell)
-                echo "<td>$cell</td>";
-
+            echo "<table border='1'><tr>";
+            print("<th>Serial No.</th>");
+            print("<th>Name</th>");
+            foreach ($classes as $class) {
+                print("<th>" . $class->beautify(SCHEDULE_BEAUTY_MULTILINE) . "</th>");
+            }
             echo "</tr>\n";
+            // printing table rows
+            while ($row = $result->fetch_row()) {
+                echo "<tr>";
+
+                // $row is array... foreach( .. ) puts every element
+                // of $row to $cell variable
+                foreach ($row as $cell)
+                    echo "<td>$cell</td>";
+
+                echo "</tr>\n";
+            }
+            $result->free();
+            //$conn->close();
+            echo "</table>";
+        } else {
+            echo "No data to show.";
         }
-        $result->free();
-        //$conn->close();
-        echo "</table>";
         ?>
     </div>
 
@@ -185,15 +189,8 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         }
 
         $classes = SchedClass::get_classes_from($conn, strtotime("2020-04-03"), $subjects);
-        $class_s = [];
-        foreach ($classes as $class) {
-            array_push($class_s, $class->as_colname('`'));
-        }
-        $class_s = implode(", ", $class_s);
 
-        $sql = "SELECT LPAD(row_number() over ( order by Name), 2, 0) `Serial No.`, Name, "
-            . $class_s .
-            " FROM {$table}";
+        $sql = "SELECT Name FROM {$table}";
 
         // Query
         $result = $conn->query($sql);
@@ -210,7 +207,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         echo "<th>Attendance %</th>";
         echo "</tr>";
         while ($row = $result->fetch_assoc()) {
-            $att = (new \ScA\Student\Student($row['Name']))->get_attendance_data();
+            $att = (new \ScA\Student\Student($row['Name']))->get_attendance_data($classes);
             echo "<tr>";
             echo "<td style='text-align: center;'>{$row['Serial No.']}</td>";
             echo "<td>{$row['Name']}</td>";

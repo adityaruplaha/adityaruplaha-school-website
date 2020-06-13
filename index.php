@@ -18,7 +18,7 @@ $is_logged_in = ($s != NULL) || $is_teacher;
 <head>
     <title>XII Sc A - Class Portal</title>
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
 </head>
 
 <body>

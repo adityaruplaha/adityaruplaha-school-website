@@ -45,7 +45,7 @@ $SUBCODES = array(
 
 $RES = array();
 foreach ($SUBCODES as $sub => $v) {
-    $result = $conn->query("SELECT LPAD(COUNT(`Name`), 2, 0) FROM {$table} WHERE `Subject` = '{$sub}'");
+    $result = $conn->query("SELECT COUNT(`Name`) FROM {$table} WHERE `Subject` = '{$sub}'");
     if (!$result) {
         die("Query to show fields from table failed.");
     }
@@ -58,14 +58,27 @@ foreach ($SUBCODES as $sub => $v) {
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75">
     <title>XII Sc A - Resources</title>
     <script src='script.js'>
     </script>
+    <?php
+    echo "<script>";
+    echo "function showint(n) {";
+    $buf = [];
+    foreach ($SUBCODES as $sub => $v) {
+        array_push($buf, "'{$sub}'");
+    }
+    echo "var subs = [" . implode(",", $buf) . "];";
+    echo "show(subs[n]);";
+    echo "}";
+    echo "</script>";
+    ?>
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <link rel='stylesheet' type='text/css' href='../shared/select-css.css' />
 </head>
 
-<body onload="clean()">
-
+<body onload="clean(); showint(0);">
     <h1 align='center'>XII Sc A - Resources</h1>
     <hr />
     <p align='center'>
@@ -74,30 +87,24 @@ foreach ($SUBCODES as $sub => $v) {
             date_default_timezone_set("Asia/Kolkata");
             echo "Report generated on " . date("d M Y h:i:sa") . " IST."
             ?>
-            <br />
-            <br />
-            Click on the subject header to see resources from that subject.
         </i>
         <hr />
     </p>
 
-    <div>
-        <table class='nav'>
-            <tr>
-                <td>Subject</td>
-                <td>Resources</td>
-            </tr>
+    <p>
+        <label for="subject">Select Subject: </label>&nbsp;&nbsp;
+        <select name="subject" id="subject" onchange="showint(value)" class="select-css">
             <?php
+            $i = 0;
             foreach ($SUBCODES as $k => $v) {
                 $a = $RES[$k];
-                echo "<tr>";
-                echo "<td onclick=\"show('{$k}')\" class='button'>{$v}</td><td>{$a}</td>";
+                echo "<option class='button' value='{$i}'>{$v} ({$a})</option>";
                 echo "</tr>";
+                $i += 1;
             }
             ?>
-        </table>
-        <br />
-    </div>
+        </select>
+    </p>
 
     <?php
 
