@@ -9,9 +9,6 @@ use \ScA\Student\TGLogin\TGLogin;
 $s = TGLogin::from_cookie();
 if ($s != NULL) {
     $s = new \ScA\Student\Student(NULL, $s->id);
-    if (!$s->has_privileges("Member")) {
-        $s = NULL;
-    }
 }
 $is_logged_in = ($s != NULL);
 
@@ -114,6 +111,12 @@ if (!$is_logged_in) {
             </tr>
         </table>
     </div>
+    <?php
+    if (!$s->has_privileges("Member")) {
+        echo "</body></html>";
+        exit;
+    }
+    ?>
     <hr />
     <div>
         <h2>Uploads</h2><br />
@@ -141,3 +144,5 @@ if (!$is_logged_in) {
         </table>
     </div>
 </body>
+
+</html>

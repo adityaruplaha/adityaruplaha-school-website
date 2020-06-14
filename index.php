@@ -28,30 +28,20 @@ $is_logged_in = ($s != NULL) || $is_teacher;
 
     if ($s) {
         $stu = new \ScA\Student\Student(NULL, $s->id);
-        if ($stu->has_privileges("Member")) {
+        $n = $stu->name;
+        $greet = "Hello, {$n}.";
 
-            $n = $stu->name;
-            $greet = "Hello, {$n}.";
-
-            echo "
-            <table class='head'>
-            <tr>
-            <td style='text-align: left;'>
-                <a href='member/'>Profile</a>
-            </td>
-            <td>{$greet} <a href='loginhandler.php?logout'>Logout</a></td>
-            </tr>
-            </table>
-            <hr/>
-            ";
-        } else {
-            echo "
-            <div class='head'>
-            Hello, {$stu->name}. <a href='loginhandler.php?logout'>Logout</a>
-            </div>
-            <hr/>
-            ";
-        }
+        echo "
+        <table class='head'>
+        <tr>
+        <td style='text-align: left;'>
+            <a href='member/'>Profile</a>
+        </td>
+        <td>{$greet} <a href='loginhandler.php?logout'>Logout</a></td>
+        </tr>
+        </table>
+        <hr/>
+        ";
     } elseif ($is_teacher) {
         echo "
         <table class='head'>
