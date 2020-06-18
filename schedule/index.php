@@ -66,6 +66,18 @@ $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
             ?>
         </i>
     </p>
+    <hr />
+    <p align='center'>
+        Please note, in the schedule...<br />
+        <br />
+        Chemistry (Vol 1) = Soumi Ma'am, even if she's teaching Vol 2.<br />
+        Chemistry (Vol 2) = ND Ma'am, even if she's teaching Vol 1.<br />
+        <br />
+        Physics (Vol 1) = Saswati Ma'am, even if she's teaching Vol 2.<br />
+        Physics (Vol 2) = Debarati Ma'am, even if she's teaching Vol 1.<br />
+        <br />
+        This is for statistical continuity and historical reasons.
+    </p>
     <div class='tab' id='data'>
         <table>
             <tr>

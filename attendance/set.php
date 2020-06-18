@@ -43,7 +43,12 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$classes = SchedClass::get_classes_on($conn, time());
+$a = 0;
+if ($_GET["add_days"]) {
+    $a = $_GET["add_days"];
+}
+
+$classes = SchedClass::get_classes_on($conn, strtotime("today") + 86400 * $a);
 
 foreach ($classes as $class) {
     $class = $class->as_colname('`');

@@ -19,6 +19,14 @@ require_once '../student.php';
 $lim_days = isset($_GET['lim_days']) ? $_GET['lim_days'] : 0;
 $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
 
+$from = isset($_GET['from']) ? $_GET['from'] : "2020-04-03";
+$from = strtotime($from);
+$from = max($from, strtotime("2020-04-03"));
+
+$to = isset($_GET['to']) ? $_GET['to'] : "today";
+$to = strtotime($to);
+$to = min($to, strtotime("today"));
+
 $table = 'attendance';
 
 use ScA\Classes\SchedClass;
@@ -53,16 +61,27 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             <?php
             date_default_timezone_set("Asia/Kolkata");
             echo "Report generated on " . date("d M Y h:i:sa") . " IST.";
-            if ($subjects) {
-                $subs = array();
-                foreach ($subjects as $subject) {
-                    array_push($subs, \ScA\Classes\SUBCODES[$subject]);
-                }
-                $subs = implode(', ', $subs);
-                echo "<br/>Viewing data for {$subs}.";
-            }
             ?>
         </i>
+        <br />
+        <?php
+        if ($subjects) {
+            $subs = array();
+            foreach ($subjects as $subject) {
+                array_push($subs, \ScA\Classes\SUBCODES[$subject]);
+            }
+            $subs = implode(', ', $subs);
+            echo "<br/>Viewing data for {$subs}.";
+        }
+        if (isset($_GET['from']) && isset($_GET['to'])) {
+            $f = strftime("%d %B %Y", $from);
+            $t = strftime("%d %B %Y", $to);
+            echo "<br/>Viewing data for Date Range: {$f} - {$t}.";
+        } else if (isset($_GET['from'])) {
+            $f = strftime("%d %B %Y", $from);
+            echo "<br/>Viewing data for Date Range: {$f} onwards.";
+        }
+        ?>
     </p>
 
     <div>
@@ -144,7 +163,9 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             </tr>
             <?php
 
-            $classes = SchedClass::get_classes_from($conn, strtotime("2020-04-03"), $subjects);
+            $classes = NULL;
+            $classes = SchedClass::get_classes_between($conn, $from, $to, $subjects);
+            $classes = SchedClass::get_classes_from($conn, $from, $subjects);
 
             foreach ($classes as $class) {
                 echo "<tr>";
@@ -183,13 +204,6 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
 
         <?php
 
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
-        $classes = SchedClass::get_classes_from($conn, strtotime("2020-04-03"), $subjects);
-
         $sql = "SELECT Name FROM {$table}";
 
         // Query
@@ -199,7 +213,6 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         }
 
         echo "<table border='1'><tr>";
-        echo "<th>Serial No.</th>";
         echo "<th>Name</th>";
         echo "<th class='green'>P</th>";
         echo "<th class='red'>A</th>";
@@ -209,7 +222,6 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         while ($row = $result->fetch_assoc()) {
             $att = (new \ScA\Student\Student($row['Name']))->get_attendance_data($classes);
             echo "<tr>";
-            echo "<td style='text-align: center;'>{$row['Serial No.']}</td>";
             echo "<td>{$row['Name']}</td>";
             $p = str_pad($att['P'], 2, '0', STR_PAD_LEFT);
             echo "<td style='text-align: center;'>{$p}</td>";
