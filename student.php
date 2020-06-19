@@ -60,14 +60,14 @@ class Student
     }
 
     /**
-     * Get attendance data in the form {Name, Attendance % (float b/w 0 and 1), P (int), A (int), Total (int)}.
+     * Get attendance stats in the form {Name, Attendance % (float b/w 0 and 1), P (int), A (int), Total (int)}.
      * 
      * @param array $classes Array of `SchedClass` objects.
      *  
      * @return array Associative array 
      * 
      */
-    public function get_attendance_data($classes = [])
+    public function get_attendance_summary($classes = [])
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
         $r = NULL;
@@ -106,6 +106,37 @@ class Student
         $result['A'] = $net - $p;
         $result['Total'] = $net;
 
+        return $result;
+    }
+
+    /**
+     * Get attendance data in the form {Object<SchedClass> => bool}.
+     * 
+     * @param array $classes Array of `SchedClass` objects.
+     *  
+     * @return array Associative array 
+     * 
+     */
+    public function get_attendance_data($classes = [])
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = NULL;
+        if (!$classes) {
+            $classes = SchedClass::get_classes_from($conn, strtotime("2020-04-03"));
+        }
+        $cols = [];
+        foreach ($classes as $class) {
+            if ($class->status == 'All OK') {
+                $cols[$class->as_colname('`')] = $class;
+            }
+        }
+        $s = implode(', ', array_keys($cols));
+        $r = $conn->query("SELECT {$s} FROM attendance WHERE `Name` = '{$this->name}'");
+        $row = $r->fetch_assoc();
+        $r->free();
+        $conn->close();
+
+        $result = array_map(null, $cols, $row);
         return $result;
     }
 

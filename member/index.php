@@ -62,7 +62,7 @@ if (!$is_logged_in) {
         <h2>Attendance</h2><br />
         <table class='center' style="table-layout: auto;">
             <?php
-            $info = $s->get_attendance_data();
+            $info = $s->get_attendance_summary();
             echo "<tr>";
             echo "<td style='text-align: right;'>Present:</td><td style='text-align: left;'>{$info['P']}/{$info['Total']}</td>";
             echo "</tr>";
@@ -85,6 +85,9 @@ if (!$is_logged_in) {
             echo "</tr>";
 
             ?>
+            <tr>
+                <td colspan=2><a href='attendance/'>See Details</a></td>
+            </tr>
         </table>
         <br />
         <hr />

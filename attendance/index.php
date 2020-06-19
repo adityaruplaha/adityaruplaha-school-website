@@ -163,9 +163,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             </tr>
             <?php
 
-            $classes = NULL;
             $classes = SchedClass::get_classes_between($conn, $from, $to, $subjects);
-            $classes = SchedClass::get_classes_from($conn, $from, $subjects);
 
             foreach ($classes as $class) {
                 echo "<tr>";
@@ -220,7 +218,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         echo "<th>Attendance %</th>";
         echo "</tr>";
         while ($row = $result->fetch_assoc()) {
-            $att = (new \ScA\Student\Student($row['Name']))->get_attendance_data($classes);
+            $att = (new \ScA\Student\Student($row['Name']))->get_attendance_summary($classes);
             echo "<tr>";
             echo "<td>{$row['Name']}</td>";
             $p = str_pad($att['P'], 2, '0', STR_PAD_LEFT);
