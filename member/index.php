@@ -36,23 +36,24 @@ if (!$is_logged_in) {
         <h2>Details</h2><br />
         <table class='center' style="table-layout: auto;">
             <?php
-            $info = $s->get_contact_info();
+            $contact = $s->get_contact_info();
+            $mob = $contact["Mobile"];
             echo "<tr>";
-            echo "<td style='text-align: right;'>Name:</td><td style='text-align: left;'>{$info['Name']}</td>";
+            echo "<td style='text-align: right;'>Name:</td><td style='text-align: left;'>{$contact['Name']}</td>";
             echo "</tr>";
             echo "<tr>";
-            echo "<td style='text-align: right;'>Email:</td><td style='text-align: left;'>{$info['EMail']}</td>";
+            echo "<td style='text-align: right;'>Email:</td><td style='text-align: left;'>{$contact['EMail']}</td>";
             echo "</tr>";
-            if ($m2 = $info["Mobile2"]) {
+            if ($m2 = $contact["Mobile2"]) {
                 echo "<tr>";
-                echo "<td rowspan=2>Mobile No.(s):</td><td style='text-align: left;'>{$info['Mobile']}</td>";
+                echo "<td rowspan=2>Mobile No.(s):</td><td style='text-align: left;'>{$mob}</td>";
                 echo "</tr>";
                 echo "<tr>";
                 echo "<td style='text-align: left;'>{$m2}</td>";
                 echo "</tr>";
             } else {
                 echo "<tr>";
-                echo "<td style='text-align: right;'>Mobile No.(s):</td><td style='text-align: left;'>{$info['Mobile']}</td>";
+                echo "<td style='text-align: right;'>Mobile No.(s):</td><td style='text-align: left;'>{$mob}</td>";
                 echo "</tr>";
             }
             ?>
@@ -62,16 +63,16 @@ if (!$is_logged_in) {
         <h2>Attendance</h2><br />
         <table class='center' style="table-layout: auto;">
             <?php
-            $info = $s->get_attendance_summary();
+            $att = $s->get_attendance_summary();
             echo "<tr>";
-            echo "<td style='text-align: right;'>Present:</td><td style='text-align: left;'>{$info['P']}/{$info['Total']}</td>";
+            echo "<td style='text-align: right;'>Present:</td><td style='text-align: left;'>{$att['P']}/{$att['Total']}</td>";
             echo "</tr>";
             echo "<tr>";
-            echo "<td style='text-align: right;'>Absent:</td><td style='text-align: left;'>{$info['A']}/{$info['Total']}</td>";
+            echo "<td style='text-align: right;'>Absent:</td><td style='text-align: left;'>{$att['A']}/{$att['Total']}</td>";
             echo "</tr>";
             echo "<tr>";
             echo "<td style='text-align: right;'>Attendance %:</td>";
-            $n = round($info['Attendance %'] * 100, 2);
+            $n = round($att['Attendance %'] * 100, 2);
             if ($n > 75) {
                 $n = number_format($n, 2);
                 echo "<td class ='green' style='text-align: center;'>{$n}%</td>";
@@ -110,6 +111,24 @@ if (!$is_logged_in) {
             <tr>
                 <td colspan="2">
                     <a href='../'>Open Students' Portal</a>
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td colspan="2">
+                    <?php
+                    $mob = substr($mob, 3);
+                    $info = $s->get_basic_info();
+                    $gender = $info["Gender"];
+                    $religion = $info["Religion"];
+                    $cbse_link = "https://docs.google.com/forms/d/e/1FAIpQLSfuX2P0EAkVyi6EH7bwde5Nh-NYNQHIn1iQLUPhtJnRu4T6Kg/viewform?usp=pp_url&entry.317990605={$s->name}&entry.189653616={$gender}&entry.1947189627={$religion}&entry.1869836722={$mob}";
+                    if ($gender === "Male") {
+                        $cbse_link .= "&entry.1110133704=No";
+                    }
+                    echo "<a href = '{$cbse_link}' class=red>";
+                    echo "Fill up CBSE information form.";
+                    echo "</a>";
+                    ?>
                 </td>
             </tr>
         </table>

@@ -54,25 +54,24 @@ if (!$is_logged_in) {
     }
     ?>
 
-    <h1 align='center'>XII Sc A - Student Details</h1>
+    <h1 class='center'>XII Sc A - Student Details</h1>
     <hr />
 
     <div>
-        <table border='1'>
+        <table>
             <tr>
                 <th>Name</th>
-                <th>Gender</th>
-                <th>Religion</th>
-                <th>Caste</th>
+                <th>Email</th>
+                <th colspan="2">Mobile</th>
             </tr>
             <?php
             while ($row = $result->fetch_assoc()) {
-                $info = (new \ScA\Student\Student($row['Name']))->get_basic_info($classes);
+                $info = (new \ScA\Student\Student($row['Name']))->get_contact_info($classes);
                 echo "<tr>";
                 echo "<td>{$row['Name']}</td>";
-                echo "<td>{$info['Gender']}</td>";
-                echo "<td>{$info['Religion']}</td>";
-                echo "<td></td>";
+                echo "<td>{$info['EMail']}</td>";
+                echo "<td>{$info['Mobile']}</td>";
+                echo "<td>{$info['Mobile2']}</td>";
                 echo "</tr>";
             }
             $result->free();

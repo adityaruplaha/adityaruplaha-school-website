@@ -27,6 +27,8 @@ $to = isset($_GET['to']) ? $_GET['to'] : "today";
 $to = strtotime($to);
 $to = min($to, strtotime("today"));
 
+$using_date_range = isset($_GET['from']);
+
 $table = 'attendance';
 
 use ScA\Classes\SchedClass;
@@ -81,16 +83,44 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             $f = strftime("%d %B %Y", $from);
             echo "<br/>Viewing data for Date Range: {$f} onwards.";
         }
+        if ($from > $to) {
+            die("<br/><br/><span class='red'><b>Invalid Date Range! <code>from</code> is later than <code>to</code>.</b></span>");
+        }
         ?>
     </p>
 
     <div>
         <table class='nav'>
             <tr>
-                <td onclick="show(this, 'data')" class='button' id='dbut'>Show Studentwise Attendance of Recent
-                    Classes</td>
-                <td onclick="show(this, 'summary')" class='button' id='sbut'>Show Summary of All Classes</td>
-                <td onclick="show(this, 'stusum')" class='button' id='stbut'>Show Attendance % of Students
+                <?php
+                $str = "Studentwise Attendance of Recent Classes";
+                if ($using_date_range) {
+                    $str = "Studentwise Attendance of Selected Classes";
+                }
+                ?>
+                <td onclick="show(this, 'data')" class='button' id='dbut'>
+                    <?php echo $str;
+                    unset($str); ?>
+                </td>
+                <?php
+                $str = "Classwise Attendance of All Classes";
+                if ($using_date_range) {
+                    $str = "Classwise Attendance of Selected Classes";
+                }
+                ?>
+                <td onclick="show(this, 'summary')" class='button' id='sbut'>
+                    <?php echo $str;
+                    unset($str); ?>
+                </td>
+                <?php
+                $str = "Studentwise Attendance Statistics";
+                if ($using_date_range) {
+                    $str = "Studentwise Attendance Statistics in Selected Classes";
+                }
+                ?>
+                <td onclick="show(this, 'stusum')" class='button' id='stbut'>
+                    <?php echo $str;
+                    unset($str); ?>
                 </td>
             </tr>
         </table>
@@ -108,44 +138,43 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             die("Connection failed: " . $conn->connect_error);
         }
 
-        $classes = SchedClass::get_last_classes($conn, $lim_days, $subjects);
+        $classes = [];
+        if ($using_date_range) {
+            $classes = SchedClass::get_classes_between($conn, $from, $to, $subjects);
+        } else {
+            $classes = SchedClass::get_last_classes($conn, $lim_days, $subjects);
+        }
         if ($classes) {
-            $class_s = [];
-            foreach ($classes as $class) {
-                array_push($class_s, $class->as_colname('`'));
-            }
-            $class_s = implode(", ", $class_s);
-
-            $sql = "SELECT LPAD(row_number() over ( order by Name), 2, 0) `Serial No.`, Name, "
-                . $class_s .
-                " FROM {$table}";
-
-            // Query
-            $result = $conn->query($sql);
-            if (!$result) {
-                die("Query to show fields from table failed. Error code: E_A01.");
-            }
-
             echo "<table border='1'><tr>";
-            print("<th>Serial No.</th>");
-            print("<th>Name</th>");
+            echo "<th>Name</th>";
             foreach ($classes as $class) {
                 print("<th>" . $class->beautify(SCHEDULE_BEAUTY_MULTILINE) . "</th>");
             }
             echo "</tr>\n";
-            // printing table rows
-            while ($row = $result->fetch_row()) {
+
+            $sql = "SELECT Name FROM {$table}";
+            $result = $conn->query($sql);
+            if (!$result) {
+                die("Query to show fields from table failed. Error Code: E_A01.");
+            }
+            while ($row = $result->fetch_assoc()) {
+                $att = (new \ScA\Student\Student($row['Name']))->get_attendance_data($classes);
                 echo "<tr>";
-
-                // $row is array... foreach( .. ) puts every element
-                // of $row to $cell variable
-                foreach ($row as $cell)
-                    echo "<td>$cell</td>";
-
-                echo "</tr>\n";
+                echo "<td>" . $row['Name'] . "</td>";
+                foreach ($att as list($class, $present)) {
+                    if ($present === NULL) {
+                        echo "<td></td>";
+                        continue;
+                    }
+                    if ($present) {
+                        echo "<td class='green' style='text-align: center;'>P</td>";
+                    } else {
+                        echo "<td class='red' style='text-align: center;'>A</td>";
+                    }
+                }
+                echo "</tr>";
             }
             $result->free();
-            //$conn->close();
             echo "</table>";
         } else {
             echo "No data to show.";

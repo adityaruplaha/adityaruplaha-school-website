@@ -54,25 +54,49 @@ if (!$is_logged_in) {
     }
     ?>
 
-    <h1 align='center'>XII Sc A - Student Details</h1>
+    <h1 class='center'>XII Sc A - Student Details</h1>
     <hr />
 
     <div>
-        <table border='1'>
+        <table>
             <tr>
                 <th>Name</th>
-                <th>Gender</th>
-                <th>Religion</th>
-                <th>Caste</th>
+                <th>Additional Subject</th>
+                <th>Status (Class XI)</th>
             </tr>
             <?php
             while ($row = $result->fetch_assoc()) {
-                $info = (new \ScA\Student\Student($row['Name']))->get_basic_info($classes);
+                $info = (new \ScA\Student\Student($row['Name']))->get_academic_info($classes);
                 echo "<tr>";
                 echo "<td>{$row['Name']}</td>";
-                echo "<td>{$info['Gender']}</td>";
-                echo "<td>{$info['Religion']}</td>";
-                echo "<td></td>";
+                switch ($info['ExtraSub']) {
+                    case "pe":
+                        echo "<td>Physical Education</td>";
+                        break;
+                    case "bn":
+                        echo "<td>Bengali</td>";
+                        break;
+                    case "hi":
+                        echo "<td>Hindi</td>";
+                        break;
+                    default:
+                        echo "<td></td>";
+                        break;
+                }
+                switch ($info['Status']) {
+                    case "Passed":
+                        echo "<td class='green' align='center'>{$info['Status']}</td>";
+                        break;
+                    case "Retest":
+                        echo "<td class='yellow' align='center'>{$info['Status']}</td>";
+                        break;
+                    case "Failed":
+                        echo "<td class='red' align='center'>{$info['Status']}</td>";
+                        break;
+                    default:
+                        echo "<td></td>";
+                        break;
+                }
                 echo "</tr>";
             }
             $result->free();

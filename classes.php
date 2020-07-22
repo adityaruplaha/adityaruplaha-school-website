@@ -10,16 +10,17 @@ use const ScA\DB_PWD;
 use const ScA\DB_USER;
 
 const SUBCODES = array(
-    "phy1" => "Physics (Vol I)",
-    "phy2" => "Physics (Vol II)",
-    "chem1" => "Chemistry (Vol I)",
-    "chem2" => "Chemistry (Vol II)",
-    "math" => "Mathematics",
-    "cs" => "Computer Science",
-    "en" => "English",
-    "pe" => "Physical Education",
-    "bn" => "Bengali",
-    "hi" => "Hindi"
+    "phy1" => "Physics (Saswati Sur)",
+    "phy2" => "Physics (Debarati Pramanik)",
+    "chem1" => "Chemistry (Soumi Karmakar)",
+    "chem2" => "Chemistry (Nandita Dastidar)",
+    "math" => "Mathematics (Rafiqul Amin)",
+    "cs" => "Computer Science (Pintu Majumder)",
+    "en" => "English (Molly Basu)",
+    "pe0" => "Physical Education (Himadri Dutta)",
+    "pe" => "Physical Education (Shiman Dey)",
+    "bn" => "Bengali (Sharmistha Biswas)",
+    "hi" => "Hindi (Seema Singh)"
 );
 
 const SCHEDULE_BEAUTY_MULTILINE = 0xADE0;

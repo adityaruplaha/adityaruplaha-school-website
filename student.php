@@ -141,7 +141,7 @@ class Student
     }
 
     /**
-     * Get info in the form `{Name, ExtraSub, Status}`.
+     * Get info in the form `{Name, Gender, Religion}`.
      *  
      * @return array|null Associative array 
      * 
@@ -149,7 +149,24 @@ class Student
     public function get_basic_info()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT Name, ExtraSub, Status FROM info WHERE `Name` = '{$this->name}'");
+        $r = $conn->query("SELECT Name, Gender, Religion FROM info WHERE `Name` = '{$this->name}'");
+        $row = $r->fetch_assoc();
+        $r->free();
+        $conn->close();
+        return $row;
+    }
+
+
+    /**
+     * Get info in the form `{Name, ExtraSub, Status}`.
+     *  
+     * @return array|null Associative array 
+     * 
+     */
+    public function get_academic_info()
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT Name, ExtraSub, Status FROM academic WHERE `Name` = '{$this->name}'");
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();
@@ -165,7 +182,7 @@ class Student
     public function get_contact_info()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT Name, EMail, Mobile, Mobile2 FROM info WHERE `Name` = '{$this->name}'");
+        $r = $conn->query("SELECT Name, EMail, Mobile, Mobile2 FROM contact WHERE `Name` = '{$this->name}'");
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();

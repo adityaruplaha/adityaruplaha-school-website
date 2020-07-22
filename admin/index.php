@@ -69,6 +69,7 @@ if (!$is_logged_in) {
             <tr>
                 <th>Date</th>
                 <th>URL</th>
+                <th>Uploader</th>
                 <th>Status</th>
             </tr>
             <?php
@@ -100,9 +101,50 @@ if (!$is_logged_in) {
                 $date = strtotime($upload["Date"]);
                 $date = strftime("%d %B %Y", $date);
                 $url = $upload["PrivateTrello"];
+                $uploader = $upload["UploadedBy"];
                 $stat = $upload["Status"];
                 echo "<td>{$date}</td>";
                 echo "<td><a href='{$url}'>{$url}</a></td>";
+                echo "<td>{$uploader}</td>";
+                echo "<td>{$stat}</td>";
+                echo "</tr>";
+            }
+
+            ?>
+        </table>
+    </div>
+    <div>
+        <h2>Recent/Upcoming Uploads</h2>
+        <br />
+        <table class='bordered'>
+            <tr>
+                <th>Date</th>
+                <th>URL</th>
+                <th>Uploader</th>
+                <th>Status</th>
+            </tr>
+            <?php
+
+            $threshold = strftime("%Y-%m-%d", time() - 2 * 86400);
+
+            // Query
+            $result = $conn->query("SELECT * FROM days WHERE Date > '{$threshold}'");
+            if (!$result) {
+                die("Query to show fields from table failed");
+            }
+
+            $uploads = $result->fetch_all(MYSQLI_ASSOC);
+
+            foreach ($uploads as $upload) {
+                echo "<tr>";
+                $date = strtotime($upload["Date"]);
+                $date = strftime("%d %B %Y", $date);
+                $url = $upload["PrivateTrello"];
+                $uploader = $upload["UploadedBy"];
+                $stat = $upload["Status"];
+                echo "<td>{$date}</td>";
+                echo "<td><a href='{$url}'>{$url}</a></td>";
+                echo "<td>{$uploader}</td>";
                 echo "<td>{$stat}</td>";
                 echo "</tr>";
             }

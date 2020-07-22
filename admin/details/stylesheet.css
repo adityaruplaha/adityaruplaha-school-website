@@ -6,6 +6,7 @@ body {
 
 .center {
 	margin: auto;
+	text-align: center;
 }
 
 .red {
@@ -23,11 +24,12 @@ table {
 	border-style: solid;
 	color: #BFBFBF;
 	border-collapse: collapse;
+	table-layout: initial;
 }
 
 th {
 	padding: 15px 20px;
-	border-style: solid;
+	border-style: none;
 }
 
 tr {
