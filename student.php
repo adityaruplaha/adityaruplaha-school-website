@@ -78,7 +78,8 @@ class Student
         }
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
         $json = json_encode($extradata);
-        $conn->query("INSERT INTO telemetry VALUES (NULL, '{$this->name}', '$action', '$json')");
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $conn->query("INSERT INTO telemetry VALUES (NULL, '{$this->name}', '{$ip}', '$action', '$json')");
         $b = (bool) $conn->error;
         $conn->close();
         return !$b;

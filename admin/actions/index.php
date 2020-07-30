@@ -15,6 +15,11 @@ if ($s != NULL) {
         $s = NULL;
     }
 }
+
+if ($s != NULL) {
+    $s->report_url_visit($_SERVER['PHP_SELF']);
+}
+
 $is_logged_in = ($s != NULL) || $is_teacher;
 
 if (!$is_logged_in) {

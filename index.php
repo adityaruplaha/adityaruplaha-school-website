@@ -11,6 +11,11 @@ $s = TGLogin::from_cookie();
 $is_teacher = Teacher\is_logged_in();
 $is_logged_in = ($s != NULL) || $is_teacher;
 
+if ($s != NULL) {
+    $s = (new \ScA\Student\Student(NULL, $s->id));
+    $s->report_url_visit($_SERVER['PHP_SELF']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -27,17 +32,13 @@ $is_logged_in = ($s != NULL) || $is_teacher;
     <?php
 
     if ($s) {
-        $stu = new \ScA\Student\Student(NULL, $s->id);
-        $n = $stu->name;
-        $greet = "Hello, {$n}.";
-
         echo "
         <table class='head'>
         <tr>
         <td style='text-align: left;'>
             <a href='member/'>Profile</a>
         </td>
-        <td>{$greet} <a href='loginhandler.php?logout'>Logout</a></td>
+        <td>{$s->name} <a href='loginhandler.php?logout'>Logout</a></td>
         </tr>
         </table>
         <hr/>

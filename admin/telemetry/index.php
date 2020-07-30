@@ -62,6 +62,7 @@ if ($conn->connect_error) {
             echo "Report generated on " . date("d M Y h:i:sa") . " IST."
             ?>
         </i>
+        <br /> This page is not covered by telemetry.
         <hr />
     </p>
 
@@ -79,6 +80,7 @@ if ($conn->connect_error) {
             <tr>
                 <th>Timestamp</th>
                 <th>Member</th>
+                <th>IP Address</th>
                 <th>Action</th>
                 <th>Data</th>
             </tr>";
@@ -88,6 +90,7 @@ if ($conn->connect_error) {
 
         echo "<td>" . $action["Timestamp"] . "</td>";
         echo "<td>" . $action["Member"] . "</td>";
+        echo "<td>" . $action["IP"] . "</td>";
         echo "<td>" . $action["Action"] . "</td>";
 
         $r = $action["Data"];
