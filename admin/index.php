@@ -51,6 +51,16 @@ if (!$is_logged_in) {
                 }
                 ?>
             </tr>
+            <?php
+            if ($s->has_privileges("Super Admin")) {
+                echo "
+                    <tr>
+                    <td><a href='cbseinfo/'>Check CBSE Info</a></td>
+                    <td><a href='telemetry/'>Check Telemetry</a></td>
+                    </tr>
+                ";
+            }
+            ?>
             <tr>
                 <td colspan="2"><br /></td>
             </tr>

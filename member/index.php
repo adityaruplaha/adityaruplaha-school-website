@@ -116,19 +116,9 @@ if (!$is_logged_in) {
             <tr></tr>
             <tr>
                 <td colspan="2">
-                    <?php
-                    $mob = substr($mob, 3);
-                    $info = $s->get_basic_info();
-                    $gender = $info["Gender"];
-                    $religion = $info["Religion"];
-                    $cbse_link = "https://docs.google.com/forms/d/e/1FAIpQLSfuX2P0EAkVyi6EH7bwde5Nh-NYNQHIn1iQLUPhtJnRu4T6Kg/viewform?usp=pp_url&entry.317990605={$s->name}&entry.189653616={$gender}&entry.1947189627={$religion}&entry.1869836722={$mob}";
-                    if ($gender === "Male") {
-                        $cbse_link .= "&entry.1110133704=No";
-                    }
-                    echo "<a href = '{$cbse_link}' class=red>";
-                    echo "Fill up CBSE information form.";
-                    echo "</a>";
-                    ?>
+                    <a href='cbseinfo/'>
+                        Check CBSE Info
+                    </a>
                 </td>
             </tr>
         </table>

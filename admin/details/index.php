@@ -64,6 +64,7 @@ if (!$is_logged_in) {
                 <th>Gender</th>
                 <th>Religion</th>
                 <th>Caste</th>
+                <th>Single girl child?</th>
             </tr>
             <?php
             while ($row = $result->fetch_assoc()) {
@@ -72,7 +73,8 @@ if (!$is_logged_in) {
                 echo "<td>{$row['Name']}</td>";
                 echo "<td>{$info['Gender']}</td>";
                 echo "<td>{$info['Religion']}</td>";
-                echo "<td></td>";
+                echo "<td>{$info['Caste']}</td>";
+                echo "<td>{$info['SingleGirlChild']}</td>";
                 echo "</tr>";
             }
             $result->free();

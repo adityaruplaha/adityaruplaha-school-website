@@ -1,0 +1,52 @@
+body {
+	background-color: #222222;
+	font-family: "Arial", "Courier", "Letter Gothic";
+	color: #BBBBBB;
+}
+
+p {
+	text-align: center;
+}
+
+.center {
+	margin: auto;
+}
+
+
+table {
+	margin: auto;
+	border-style: solid;
+	color: #BFBFBF;
+	border-collapse: collapse;
+}
+
+th {
+	padding: 15px 20px;
+	border-style: solid;
+}
+
+tr {
+	border-style: solid;
+}
+
+td {
+	padding: 10px 15px;
+	border-style: solid;
+	text-align: center;
+	vertical-align: middle;
+}
+
+h1 {
+	margin: auto;
+	padding: 10px 0px;
+}
+
+hr {
+	color: #888888;
+	fill: #888888;
+}
+
+.code {
+	font-family: "Consolas";
+	text-align: left;
+}

@@ -13,6 +13,12 @@ use const \ScA\DB_USER;
 use Exception;
 use ScA\Classes\SchedClass;
 
+const TELEMETRY_ENUM = [
+    'LOGIN',
+    'LOGOUT',
+    'URLVISIT',
+    'CBSEINFO_MANUALCONFIRM'
+];
 class Privilege
 {
     private const LOOKUP = [
@@ -26,7 +32,7 @@ class Privilege
 
     public function __construct($str)
     {
-        if (!in_array($str, Privilege::LOOKUP)) {
+        if (!in_array($str, self::LOOKUP)) {
             throw "Invalid Privilege Level.";
         }
         $this->lv = $str;
@@ -34,8 +40,13 @@ class Privilege
 
     public function get_int()
     {
-        return array_flip(Privilege::LOOKUP)[$this->lv];
+        return array_flip(self::LOOKUP)[$this->lv];
     }
+}
+
+function is_valid_telemetry($str)
+{
+    return in_array($str, TELEMETRY_ENUM);
 }
 class Student
 {
@@ -57,6 +68,25 @@ class Student
         $this->name = $name;
         $this->tgid = $tgid;
         $this->check();
+    }
+
+    public function report_telemetry(string $action, array $extradata = NULL)
+    {
+        if (!is_valid_telemetry($action)) {
+            error_log("Invalid telemetry action.");
+            return false;
+        }
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $json = json_encode($extradata);
+        $conn->query("INSERT INTO telemetry VALUES (NULL, '{$this->name}', '$action', '$json')");
+        $b = (bool) $conn->error;
+        $conn->close();
+        return !$b;
+    }
+
+    public function report_url_visit(string $url)
+    {
+        $this->report_telemetry("URLVISIT", ["url" => $url]);
     }
 
     /**
@@ -141,7 +171,7 @@ class Student
     }
 
     /**
-     * Get info in the form `{Name, Gender, Religion}`.
+     * Get info in the form `{Name, Gender, Religion, Caste, SingleGirlChild}`.
      *  
      * @return array|null Associative array 
      * 
@@ -149,11 +179,27 @@ class Student
     public function get_basic_info()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT Name, Gender, Religion FROM info WHERE `Name` = '{$this->name}'");
+        $r = $conn->query("SELECT * FROM info WHERE `Name` = '{$this->name}'");
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();
         return $row;
+    }
+
+    /**
+     * Get games played.
+     *  
+     * @return string 
+     * 
+     */
+    public function get_games()
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT * FROM games WHERE `Name` = '{$this->name}'");
+        $row = $r->fetch_assoc();
+        $r->free();
+        $conn->close();
+        return $row['Games'];
     }
 
 
@@ -187,6 +233,48 @@ class Student
         $r->free();
         $conn->close();
         return $row;
+    }
+
+    /**
+     * Get info in the form {Name, EMail, EMail_verified, Mobile, Mobile_verified, ManualConfirm} from CBSE listing.
+     *  
+     * @return array|null Associative array 
+     * 
+     */
+    public function get_contact_cbse()
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT * FROM contact_cbse WHERE `Name` = '{$this->name}'");
+        $row = $r->fetch_assoc();
+        $r->free();
+        if ($row["ManualConfirm"]) {
+            $row['EMail_verified'] = NULL;
+            $row['Mobile_verified'] = NULL;
+            $conn->close();
+            return $row;
+        }
+        $r = $conn->query("SELECT * FROM contact WHERE `Name` = '{$this->name}'");
+        $row2 = $r->fetch_assoc();
+        $r->free();
+        $conn->close();
+        $row['EMail_verified'] = ($row["EMail"] == $row2["EMail"]);
+        $row['Mobile_verified'] = (($row["Mobile"] == $row2["Mobile"]) || ($row["Mobile"] == $row2["Mobile2"]));
+        return $row;
+    }
+
+    /**
+     * Set CBSE contact ManualConfirm status.
+     *  
+     * @return bool 
+     * 
+     */
+    public function set_manual_confirm_contact_cbse($manual_confirm)
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("UPDATE contact_cbse SET `ManualConfirm` = {$manual_confirm} WHERE `Name` = '{$this->name}'");
+        $conn->close();
+        $this->report_telemetry("CBSEINFO_MANUALCONFIRM", ["status" => $manual_confirm]);
+        return (bool) $r;
     }
 
     /**
