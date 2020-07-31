@@ -29,7 +29,8 @@ if (!$is_logged_in) {
 <head>
     <meta charset="utf-8">
     <title>XII Sc A - Trello Upload Recommendations</title>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
 </head>
 
 <body>
@@ -56,17 +57,17 @@ if (!$is_logged_in) {
 
     $fields_num = $result->field_count;
 
-    echo "<h1 align='center'>XII Sc A - Trello Upload Recommendations</h1>";
+    echo "<h1 class='center'>XII Sc A - Trello Upload Recommendations</h1>";
     echo "<hr/>";
     date_default_timezone_set("Asia/Kolkata");
-    echo "<p align='center'>
+    echo "<p class='center'>
     <i>Report generated on " . date("d M Y h:i:sa") . " IST.</i>
     <br/><br/>
     The candidates most deserving of this task appear at the top.
     </p>";
 
     echo "<div>";
-    echo "<table border='1'><tr>";
+    echo "<table class='semibordered center autowidth'><tr>";
     // printing table headers
     for ($i = 0; $i < $fields_num; $i++) {
         $field = $result->fetch_field();

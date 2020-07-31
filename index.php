@@ -22,6 +22,8 @@ if ($s != NULL) {
 
 <head>
     <title>XII Sc A - Class Portal</title>
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
     <meta name="viewport" content="width=device-width, initial-scale=0.8">
 </head>
@@ -33,22 +35,22 @@ if ($s != NULL) {
 
     if ($s) {
         echo "
-        <table class='head'>
+        <table class='invbicolumn fullwidth mediumfont'>
         <tr>
         <td style='text-align: left;'>
             <a href='member/'>Profile</a>
         </td>
-        <td>{$s->name} <a href='loginhandler.php?logout'>Logout</a></td>
+        <td style='text-align: right;'>{$s->name} <a href='loginhandler.php?logout'>Logout</a></td>
         </tr>
         </table>
         <hr/>
         ";
     } elseif ($is_teacher) {
         echo "
-        <table class='head'>
+        <table class='invbicolumn fullwidth mediumfont'>
         <tr>
         <td style='text-align: left;'><a href='teacher/'>Open Teachers' Portal</a></td>
-        <td>Hello, Teacher.</td>
+        <td style='text-align: right;'>Hello, Teacher.</td>
         </tr>
         </table>
         <hr/>
@@ -76,9 +78,9 @@ if ($s != NULL) {
 
         $logged_in_str = "
         {$status_message}
-    <table class='nav'>
+    <table class='unbordered centercells reducedwidth bigfont'>
     <tr>
-        <td><a href='name_list/'>Name List</a></td>
+        <td><a href='/go/?url=https://chat.whatsapp.com/I1kdbGC1xfA5ZaPNbSgtCS'>Offical Group</a></td>
         <td><a href='contact/'>Contact Teachers</a></td>
     </tr>
     <tr>

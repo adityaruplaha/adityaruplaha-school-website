@@ -34,8 +34,8 @@ if (!$is_logged_in) {
     <title>
         XII Sc A - CBSE Info
     </title>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
-    <meta name="viewport" content="width=device-width, initial-scale=0.75">
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
 </head>
 
 <body>
@@ -51,8 +51,7 @@ if (!$is_logged_in) {
         <br />
     </div>
     <div>
-        <table class='center' style="table-layout: auto;">
-
+        <table class='autowidth semibordered center'>
             <tr>
                 <th>Name</th>
                 <th>Gender</th>
@@ -107,7 +106,7 @@ if (!$is_logged_in) {
                 echo "<tr>";
                 echo "<td>{$contact['Name']}</td>";
                 echo "<td>{$info['Gender']}</td>";
-                echo "<td>{$info['SingleGirlChild']}</td>";
+                echo "<td class='center'>{$info['SingleGirlChild']}</td>";
                 echo "<td>{$info['Religion']}</td>";
                 echo "<td>{$info['Caste']}</td>";
                 echo "<td>{$games}</td>";

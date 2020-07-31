@@ -58,7 +58,8 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
     <title>XII Sc A - Student Attendance</title>
     <script src='script.js'>
     </script>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
 </head>
 
 <body onload="beautify()">
@@ -152,7 +153,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             $classes = SchedClass::get_last_classes($conn, $lim_days, $subjects);
         }
         if ($classes) {
-            echo "<table border='1'><tr>";
+            echo "<table class='semibordered center autowidth'><tr>";
             echo "<th>Name</th>";
             foreach ($classes as $class) {
                 print("<th>" . $class->beautify(SCHEDULE_BEAUTY_MULTILINE) . "</th>");
@@ -190,7 +191,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
     </div>
 
     <div class='tab' id='summary' style='display: none;'>
-        <table>
+        <table class="semibordered autowidth center">
             <tr>
                 <td>Class</td>
                 <td class='green' style="text-align: center;">P</td>
@@ -246,7 +247,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             die("Query to show fields from table failed. Error Code: E_A03.");
         }
 
-        echo "<table border='1'><tr>";
+        echo "<table class='semibordered center autowidth'><tr>";
         echo "<th>Name</th>";
         echo "<th class='green'>P</th>";
         echo "<th class='red'>A</th>";

@@ -82,27 +82,27 @@ foreach ($SUBCODES as $sub => $v) {
     echo "}";
     echo "</script>";
     ?>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
-    <link rel='stylesheet' type='text/css' href='../shared/select-css.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/select.css' />
 </head>
 
 <body onload="clean(); showint(0);">
 
-    <h1 align='center'>XII Sc A - Assignments</h1>
+    <h1 class='center'>XII Sc A - Assignments</h1>
     <hr />
-    <p align='center'>
+    <p class='center'>
         <i>
             <?php
             date_default_timezone_set("Asia/Kolkata");
             echo "Report generated on " . date("d M Y h:i:sa") . " IST."
             ?>
         </i>
-        <hr />
     </p>
-
+    <hr />
     <p>
         <label for="subject">Select Subject: </label>&nbsp;&nbsp;
-        <select name="subject" id="subject" onchange="showint(value)" class="select-css">
+        <select name="subject" id="subject" onchange="showint(value)" class="select-css center">
             <?php
             $i = 0;
             foreach ($SUBCODES as $k => $v) {
@@ -129,7 +129,7 @@ foreach ($SUBCODES as $sub => $v) {
 
         echo "
         <div class='tab' id='{$sub}'>
-        <table>
+        <table class='center autowidth semibordered conpact'>
             <tr>
                 <th>Assignment</th>
                 <th>Assigned On</th>
@@ -145,7 +145,7 @@ foreach ($SUBCODES as $sub => $v) {
             echo "<td>" . $assignment["AssignedOn"] . "</td>";
 
             echo ($d = $assignment["DueOn"]) ? "<td>" . $d . "</td>" : "<td></td>";
-            echo ($l = $assignment["URL"]) ? "<td><a href=\"" . $l . "\">Download</a></td>" : "<td></td>";
+            echo ($l = $assignment["URL"]) ? "<td><a class='compact' href=\"" . $l . "\">Download</a></td>" : "<td></td>";
 
             if ($r = $assignment["Notes"]) {
                 echo "<td class='button' onclick=\"alert(`" . htmlspecialchars($r) . "`);\">Click to view.</td>";

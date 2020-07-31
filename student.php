@@ -90,6 +90,11 @@ class Student
         $this->report_telemetry("URLVISIT", ["url" => $url]);
     }
 
+    public function get_theme()
+    {
+        return "dark";
+    }
+
     /**
      * Get attendance stats in the form {Name, Attendance % (float b/w 0 and 1), P (int), A (int), Total (int)}.
      * 

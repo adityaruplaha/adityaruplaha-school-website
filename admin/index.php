@@ -33,15 +33,15 @@ if (!$is_logged_in) {
     <title>
         XII Sc A - Administrators Portal
     </title>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
-    </script>
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
 </head>
 
 <body>
     <h1>XII Sc A - Administrators Portal</h1>
     <hr />
     <div>
-        <table>
+        <table class='fullwidth bigfont centercells'>
             <tr>
                 <td><a href='actions/'>Action Log</a></td>
                 <td><a href='details/'>Student Details</a></td>
@@ -78,9 +78,9 @@ if (!$is_logged_in) {
     </div>
     <hr />
     <div>
-        <h2>Uploads requiring Attention</h2>
+        <h2 class='center'>Uploads requiring Attention</h2>
         <br />
-        <table class='bordered'>
+        <table class='reducedwidth centercells smallfont bordered'>
             <tr>
                 <th>Date</th>
                 <th>URL</th>
@@ -119,7 +119,7 @@ if (!$is_logged_in) {
                 $uploader = $upload["UploadedBy"];
                 $stat = $upload["Status"];
                 echo "<td>{$date}</td>";
-                echo "<td><a href='{$url}'>{$url}</a></td>";
+                echo "<td><a class='compact' href='{$url}'>{$url}</a></td>";
                 echo "<td>{$uploader}</td>";
                 echo "<td>{$stat}</td>";
                 echo "</tr>";
@@ -129,9 +129,9 @@ if (!$is_logged_in) {
         </table>
     </div>
     <div>
-        <h2>Recent/Upcoming Uploads</h2>
+        <h2 class='center'>Recent/Upcoming Uploads</h2>
         <br />
-        <table class='bordered'>
+        <table class='reducedwidth centercells smallfont bordered'>
             <tr>
                 <th>Date</th>
                 <th>URL</th>

@@ -29,7 +29,7 @@ use const ScA\DB_HOST;
 use const ScA\DB_PWD;
 use const ScA\DB_USER;
 
-$table = 'telemetry';
+$table = 'last_logins';
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
 
@@ -45,7 +45,7 @@ if ($conn->connect_error) {
 
 <head>
     <meta charset="utf-8">
-    <title>XII Sc A - Telemetry</title>
+    <title>XII Sc A - Last Logins</title>
     <script src='script.js'>
     </script>
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
@@ -54,7 +54,7 @@ if ($conn->connect_error) {
 
 <body onload="clean()">
 
-    <h1 class='center'>XII Sc A - Telemetry</h1>
+    <h1 class='center'>XII Sc A - Last Logins</h1>
     <hr />
     <p class='center'>
         <i>
@@ -69,7 +69,7 @@ if ($conn->connect_error) {
 
     <?php
     // Query
-    $result = $conn->query("SELECT * FROM {$table} ORDER BY `{$table}`.`Timestamp` ASC");
+    $result = $conn->query("SELECT * FROM {$table}");
 
     if (!$result) {
         die("Query to show fields from table failed.");
@@ -79,29 +79,14 @@ if ($conn->connect_error) {
         <div class='tab' id='{$sub}'>
         <table class='semibordered center autowidth'>
             <tr>
-                <th>Timestamp</th>
                 <th>Member</th>
-                <th>IP Address</th>
-                <th>Action</th>
-                <th>Data</th>
+                <th>Last Login</th>
             </tr>";
 
     while ($action = $result->fetch_assoc()) {
         echo "<tr>";
-
-        echo "<td>" . $action["Timestamp"] . "</td>";
         echo "<td>" . $action["Member"] . "</td>";
-        echo "<td>" . $action["IP"] . "</td>";
-        echo "<td class='code'>" . $action["Action"] . "</td>";
-
-        $r = $action["Data"];
-        if ($r && $r != '{}' && $r != 'null') {
-            $r = str_replace("\n", "\n<br/>", htmlspecialchars($r));
-            echo "<td class='code'>{$r}</td>";
-        } else {
-            echo "<td></td>";
-        }
-
+        echo "<td>" . $action["LastLogin"] . "</td>";
         echo "</tr>";
     }
 

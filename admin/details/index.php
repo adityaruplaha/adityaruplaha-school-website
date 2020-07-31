@@ -33,7 +33,8 @@ if (!$is_logged_in) {
 <head>
     <meta charset="utf-8">
     <title>XII Sc A - Student Details</title>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
 </head>
 
 <body>
@@ -59,27 +60,64 @@ if (!$is_logged_in) {
     }
     ?>
 
-    <h1 align='center'>XII Sc A - Student Details</h1>
+    <h1 class='center'>XII Sc A - Student Details</h1>
     <hr />
 
     <div>
-        <table border='1'>
+        <table class="semibordered autowidth">
             <tr>
                 <th>Name</th>
                 <th>Gender</th>
                 <th>Religion</th>
                 <th>Caste</th>
                 <th>Single girl child?</th>
+                <th>Email</th>
+                <th colspan="2">Mobile</th>
+                <th>Additional Subject</th>
+                <th>Status (Class XI)</th>
             </tr>
             <?php
             while ($row = $result->fetch_assoc()) {
-                $info = (new \ScA\Student\Student($row['Name']))->get_basic_info($classes);
+                $academic_info = (new \ScA\Student\Student($row['Name']))->get_academic_info($classes);
+                $basic_info = (new \ScA\Student\Student($row['Name']))->get_basic_info($classes);
+                $contact = (new \ScA\Student\Student($row['Name']))->get_contact_info($classes);
                 echo "<tr>";
                 echo "<td>{$row['Name']}</td>";
-                echo "<td>{$info['Gender']}</td>";
-                echo "<td>{$info['Religion']}</td>";
-                echo "<td>{$info['Caste']}</td>";
-                echo "<td>{$info['SingleGirlChild']}</td>";
+                echo "<td>{$basic_info['Gender']}</td>";
+                echo "<td>{$basic_info['Religion']}</td>";
+                echo "<td>{$basic_info['Caste']}</td>";
+                echo "<td class='center'>{$basic_info['SingleGirlChild']}</td>";
+                echo "<td>{$contact['EMail']}</td>";
+                echo "<td>{$contact['Mobile']}</td>";
+                echo "<td>{$contact['Mobile2']}</td>";
+                switch ($academic_info['ExtraSub']) {
+                    case "pe":
+                        echo "<td>Physical Education</td>";
+                        break;
+                    case "bn":
+                        echo "<td>Bengali</td>";
+                        break;
+                    case "hi":
+                        echo "<td>Hindi</td>";
+                        break;
+                    default:
+                        echo "<td></td>";
+                        break;
+                }
+                switch ($academic_info['Status']) {
+                    case "Passed":
+                        echo "<td class='green center'>{$academic_info['Status']}</td>";
+                        break;
+                    case "Retest":
+                        echo "<td class='yellow center'>{$academic_info['Status']}</td>";
+                        break;
+                    case "Failed":
+                        echo "<td class='red center'>{$academic_info['Status']}</td>";
+                        break;
+                    default:
+                        echo "<td></td>";
+                        break;
+                }
                 echo "</tr>";
             }
             $result->free();

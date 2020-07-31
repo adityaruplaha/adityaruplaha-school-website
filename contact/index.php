@@ -26,14 +26,23 @@ if (!$is_logged_in) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.7">
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
+    <style>
+    img.icon {
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    </style>
 </head>
 
 <body>
-    <h1 align=center>Contact Teachers</h1>
+    <h1 class=center>Contact Teachers</h1>
     <hr /><br />
     <div>
-        <table>
+        <table class='smallfont autowidth semibordered'>
             <tr>
                 <th>Name</th>
                 <th colspan="3">Phone No.</th>

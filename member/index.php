@@ -30,7 +30,8 @@ if (!$is_logged_in) {
     <title>
         XII Sc A - Members Portal
     </title>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <meta name="viewport" content="width=device-width, initial-scale=0.75">
 </head>
 
@@ -38,8 +39,8 @@ if (!$is_logged_in) {
     <h1>XII Sc A - Members Portal</h1>
     <hr />
     <div>
-        <h2>Details</h2><br />
-        <table class='center' style="table-layout: auto;">
+        <h2 class='center'>Details</h2><br />
+        <table class='autowidth unbordered center bicolumn bigfont'>
             <?php
             $contact = $s->get_contact_info();
             $mob = $contact["Mobile"];
@@ -64,9 +65,9 @@ if (!$is_logged_in) {
             ?>
         </table>
         <br />
-        <hr />
-        <h2>Attendance</h2><br />
-        <table class='center' style="table-layout: auto;">
+        <hr /><br />
+        <h2 class='center'>Attendance</h2><br />
+        <table class='autowidth unbordered center bicolumn bigfont'>
             <?php
             $att = $s->get_attendance_summary();
             echo "<tr>";
@@ -92,13 +93,13 @@ if (!$is_logged_in) {
 
             ?>
             <tr>
-                <td colspan=2><a href='attendance/'>See Details</a></td>
+                <td style='text-align: center;' colspan=2><a href='attendance/'>See Details</a></td>
             </tr>
         </table>
         <br />
-        <hr />
-        <h2>Quick Links</h2>
-        <table class='center'>
+        <hr /><br />
+        <h2 class='center'>Quick Links</h2>
+        <table class='autowidth unbordered center mediumfont centercells'>
             <tr>
                 <td>
                     <a href='/go/?url=https://trello.com/b/GsKINBwD/'>
@@ -134,10 +135,10 @@ if (!$is_logged_in) {
         exit;
     }
     ?>
-    <hr />
+    <hr /><br />
     <div>
-        <h2>Uploads</h2><br />
-        <table class='bordered'>
+        <h2 class='center'>Uploads</h2><br />
+        <table class='reducedwidth bordered center smallfont centercells'>
             <tr>
                 <th>Date</th>
                 <th>URL</th>
@@ -152,7 +153,7 @@ if (!$is_logged_in) {
                 $url = $upload["PrivateTrello"];
                 $stat = $upload["Status"];
                 echo "<td>{$date}</td>";
-                echo "<td><a href='{$url}'>{$url}</a></td>";
+                echo "<td><a class='compact' href='{$url}'>{$url}</a></td>";
                 echo "<td>{$stat}</td>";
                 echo "</tr>";
             }

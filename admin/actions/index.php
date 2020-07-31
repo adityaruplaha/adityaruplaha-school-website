@@ -53,22 +53,23 @@ if ($conn->connect_error) {
     <title>XII Sc A - Action Log</title>
     <script src='script.js'>
     </script>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
 </head>
 
 <body onload="clean()">
 
-    <h1 align='center'>XII Sc A - Action Log</h1>
+    <h1 class='center'>XII Sc A - Action Log</h1>
     <hr />
-    <p align='center'>
+    <p class='center'>
         <i>
             <?php
             date_default_timezone_set("Asia/Kolkata");
             echo "Report generated on " . date("d M Y h:i:sa") . " IST."
             ?>
         </i>
-        <hr />
     </p>
+    <hr />
 
     <?php
     // Query
@@ -80,7 +81,7 @@ if ($conn->connect_error) {
 
     echo "
         <div class='tab' id='{$sub}'>
-        <table>
+        <table class='autowidth bordered'>
             <tr>
                 <th>Timestamp</th>
                 <th>Action</th>

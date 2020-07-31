@@ -59,14 +59,15 @@ $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
 <head>
     <meta charset="utf-8">
     <title>XII Sc A - Class Schedule</title>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
 </head>
 
 <body>
 
-    <h1 align='center'>XII Sc A - Class Schedule</h1>
+    <h1 class='center'>XII Sc A - Class Schedule</h1>
     <hr />
-    <p align='center'>
+    <p class='center'>
         <i>
             <?php
             echo "Report generated on " . date("d M Y h:i:sa") . " IST."
@@ -74,7 +75,7 @@ $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
         </i>
     </p>
     <div class='tab' id='data'>
-        <table>
+        <table class='bordered smallfont autowidth'>
             <tr>
                 <th>Date</th>
                 <th>Classes</th>

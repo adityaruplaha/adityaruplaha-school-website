@@ -1,0 +1,134 @@
+body {
+    background-color: #222222;
+    font-family: "Arial", "Courier", "Letter Gothic";
+    color: #BBBBBB;
+}
+
+div {
+    padding: 10px 3px;
+}
+
+p {
+    text-align: center;
+    padding: 10px 3px;
+}
+
+h1 {
+    margin: auto;
+    padding: 10px 0px;
+    text-align: center;
+}
+
+hr {
+    color: #505050;
+    fill: #5c5c5c;
+}
+
+/* Basic Properties */
+
+.red {
+    color: #FF8888;
+    font-weight: 500;
+}
+
+.green {
+    color: #74cfa2;
+    font-weight: 500;
+}
+
+.yellow {
+    color: #e9e170;
+    font-weight: 500;
+}
+
+.code {
+    font-family: "Consolas";
+    text-align: left;
+}
+
+.center {
+    text-align: center;
+    margin: auto;
+}
+
+.fullwidth {
+    width: 100%;
+}
+
+.autowidth {
+    width: auto;
+}
+
+.reducedwidth {
+    width: 70%;
+}
+
+/* Anchors */
+
+a:link {
+    color: rgb(90, 138, 211);
+    text-decoration: none;
+    display: inline-block;
+    padding: 14px 25px;
+    border-radius: 10px;
+}
+
+a.compact {
+    padding: 2px 5px;
+}
+
+a:visited {
+    color: #bd95e2;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(116, 207, 162);
+    font-weight: 400;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+a:not(.compact):hover {
+    background-color: #353535;
+}
+
+a:active {
+    color: rgb(116, 207, 162);
+    font: bold;
+    text-decoration: none;
+}
+
+a.wip:hover {
+    border: 2px solid #FF5555;
+    padding: 11px 22px;
+}
+
+a.dead:hover {
+    border: 2px solid #e67b7b;
+    color: #ca7266;
+    padding: 11px 22px;
+}
+
+a.insecure:hover {
+    border: 2px solid #fff56a;
+    color: #fff99f;
+    padding: 11px 22px;
+}
+
+/* Buttons */
+
+button {
+    background-color: #222222;
+    font-family: "Arial", "Courier", "Letter Gothic";
+    color: #BBBBBB;
+    border-radius: 10px;
+    border-style: solid;
+    padding: 14px 25px;
+    font-size: 23px;
+}
+
+button:hover {
+    background-color: #5f5f5f;
+    transition: 0.2s;
+}

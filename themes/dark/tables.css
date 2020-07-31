@@ -1,0 +1,154 @@
+table {
+    margin-left: auto;
+    margin-right: auto;
+    color: #BFBFBF;
+    border-collapse: collapse;
+}
+
+td {
+    vertical-align: middle;
+    padding: 10px 15px;
+    text-align: left;
+}
+
+th {
+    vertical-align: middle;
+    padding: 15px 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/** SPECIAL ATTRIBUTES **/
+
+/* Center cell contents */
+
+table.centercells td {
+    text-align: center;
+}
+
+/* Hoverable Tables */
+
+table.hoverable tr:not(:first-child):hover {
+    background-color: #414141;
+    transition: 0.1s;
+}
+
+/* Font Sizes */
+
+table.bigfont {
+    font-size: 26px;
+}
+
+table.mediumfont {
+    font-size: 22px;
+}
+
+table.smallfont {
+    font-size: 18px;
+}
+
+/* Bicolumnar Tables */
+
+table.bicolumn tr td:first-child {
+    text-align: right;
+}
+
+table.bicolumn tr td:last-child {
+    text-align: left;
+}
+
+table.invbicolumn tr td:first-child {
+    text-align: left;
+}
+
+table.invbicolumn tr td:last-child {
+    text-align: right;
+}
+
+/* Navigational Tables */
+
+table.nav {
+    border-style: solid;
+    color: #BFBFBF;
+    width: 100%;
+    margin: 3px;
+    table-layout: fixed;
+    text-align: center;
+}
+
+table.nav td {
+    text-align: center;
+}
+
+/* Compact Tables (reduced padding) */
+
+table.compact td {
+    padding: 7px 10px;
+}
+
+table.compact th {
+    padding: 10px 15px;
+}
+
+/** DIFFERENT BORDER CLASSES **/
+
+/* Unbordered tables */
+
+table.unbordered {
+    border-style: none;
+}
+
+table.unbordered tr {
+    border-style: none;
+}
+
+table.unbordered td,
+table.unbordered th {
+    border-style: none;
+}
+
+/* Semibordered tables */
+
+table.semibordered {
+    border-style: solid;
+}
+
+table.semibordered tr {
+    border-style: solid;
+}
+
+table.semibordered td,
+table.semibordered th {
+    border-style: none;
+}
+
+/* Boxed tables */
+
+table.boxed {
+    border-style: solid;
+    width: 70%;
+}
+
+table.boxed tr {
+    border-style: none;
+}
+
+table.boxed td,
+table.boxed th {
+    border-style: none;
+}
+
+/* Bordered tables */
+
+table.bordered {
+    border-style: solid;
+}
+
+table.bordered tr {
+    border-style: solid;
+}
+
+table.bordered td,
+table.bordered th {
+    border-style: solid;
+}

@@ -55,14 +55,15 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
     <title>XII Sc A - Attendance Stats</title>
     <script src='script.js'>
     </script>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
 </head>
 
 <body onload="beautify()">
 
-    <h1 align='center'>XII Sc A - Attendance Stats</h1>
+    <h1 class='center'>XII Sc A - Attendance Stats</h1>
     <hr />
-    <p align='center'>
+    <p class='center'>
         <i>
             <?php
             date_default_timezone_set("Asia/Kolkata");
@@ -92,27 +93,27 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
 
     <hr />
     <br />
-    <table class='center' style="table-layout: auto;">
+    <table class='center autowidth semibordered bicolumn'>
         <?php
         $info = $s->get_attendance_summary($classes);
         echo "<tr>";
-        echo "<td style='text-align: right;'>Present:</td><td style='text-align: left;'>{$info['P']}/{$info['Total']}</td>";
+        echo "<td style='text-class: right;'>Present:</td><td style='text-class: left;'>{$info['P']}/{$info['Total']}</td>";
         echo "</tr>";
         echo "<tr>";
-        echo "<td style='text-align: right;'>Absent:</td><td style='text-align: left;'>{$info['A']}/{$info['Total']}</td>";
+        echo "<td style='text-class: right;'>Absent:</td><td style='text-class: left;'>{$info['A']}/{$info['Total']}</td>";
         echo "</tr>";
         echo "<tr>";
-        echo "<td style='text-align: right;'>Attendance %:</td>";
+        echo "<td style='text-class: right;'>Attendance %:</td>";
         $n = round($info['Attendance %'] * 100, 2);
         if ($n > 75) {
             $n = number_format($n, 2);
-            echo "<td class ='green' style='text-align: center;'>{$n}%</td>";
+            echo "<td class ='green' style='text-class: center;'>{$n}%</td>";
         } elseif ($n > 40) {
             $n = number_format($n, 2);
-            echo "<td class ='yellow' style='text-align: center;'>{$n}%</td>";
+            echo "<td class ='yellow' style='text-class: center;'>{$n}%</td>";
         } else {
             $n = number_format($n, 2);
-            echo "<td class ='red' style='text-align: center;'>{$n}%</td>";
+            echo "<td class ='red' style='text-class: center;'>{$n}%</td>";
         }
         echo "</tr>";
 
@@ -124,7 +125,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
 
         <?php
 
-        echo "<table border='1'><tr>";
+        echo "<table class='center autowidth semibordered centercells hoverable'><tr>";
         echo "<th>Class</th>";
         echo "<th>Attendance</th>";
         echo "</tr>";
@@ -134,11 +135,11 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
                 continue;
             }
             echo "<tr>";
-            echo "<td>" . $class->beautify(SCHEDULE_BEAUTY_SINGLELINE) . "</td>";
+            echo "<td style='text-align: left;'>" . $class->beautify(SCHEDULE_BEAUTY_SINGLELINE) . "</td>";
             if ($present) {
-                echo "<td class='green' style='text-align: center;'>P</td>";
+                echo "<td class='green'>P</td>";
             } else {
-                echo "<td class='red' style='text-align: center;'>A</td>";
+                echo "<td class='red'>A</td>";
             }
             echo "</tr>";
         }
