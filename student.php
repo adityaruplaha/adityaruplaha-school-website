@@ -17,7 +17,8 @@ const TELEMETRY_ENUM = [
     'LOGIN',
     'LOGOUT',
     'URLVISIT',
-    'CBSEINFO_MANUALCONFIRM'
+    'CBSEINFO_MANUALCONFIRM',
+    'BOT_COMMAND',
 ];
 class Privilege
 {
@@ -77,9 +78,9 @@ class Student
             return false;
         }
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $json = json_encode($extradata);
+        $json = $conn->real_escape_string(json_encode($extradata, JSON_HEX_APOS));
         $ip = $_SERVER['REMOTE_ADDR'];
-        $conn->query("INSERT INTO telemetry VALUES (NULL, '{$this->name}', '{$ip}', '$action', '$json')");
+        $conn->query("INSERT INTO telemetry VALUES (NULL, '{$this->name}', '{$ip}', '{$action}', '{$json}')");
         $b = (bool) $conn->error;
         $conn->close();
         return !$b;
@@ -88,6 +89,11 @@ class Student
     public function report_url_visit(string $url)
     {
         $this->report_telemetry("URLVISIT", ["url" => $url]);
+    }
+
+    public function report_bot_command(string $command, array $args)
+    {
+        $this->report_telemetry("BOT_COMMAND", ["command" => $command, "args" => $args]);
     }
 
     public function get_theme()
