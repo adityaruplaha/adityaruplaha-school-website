@@ -32,13 +32,37 @@ if (!$is_logged_in) {
 
 <head>
     <title>Broadcast Message to Telegram</title>
-    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <script src='/sc_a/scripts/tab.js'>
+    </script>
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tabs.css' />
+    <style>
+    form {
+        text-align: center;
+    }
+
+    input,
+    textarea {
+        background-color: #222222;
+        font-family: "Arial", "Courier", "Letter Gothic";
+        color: #BBBBBB;
+        border-radius: 10px;
+        border: 2px solid;
+        padding: 14px 25px;
+        font-size: 23px;
+    }
+
+    textarea {
+        height: 200px;
+        width: 520px;
+    }
+    </style>
 </head>
 
-<body>
+<body onload="autoload(0)">
     <h1>Broadcast to Telegram</h1>
-    <?php
-    if (array_key_exists('done', $_GET)) {
+    <?php if (array_key_exists('done', $_GET)) {
         if ($_GET['done']) {
             echo '<p class="green">Successfully posted message.</p>';
         } else {
@@ -48,34 +72,26 @@ if (!$is_logged_in) {
             echo "</p>";
         }
     }
+
     ?>
-    <hr />
-    <div>
-        <h2>Send Message</h2>
-        <form action='send.php' method='post'>
-            <textarea name='msg' placeholder="Enter message to broadcast." required></textarea>
-            <br /><br />
-            <input name='name' placeholder="Enter your name here." required />
-            <br /><br />
-            <button type='submit'>Send</button>
-        </form>
+    <table class='nav smallfont'>
+        <tr>
+            <td onclick="show(this, 'msg')" class='tab_button'>Send a message.</td>
+            <td onclick="show(this, 'file')" class='tab_button'>Send a file.</td>
+        </tr>
+    </table>
+    <div class='tab' id='msg'>
+        <form action='send.php' method='post'><textarea name='msg' placeholder="Enter message to broadcast."
+                required></textarea><br /><br /><input name='name' placeholder="Enter your name here."
+                required /><br /><br /><button type='submit'>Send</button></form>
     </div>
-    <hr />
-    <div>
-        <h2>Send File</h2>
-        <p>
-            Please note this can take upto 10 minutes to finish, depending on file size and network quality.<br />
-            Please keep this tab open for the transfer to finish.
-        </p>
-        <form action='sendfile.php' method='post' enctype="multipart/form-data">
-            <input type="file" name="file" required />
-            <br /><br />
-            <textarea name='msg' placeholder="Enter caption (optional)."></textarea>
-            <br /><br />
-            <input name='name' placeholder="Enter your name here." required />
-            <br /><br />
-            <button type='submit'>Send</button>
-        </form>
+    <div class='tab' id='file'>
+        <p>Please note this can take upto 10 minutes to finish,
+            depending on file size and network quality.<br />Please keep this tab open for the transfer to finish. </p>
+        <form action='sendfile.php' method='post' enctype="multipart/form-data"><input type="file" name="file"
+                required /><br /><br /><textarea name='msg'
+                placeholder="Enter caption (optional)."></textarea><br /><br /><input name='name'
+                placeholder="Enter your name here." required /><br /><br /><button type='submit'>Send</button></form>
     </div>
 </body>
 

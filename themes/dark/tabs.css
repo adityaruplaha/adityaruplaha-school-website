@@ -1,0 +1,30 @@
+table.nav {
+    border-style: solid;
+    color: #BFBFBF;
+    width: 100%;
+    margin: 3px;
+    table-layout: fixed;
+    text-align: center;
+}
+
+table.nav td.tab_button {
+    text-align: center;
+}
+
+table.nav td.tab_button:hover {
+    background-color: #2d3133;
+    transition: 0.1s linear;
+}
+
+table.nav td.tab_button.active {
+    background-color: #373a3d;
+    transition: 0.1s linear;
+}
+
+div.tab {
+    display: none;
+}
+
+div.tab.active {
+    display: block;
+}

@@ -73,7 +73,7 @@ if ($conn->connect_error) {
 
     <?php
     // Query
-    $result = $conn->query("SELECT * FROM {$table} ORDER BY `{$table}`.`Timestamp` ASC");
+    $result = $conn->query("SELECT * FROM {$table} ORDER BY `{$table}`.`Timestamp` DESC");
 
     if (!$result) {
         die("Query to show fields from table failed.");

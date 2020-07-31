@@ -158,7 +158,7 @@ if (!$is_logged_in) {
                 $uploader = $upload["UploadedBy"];
                 $stat = $upload["Status"];
                 echo "<td>{$date}</td>";
-                echo "<td><a href='{$url}'>{$url}</a></td>";
+                echo "<td><a class='compact' href='{$url}'>{$url}</a></td>";
                 echo "<td>{$uploader}</td>";
                 echo "<td>{$stat}</td>";
                 echo "</tr>";

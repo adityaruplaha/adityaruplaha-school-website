@@ -56,17 +56,18 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
 <head>
     <meta charset="utf-8">
     <title>XII Sc A - Student Attendance</title>
-    <script src='script.js'>
+    <script src='/sc_a/scripts/tab.js'>
     </script>
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tabs.css' />
 </head>
 
-<body onload="beautify()">
+<body onload='autoload(0)'>
 
-    <h1 align='center'>XII Sc A - Student Attendance</h1>
+    <h1 class='center'>XII Sc A - Student Attendance</h1>
     <hr />
-    <p align='center'>
+    <p class='center'>
         <i>
             <?php
             date_default_timezone_set("Asia/Kolkata");
@@ -106,7 +107,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
                     $str = "Studentwise Attendance of Selected Classes";
                 }
                 ?>
-                <td onclick="show(this, 'data')" class='button' id='dbut'>
+                <td onclick="show(this, 'data')" class='tab_button'>
                     <?php echo $str;
                     unset($str); ?>
                 </td>
@@ -116,7 +117,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
                     $str = "Classwise Attendance of Selected Classes";
                 }
                 ?>
-                <td onclick="show(this, 'summary')" class='button' id='sbut'>
+                <td onclick="show(this, 'summary')" class='tab_button'>
                     <?php echo $str;
                     unset($str); ?>
                 </td>
@@ -126,7 +127,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
                     $str = "Studentwise Attendance Statistics in Selected Classes";
                 }
                 ?>
-                <td onclick="show(this, 'stusum')" class='button' id='stbut'>
+                <td onclick="show(this, 'stusum')" class='tab_button'>
                     <?php echo $str;
                     unset($str); ?>
                 </td>
@@ -190,7 +191,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         ?>
     </div>
 
-    <div class='tab' id='summary' style='display: none;'>
+    <div class='tab' id='summary'>
         <table class="semibordered autowidth center">
             <tr>
                 <td>Class</td>
@@ -235,7 +236,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         </table>
     </div>
 
-    <div class='tab' id='stusum' style='display: none;'>
+    <div class='tab' id='stusum'>
 
         <?php
 
