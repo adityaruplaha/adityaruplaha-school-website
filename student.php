@@ -77,6 +77,9 @@ class Student
             error_log("Invalid telemetry action.");
             return false;
         }
+        if ($this->get_telemetry_privacy() >= 2) {
+            return true;
+        }
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
         $json = $conn->real_escape_string(json_encode($extradata, JSON_HEX_APOS));
         $ip = $_SERVER['REMOTE_ADDR'];
@@ -88,17 +91,70 @@ class Student
 
     public function report_url_visit(string $url)
     {
-        $this->report_telemetry("URLVISIT", ["url" => $url]);
+        switch ($this->get_telemetry_privacy()) {
+            case 2:
+                return true;
+            case 1:
+                return $this->report_telemetry("URLVISIT", ["url" => "REDACTED"]);
+            default:
+                return $this->report_telemetry("URLVISIT", ["url" => $url]);
+        }
     }
 
     public function report_bot_command(string $command, array $args)
     {
-        $this->report_telemetry("BOT_COMMAND", ["command" => $command, "args" => $args]);
+        switch ($this->get_telemetry_privacy()) {
+            case 2:
+                return true;
+            case 1:
+                return $this->report_telemetry("BOT_COMMAND", ["command" => $command, "args" => "REDACTED"]);
+            default:
+                return $this->report_telemetry("BOT_COMMAND", ["command" => $command, "args" => $args]);
+        }
     }
 
     public function get_theme()
     {
         return "dark";
+    }
+
+    /**
+     * Get privacy level of telemetry.
+     * 
+     * 0 => Record everything.
+     * 1 => Redact URLs and arguments to bot commands.
+     * 2 => Incognito mode.
+     * 
+     * @return int
+     */
+    public function get_telemetry_privacy(): int
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT TelemetryPrivacy FROM accounts WHERE `Name` = '{$this->name}'");
+        $row = $r->fetch_row();
+        $r->free();
+        $conn->close();
+        return intval($row[0]);
+    }
+
+    /**
+     * Set privacy level of telemetry.
+     * 
+     * 0 => Record everything.
+     * 1 => Redact URLs and arguments to bot commands.
+     * 2 => Incognito mode.
+     * 
+     * @param $mode int
+     * 
+     * @return bool
+     */
+    public function set_telemetry_privacy(int $mode): bool
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("UPDATE accounts SET TelemetryPrivacy = {$mode} WHERE `Name` = '{$this->name}'");
+        $b = (bool) $conn->error;
+        $conn->close();
+        return !$b;
     }
 
     /**

@@ -11,7 +11,7 @@ $is_teacher = Teacher\is_logged_in();
 $s = TGLogin::from_cookie();
 if ($s != NULL) {
     $s = new \ScA\Student\Student(NULL, $s->id);
-    if (!$s->has_privileges("Admin")) {
+    if (!$s->has_privileges("Super Admin")) {
         $s = NULL;
     }
 }
@@ -36,6 +36,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
+
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +51,13 @@ if ($conn->connect_error) {
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tabs.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/slider.css' />
+    <link rel='stylesheet' type='text/css' href='telemetry_slider.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75">
+    <script src='/sc_a/scripts/post.js'>
+    </script>
+    <script src='telemetry_slider.js'>
+    </script>
 </head>
 
 <body onload="autoload(0)">
@@ -67,13 +76,20 @@ if ($conn->connect_error) {
     </p>
     <table class='nav smallfont'>
         <tr>
-            <td onclick="show(this, 'log')" class='tab_button'>Show telemetry logs.</td>
-            <td onclick="show(this, 'lastlogin')" class='tab_button'>Last Logins</td>
+            <td onclick="show(this, 'log')" class='tab_button'>
+                Logs
+                <?php
+                if ($limit) {
+                    echo " (last {$limit})";
+                }
+                ?>
+            </td>
+            <td onclick="show(this, 'stats')" class='tab_button'>Statistics & Controls</td>
         </tr>
     </table>
 
     <div class='tab' id='log'>
-        <table class='semibordered center autowidth'>
+        <table class='semibordered center autowidth hoverable'>
             <tr>
                 <th>Timestamp</th>
                 <th>Member</th>
@@ -82,16 +98,17 @@ if ($conn->connect_error) {
                 <th>Data</th>
             </tr>
             <?php
-            $result = $conn->query("SELECT * FROM telemetry ORDER BY `telemetry`.`Timestamp` DESC");
-            while ($action = $result->fetch_assoc()) {
+            $lc = $limit ? "LIMIT {$limit}" : "";
+            $result = $conn->query("SELECT * FROM telemetry ORDER BY `telemetry`.`Timestamp` DESC {$lc}");
+            while ($member = $result->fetch_assoc()) {
                 echo "<tr>";
 
-                echo "<td>" . $action["Timestamp"] . "</td>";
-                echo "<td>" . $action["Member"] . "</td>";
-                echo "<td class='center'>" . $action["IP"] . "</td>";
-                echo "<td class='code'>" . $action["Action"] . "</td>";
+                echo "<td>" . $member["Timestamp"] . "</td>";
+                echo "<td>" . $member["Member"] . "</td>";
+                echo "<td class='center'>" . $member["IP"] . "</td>";
+                echo "<td class='code'>" . $member["Action"] . "</td>";
 
-                $r = $action["Data"];
+                $r = $member["Data"];
                 if ($r && $r != '{}' && $r != 'null') {
                     $r = str_replace("\n", "\n<br/>", htmlspecialchars($r));
                     echo "<td class='code'>{$r}</td>";
@@ -105,18 +122,31 @@ if ($conn->connect_error) {
             ?>
         </table>
     </div>
-    <div class='tab' id='lastlogin'>
-        <table class='semibordered center autowidth'>
+    <div class='tab' id='stats'>
+        <table class='semibordered center autowidth hoverable'>
             <tr>
                 <th>Member</th>
                 <th>Last Login</th>
+                <th>Last Action</th>
+                <th>MAR</th>
+                <th>Telemetry Mode</th>
             </tr>
             <?php
-            $result = $conn->query("SELECT * FROM last_logins");
-            while ($action = $result->fetch_assoc()) {
+            $result = $conn->query(
+                "SELECT Name, LAST_LOGIN(Name) 'LastLogin', LAST_ACTION(Name) 'LastAction', MEMBER_ACTION_RATIO(Name) 'MAR' FROM info"
+            );
+            while ($member = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $action["Member"] . "</td>";
-                echo "<td>" . $action["LastLogin"] . "</td>";
+                echo "<td>" . $member["Name"] . "</td>";
+                echo "<td>" . $member["LastLogin"] . "</td>";
+                echo "<td>" . $member["LastAction"] . "</td>";
+                echo "<td>" . floatval($member["MAR"]) * 100 . "%</td>";
+                $stu = new \ScA\Student\Student($member["Name"], NULL);
+                $telemetry_privacy = $stu->get_telemetry_privacy();
+                echo "<td class='slider_container'>
+                <input type='range' min='0' max='2' value='{$telemetry_privacy}' class='slider mode{$telemetry_privacy}'
+        id='telemetry_slider' oninput='telemetry_updated(this, {$stu->tgid})'>
+        </td>";
                 echo "</tr>";
             }
             $result->free();
