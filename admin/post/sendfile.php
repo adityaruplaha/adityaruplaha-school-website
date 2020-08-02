@@ -38,17 +38,17 @@ if (array_key_exists('file', $_FILES) && array_key_exists('name', $_POST)) {
 
     // Check file size
     if ($_FILES["file"]["size"] > 20000000) {
-        header("Location: index.php?done=0&error=File exceeds 20MB size limit.");
+        header("Location: /sc_a/teacher/broadcast/?done=0&error=File exceeds 20MB size limit.");
         exit;
     }
     if (file_exists($target_file)) {
-        header("Location: index.php?done=0&error=File exists already.");
+        header("Location: /sc_a/teacher/broadcast/?done=0&error=File exists already.");
         exit;
     }
 
     $r = move_uploaded_file($_FILES["file"]["tmp_name"], $target_file);
     if (!$r) {
-        header("Location: index.php?done=0&error=File upload failed.");
+        header("Location: /sc_a/teacher/broadcast/?done=0&error=File upload failed.");
         error_log(print_r($r, true));
         exit;
     }
@@ -71,13 +71,13 @@ if (array_key_exists('file', $_FILES) && array_key_exists('name', $_POST)) {
         'disable_notification' => true
     ]);
     if ($result) {
-        header("Location: index.php?done=1");
+        header("Location: /sc_a/teacher/broadcast/?done=1");
         exit;
     } else {
-        header("Location: index.php?done=0&error=" . print_r($result, true));
+        header("Location: /sc_a/teacher/broadcast/?done=0&error=" . print_r($result, true));
         exit;
     }
 }
 
-header("Location: index.php");
+header("Location: /sc_a/teacher/broadcast/");
 exit;

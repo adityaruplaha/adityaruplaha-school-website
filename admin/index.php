@@ -48,20 +48,20 @@ if (!$is_logged_in) {
             </tr>
             <tr>
                 <td><a href='trello_upload_recommendation/'>Trello Uploads Recommendations</a></td>
-                <?php
-                if ($s->has_privileges("Super Admin")) {
-                    echo "
-                    <td><a href='broadcast/'>Broadcast to Telegram</a></td>
-                ";
-                }
-                ?>
+                <td><a href='post/'>Post Assignment/Resource</a></td>
             </tr>
             <?php
             if ($s->has_privileges("Super Admin")) {
                 echo "
                     <tr>
-                    <td><a href='cbseinfo/'>Check CBSE Info</a></td>
-                    <td><a href='telemetry/'>Check Telemetry</a></td>
+                    <tr>
+                        <td colspan=2><br /></td>
+                    </tr>
+                    <td><a href='broadcast/'>Broadcast to Telegram</a></td>
+                    <td><a href='cbseinfo/'>Check CBSE Info</a></td>                    
+                    </tr>
+                    <tr>
+                    <td><a href='telemetry/'>Telemetry</a></td>
                     </tr>
                 ";
             }

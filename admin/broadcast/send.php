@@ -41,13 +41,13 @@ if (array_key_exists('msg', $_POST) && array_key_exists('name', $_POST)) {
         'text' => "{$msg}\n\n~ {$n}\n(This message was sent by a teacher.)"
     ]);
     if ($result) {
-        header("Location: /sc_a/teacher/broadcast/?done=1");
+        header("Location: index.php?done=1");
         exit;
     } else {
-        header("Location: /sc_a/teacher/broadcast/?done=0&error=" . print_r($result, true));
+        header("Location: index.php?done=0&error=" . print_r($result, true));
         exit;
     }
 }
 
-header("Location: /sc_a/teacher/broadcast/");
+header("Location: index.php");
 exit;
