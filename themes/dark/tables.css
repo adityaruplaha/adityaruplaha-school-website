@@ -3,6 +3,7 @@ table {
     margin-right: auto;
     color: #BFBFBF;
     border-collapse: collapse;
+    vertical-align: middle;
 }
 
 td {

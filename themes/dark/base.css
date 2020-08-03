@@ -42,7 +42,7 @@ hr {
 }
 
 .code {
-    font-family: "Consolas";
+    font-family: "Consolas", "Monospace";
     text-align: left;
 }
 
@@ -118,7 +118,8 @@ a.insecure:hover {
 
 /* Buttons */
 
-button {
+button,
+input[type='button'] {
     background-color: #222222;
     font-family: "Arial", "Courier", "Letter Gothic";
     color: #BBBBBB;
@@ -128,7 +129,8 @@ button {
     font-size: 23px;
 }
 
-button:hover {
-    background-color: #5f5f5f;
+button:hover,
+input[type='button']:hover {
+    background-color: #383838;
     transition: 0.2s;
 }

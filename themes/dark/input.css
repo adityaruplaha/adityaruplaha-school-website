@@ -1,0 +1,59 @@
+form {
+    text-align: center;
+}
+
+/* Input type color is not actually covered, it will be unstyled by default. */
+
+input {
+    background-color: transparent;
+    font-family: "Arial", "Courier", "Letter Gothic";
+    color: #BBBBBB;
+    border: none;
+}
+
+input:not([type=range]),
+input:not([type='radio']),
+input:not([type='checkbox']),
+input:not([type='file']),
+input:not([type='reset']),
+input:not([type='submit']),
+input:not([type='color']),
+textarea {
+    border-radius: 10px;
+    border: 2px solid #BBBBBB;
+    padding: 14px 25px;
+    font-size: 23px;
+}
+
+textarea {
+    height: 200px;
+    width: 520px;
+}
+
+::-webkit-calendar-picker-indicator {
+    background-color: #BBBBBB;
+    padding: 2px;
+    border-radius: 3px;
+}
+
+::-webkit-calendar-picker-indicator:hover {
+    background-color: #DDDDDD;
+    transition: 0.4s;
+}
+
+input[type='tel']:valid,
+input[type='email']:valid {
+    border-color: mediumaquamarine;
+    transition: 0.5s;
+}
+
+input[type='tel']:invalid,
+input[type='email']:invalid {
+    border-color: rgb(233, 147, 147);
+    transition: 0.5s;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+}

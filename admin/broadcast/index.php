@@ -93,6 +93,10 @@ if (!$is_logged_in) {
                 placeholder="Enter caption (optional)."></textarea><br /><br /><input name='name'
                 placeholder="Enter your name here." required /><br /><br /><button type='submit'>Send</button></form>
     </div>
+    <script id='remove_get'>
+    window.history.replaceState(null, '', window.location.href.split('?')[0]);
+    document.getElementById('remove_get').remove();
+    </script>
 </body>
 
 </html>

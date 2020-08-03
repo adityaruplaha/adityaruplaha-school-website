@@ -19,6 +19,7 @@ const TELEMETRY_ENUM = [
     'URLVISIT',
     'CBSEINFO_MANUALCONFIRM',
     'BOT_COMMAND',
+    'PROFILE_UPDATE'
 ];
 class Privilege
 {
@@ -84,9 +85,12 @@ class Student
         $json = $conn->real_escape_string(json_encode($extradata, JSON_HEX_APOS));
         $ip = $_SERVER['REMOTE_ADDR'];
         $conn->query("INSERT INTO telemetry VALUES (NULL, '{$this->name}', '{$ip}', '{$action}', '{$json}')");
-        $b = (bool) $conn->error;
+        $b = !(bool) $conn->error;
+        if (!$b) {
+            error_log("Telemetry logging failed: " . $conn->error);
+        }
         $conn->close();
-        return !$b;
+        return $b;
     }
 
     public function report_url_visit(string $url)
@@ -110,6 +114,16 @@ class Student
                 return $this->report_telemetry("BOT_COMMAND", ["command" => $command, "args" => "REDACTED"]);
             default:
                 return $this->report_telemetry("BOT_COMMAND", ["command" => $command, "args" => $args]);
+        }
+    }
+
+    public function report_profile_update(array $old, array $new)
+    {
+        switch ($this->get_telemetry_privacy()) {
+            case 2:
+                return true;
+            default:
+                return $this->report_telemetry("PROFILE_UPDATE", ["old" => $old, "new" => $new]);
         }
     }
 
@@ -301,6 +315,34 @@ class Student
         $r->free();
         $conn->close();
         return $row;
+    }
+
+    /**
+     * Set info in the form {EMail, Mobile, Mobile2}.
+     *  
+     * @param array|null $contact Associative array 
+     * 
+     */
+    public function set_contact_info($contact)
+    {
+        $c_old = $this->get_contact_info();
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = NULL;
+        if ($contact["Mobile2"]) {
+            $r = $conn->query("UPDATE contact SET EMail = '{$contact['EMail']}', Mobile = '{$contact['Mobile']}', Mobile2  = '{$contact['Mobile2']}' WHERE `Name` = '{$this->name}'");
+        } else {
+            $r = $conn->query("UPDATE contact SET EMail = '{$contact['EMail']}', Mobile = '{$contact['Mobile']}', Mobile2  = NULL WHERE `Name` = '{$this->name}'");
+        }
+        $b = !(bool) $conn->error;
+        if ($b) {
+            if (!$this->report_profile_update($c_old, $contact)) {
+                error_log("set_contact_info: Telemetry logging failed.");
+            }
+        } else {
+            error_log("set_contact_info: UPDATE failed: " . $conn->error);
+        }
+        $conn->close();
+        return $b;
     }
 
     /**

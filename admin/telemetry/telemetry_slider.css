@@ -1,6 +1,6 @@
 /* The slider itself */
 #telemetry_slider {
-    background: rgb(243, 248, 241);
+    background: transparent;
     /* Grey background */
 }
 
@@ -28,11 +28,11 @@
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 #telemetry_slider.mode2::-webkit-slider-thumb {
-    background: url('img/incognito.png');
+    background: url('/sc_a/img/incognito.png');
     background-size: contain;
 }
 
 #telemetry_slider.mode2::-moz-range-thumb {
-    background: url('img/incognito.png');
+    background: url('/sc_a/img/incognito.png');
     background-size: contain;
 }

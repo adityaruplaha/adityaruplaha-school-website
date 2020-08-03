@@ -40,7 +40,12 @@ if ($s != NULL) {
         <td style='text-align: left;'>
             <a href='member/'>Profile</a>
         </td>
-        <td style='text-align: right;'>{$s->name} <a href='loginhandler.php?logout'>Logout</a></td>
+        <td style='text-align: right; '>";
+        if ($s->get_telemetry_privacy() >= 2) {
+            echo "<img src='/sc_a/img/incognito.png' style='height: 2.5em; vertical-align: middle; display: inline;'></img>";
+        }
+        echo "
+        {$s->name} <a href='loginhandler.php?logout'>Logout</a></td>
         </tr>
         </table>
         <hr/>

@@ -38,38 +38,7 @@ if (!$is_logged_in) {
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/select.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tabs.css' />
-    <style>
-    form {
-        text-align: center;
-    }
-
-    input,
-    textarea {
-        background-color: #222222;
-        font-family: "Arial", "Courier", "Letter Gothic";
-        color: #BBBBBB;
-        border-radius: 10px;
-        border: 2px solid;
-        padding: 14px 25px;
-        font-size: 23px;
-    }
-
-    ::-webkit-calendar-picker-indicator {
-        background-color: #BBBBBB;
-        padding: 2px;
-        border-radius: 3px;
-    }
-
-    ::-webkit-calendar-picker-indicator:hover {
-        background-color: #DDDDDD;
-        transition: 0.4s;
-    }
-
-    textarea {
-        height: 200px;
-        width: 520px;
-    }
-    </style>
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/input.css' />
 </head>
 
 <body onload="autoload(0)">
@@ -96,25 +65,25 @@ if (!$is_logged_in) {
         <form action='upload_assignment.php' method='post'>
             <table class='unbordered bicolumn mediumfont center autowidth'>
                 <tr>
-                    <td><label>Name:</label></td>
+                    <td><label for="Name">Name:</label></td>
                     <td>
                         <input name='Name' placeholder="Name" required />
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Assigned on:</label></td>
+                    <td><label for="AssignedOn">Assigned on:</label></td>
                     <td>
                         <input type="date" name="AssignedOn" min="2020-03-01" required />
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Due on:</label></td>
+                    <td><label for="DueOn">Due on:</label></td>
                     <td>
                         <input type="date" name="DueOn" min="2020-03-01" />
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Subject:</label></td>
+                    <td><label for="Subject">Subject:</label></td>
                     <td>
                         <select name="Subject" required>
                             <option>English</option>
@@ -129,13 +98,13 @@ if (!$is_logged_in) {
                     </td>
                 </tr>
                 <tr>
-                    <td><label>URL:</label></td>
+                    <td><label for='URL'>URL:</label></td>
                     <td>
                         <textarea name='URL' placeholder="Enter URL."></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Notes:</label></td>
+                    <td><label for='Notes'>Notes:</label></td>
                     <td>
                         <textarea name='Notes' placeholder="Notes"></textarea>
                     </td>
@@ -148,19 +117,19 @@ if (!$is_logged_in) {
         <form action='upload_resource.php' method='post'>
             <table class='unbordered bicolumn mediumfont center autowidth'>
                 <tr>
-                    <td><label>Name:</label></td>
+                    <td><label for='Name'>Name:</label></td>
                     <td>
                         <input name='Name' placeholder="Name" required />
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Given on:</label></td>
+                    <td><label for="GivenOn">Given on:</label></td>
                     <td>
                         <input type="date" name="GivenOn" min="2020-03-01" />
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Subject:</label></td>
+                    <td><label for="Subject">Subject:</label></td>
                     <td>
                         <select name="Subject" required>
                             <option>English</option>
@@ -176,19 +145,19 @@ if (!$is_logged_in) {
                     </td>
                 </tr>
                 <tr>
-                    <td><label>URL:</label></td>
+                    <td><label for='URL'>URL:</label></td>
                     <td>
                         <textarea name='URL' placeholder="Enter URL."></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Notes:</label></td>
+                    <td><label for='Notes'>Notes:</label></td>
                     <td>
                         <textarea name='Notes' placeholder="Notes"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Source:</label></td>
+                    <td><label for="Source">Source:</label></td>
                     <td>
                         <select name="Source" required>
                             <option></option>
@@ -202,6 +171,10 @@ if (!$is_logged_in) {
             <button type='submit'>Upload Resource</button>
         </form>
     </div>
+    <script id='remove_get'>
+    window.history.replaceState(null, '', window.location.href.split('?')[0]);
+    document.getElementById('remove_get').remove();
+    </script>
 </body>
 
 </html>

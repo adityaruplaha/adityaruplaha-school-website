@@ -63,6 +63,9 @@ if (!$is_logged_in) {
                 echo "</tr>";
             }
             ?>
+            <tr>
+                <td style='text-align: center;' colspan=2><a href='edit/'>Edit</a></td>
+            </tr>
         </table>
         <br />
         <hr /><br />

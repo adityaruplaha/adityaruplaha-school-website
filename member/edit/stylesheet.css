@@ -1,8 +1,21 @@
 /* The slider itself */
 #telemetry_slider {
-    background: rgb(243, 248, 241);
-    /* Grey background */
+    background: transparent;
+    outline: none;
+    width: auto;
+    border: solid 2px rgb(185, 185, 185);
+    border-radius: 5px;
+    padding: 2px;
 }
+
+#telemetry_slider::-webkit-slider-thumb {
+    border-radius: 3px;
+}
+
+#telemetry_slider::-moz-range-thumb {
+    border-radius: 3px;
+}
+
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 #telemetry_slider.mode0::-webkit-slider-thumb {
@@ -28,11 +41,16 @@
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 #telemetry_slider.mode2::-webkit-slider-thumb {
-    background: url('img/incognito.png');
+    background: url('/sc_a/img/incognito.png');
     background-size: contain;
 }
 
 #telemetry_slider.mode2::-moz-range-thumb {
-    background: url('img/incognito.png');
+    background: url('/sc_a/img/incognito.png');
     background-size: contain;
+}
+
+input[type='email'],
+input[type='tel'] {
+    width: min(auto, 1fr);
 }
