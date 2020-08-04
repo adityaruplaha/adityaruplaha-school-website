@@ -66,21 +66,6 @@ table.invbicolumn tr td:last-child {
     text-align: right;
 }
 
-/* Navigational Tables */
-
-table.nav {
-    border-style: solid;
-    color: #BFBFBF;
-    width: 100%;
-    margin: 3px;
-    table-layout: fixed;
-    text-align: center;
-}
-
-table.nav td {
-    text-align: center;
-}
-
 /* Compact Tables (reduced padding) */
 
 table.compact td {

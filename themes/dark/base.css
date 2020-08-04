@@ -26,6 +26,10 @@ hr {
 
 /* Basic Properties */
 
+.invisible {
+    display: none;
+}
+
 .red {
     color: #FF8888;
     font-weight: 500;

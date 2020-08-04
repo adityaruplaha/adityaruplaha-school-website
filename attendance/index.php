@@ -58,9 +58,12 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
     <title>XII Sc A - Student Attendance</title>
     <script src='/sc_a/scripts/tab.js'>
     </script>
+    <script src='/sc_a/scripts/paginate.js'>
+    </script>
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tabs.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/pages.css' />
 </head>
 
 <body onload='autoload(0)'>
@@ -192,7 +195,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
     </div>
 
     <div class='tab' id='summary'>
-        <table class="semibordered autowidth center">
+        <table class="semibordered autowidth center" id="summary_table">
             <tr>
                 <td>Class</td>
                 <td class='green' style="text-align: center;">P</td>
@@ -283,6 +286,10 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         echo "</table>";
         ?>
     </div>
+    <script>
+    paginate(document.getElementById('summary_table'), 40)
+    show_page('summary_table', 0);
+    </script>
 </body>
 
 </html>

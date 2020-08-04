@@ -1,0 +1,42 @@
+table.pgnav {
+    color: #BFBFBF;
+    margin: auto;
+    table-layout: fixed;
+    text-align: center;
+    place-items: center;
+    border-spacing: 10px;
+    border-collapse: separate;
+}
+
+table.pgnav td.pg_button {
+    text-align: center;
+    border-radius: 10px;
+}
+
+table.pgnav td.pg_button:hover {
+    background-color: #2d3133;
+    transition: 0.1s linear;
+}
+
+table.pgnav td.pg_button.active {
+    background-color: #373a3d;
+    transition: 0.1s linear;
+}
+
+table.pgnav td.pg_button.disabled {
+    color: transparent;
+    transition: 0.1s linear;
+}
+
+table.pgnav td.pg_button.disabled:hover {
+    background-color: transparent;
+    transition: 0.1s linear;
+}
+
+div.tab {
+    display: none;
+}
+
+div.tab.active {
+    display: block;
+}
