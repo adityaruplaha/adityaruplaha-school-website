@@ -108,26 +108,37 @@ class SchedClass
         switch ($this->status) {
             case "Attendance Missing":
                 return "NO DATA";
-                break;
             case "Skip Attendance":
                 return "EXEMPTED";
-                break;
             case "Cancelled":
                 return "CANCELLED";
-                break;
             default:
                 break;
         }
         $col = $this->as_colname('`');
-        $sql = "SELECT COUNT(Name) FROM attendance GROUP BY {$col} ORDER BY {$col} DESC";
+        $sql = "SELECT {$col}, COUNT(Name) FROM attendance GROUP BY {$col} ORDER BY {$col} DESC";
         $r2 = $conn->query($sql);
         if (!$r2) {
             die("Query to show fields from table failed. Error Code: E_A02.");
         }
-        $rows = $r2->fetch_all();
-        $p = intval($rows[0][0]);
-        $a = intval($rows[1][0]);
-        $n = (isset($rows[2]) ? intval($rows[2][0]) : 0);
+        $rows = $r2->fetch_all(MYSQLI_NUM);
+        $p = 0;
+        $a = 0;
+        $n = 0;
+        foreach ($rows as list($state, $val)) {
+            if (isset($state)) {
+                if ($state) {
+                    $p = intval($val);
+                } else {
+                    $a = intval($val);
+                }
+            } else {
+                $n = intval($val);
+            }
+        }
+        if ($p === 0 && $a === 0) {
+            return "NO DATA";
+        }
         $percentage = floatval($p) / (floatval($p) + floatval($a));
         $r2->free();
         return [
