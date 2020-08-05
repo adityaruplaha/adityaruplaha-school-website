@@ -4,7 +4,8 @@ form {
 
 /* Input type color is not actually covered, it will be unstyled by default. */
 
-input {
+input,
+textarea {
     background-color: transparent;
     font-family: "Arial", "Courier", "Letter Gothic";
     color: #BBBBBB;

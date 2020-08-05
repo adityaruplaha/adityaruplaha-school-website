@@ -43,7 +43,7 @@ if (!$is_logged_in) {
     <div>
         <table class='fullwidth bigfont centercells'>
             <tr>
-                <td><a href='actions/'>Action Log</a></td>
+                <td><a href='command_logs/'>Command Logs</a></td>
                 <td><a href='details/'>Student Details</a></td>
             </tr>
             <tr>
