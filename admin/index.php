@@ -50,6 +50,9 @@ if (!$is_logged_in) {
                 <td><a href='trello_upload_recommendation/'>Trello Uploads Recommendations</a></td>
                 <td><a href='post/'>Post Assignment/Resource</a></td>
             </tr>
+            <tr>
+                <td><a href='notes/'>Internal Notes</a></td>
+            </tr>
             <?php
             if ($s->has_privileges("Super Admin")) {
                 echo "
