@@ -26,6 +26,7 @@ if ($s != NULL) {
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
     <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 </head>
 
 <body>
@@ -35,14 +36,14 @@ if ($s != NULL) {
 
     if ($s) {
         echo "
-        <table class='invbicolumn fullwidth mediumfont'>
+        <table class='invbicolumn fullwidth bigfont'>
         <tr>
-        <td style='text-align: left;'>
+        <td>
             <a href='member/'>Profile</a>
         </td>
-        <td style='text-align: right; '>";
+        <td>";
         if ($s->get_telemetry_privacy() >= 2) {
-            echo "<img src='/sc_a/img/incognito.png' style='height: 2.5em; vertical-align: middle; display: inline;'></img>";
+            echo '<span class="iconify hugefont" data-icon="mdi:incognito-circle" data-inline="false"></span>';
         }
         echo "
         {$s->name} <a href='loginhandler.php?logout'>Logout</a></td>
@@ -130,6 +131,10 @@ if ($s != NULL) {
 
         ?>
     </div>
+    <script id='remove_get'>
+    window.history.replaceState(null, '', window.location.href.split('?')[0]);
+    document.getElementById('remove_get').remove();
+    </script>
 </body>
 
 </html>

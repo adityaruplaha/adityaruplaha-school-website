@@ -1,0 +1,10 @@
+.deconstructed_pancake {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.deconstructed_pancake_card {
+    flex: 1 1 auto;
+    margin: 5px;
+}

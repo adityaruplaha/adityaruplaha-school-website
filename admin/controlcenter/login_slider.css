@@ -1,0 +1,22 @@
+/* The slider itself */
+#login_slider {
+    background: transparent;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+#login_slider.mode0::-webkit-slider-thumb {
+    background: #35b339;
+}
+
+#login_slider.mode0::-moz-range-thumb {
+    background: #35b339;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+#login_slider.mode1::-webkit-slider-thumb {
+    background: #ca1c10;
+}
+
+#login_slider.mode1::-moz-range-thumb {
+    background: #ca1c10;
+}

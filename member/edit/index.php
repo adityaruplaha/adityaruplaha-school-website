@@ -47,7 +47,7 @@ if (!$is_logged_in) {
     <h1>XII Sc A - Edit Profile</h1>
     <hr />
     <div>
-        <table class='center bigfont bicolumn unbordered'>
+        <table class='center hugefont bicolumn unbordered'>
             <?php
 
             if ($s->has_privileges("Admin")) {
@@ -86,15 +86,13 @@ if (!$is_logged_in) {
                 <tr>
                     <td><label for="Mobile">Mobile Number (Primary)</label></td>
                     <td>
-                        <input type='tel' name="Mobile" pattern="\+91[0-9]{10}"
-                            value="<?php echo $contact['Mobile']; ?>" required />
+                        <input type='tel' name="Mobile" pattern="\+91[0-9]{10}" value="<?php echo $contact['Mobile']; ?>" required />
                     </td>
                 </tr>
                 <tr>
                     <td><label for="Mobile2">Mobile Number (Alternate)</label></td>
                     <td>
-                        <input type='tel' name="Mobile2" pattern="\+91[0-9]{10}"
-                            value="<?php echo $contact['Mobile2']; ?>" />
+                        <input type='tel' name="Mobile2" pattern="\+91[0-9]{10}" value="<?php echo $contact['Mobile2']; ?>" />
                     </td>
                 </tr>
                 <tr>
@@ -116,8 +114,8 @@ if (!$is_logged_in) {
 
         ?>
         <script id='remove_get'>
-        window.history.replaceState(null, '', window.location.href.split('?')[0]);
-        document.getElementById('remove_get').remove();
+            window.history.replaceState(null, '', window.location.href.split('?')[0]);
+            document.getElementById('remove_get').remove();
         </script>
     </div>
 </body>

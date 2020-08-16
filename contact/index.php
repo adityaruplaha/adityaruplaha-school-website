@@ -8,12 +8,20 @@ use \ScA\Teacher;
 
 $s = TGLogin::from_cookie();
 
+$s = TGLogin::from_cookie();
+if ($s != NULL) {
+    $s = new \ScA\Student\Student(NULL, $s->id);
+    if ($s->get_block_resource_access()) {
+        $s = NULL;
+    }
+}
+
 $is_logged_in = ($s != NULL) || (Teacher\is_logged_in());
 
 if ($s != NULL) {
-    $s = (new \ScA\Student\Student(NULL, $s->id));
     $s->report_url_visit($_SERVER['PHP_SELF']);
 }
+
 
 if (!$is_logged_in) {
     header("Location: ../?nauth");
@@ -42,7 +50,7 @@ if (!$is_logged_in) {
     <h1 class=center>Contact Teachers</h1>
     <hr /><br />
     <div>
-        <table class='smallfont autowidth semibordered'>
+        <table class='mediumfont autowidth semibordered'>
             <tr>
                 <th>Name</th>
                 <th colspan="3">Phone No.</th>

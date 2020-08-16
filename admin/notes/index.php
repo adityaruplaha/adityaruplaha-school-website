@@ -63,6 +63,8 @@ if ($conn->connect_error) {
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/input.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/select.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/cards.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/icons.css' />
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 </head>
@@ -91,7 +93,7 @@ if ($conn->connect_error) {
         </i>
     </p>
     <hr />
-    <div>
+    <div class="cardholder">
         <?php
         // Query
         $result = $conn->query("SELECT * FROM {$table} ORDER BY `{$table}`.`PostedOn` DESC");
@@ -116,7 +118,7 @@ if ($conn->connect_error) {
             if (!$s->has_privileges($note['MinPrivilegeLevel'])) {
                 continue;
             }
-            echo "<div class='box'>";
+            echo "<div class='card'>";
             echo "<span class='yellow'>";
             echo "{$note['PostedBy']} on {$note['PostedOn']}";
             if ($note['PostedOn'] != $note['LastEditedOn']) {
@@ -146,7 +148,7 @@ if ($conn->connect_error) {
         $result->free();
         ?>
     </div>
-    <div class='footer'>
+    <div class='footercard'>
         <form action='post_note.php' method='POST' class='center'>
             <div class='content'>
                 <textarea name='Content' placeholder="Note" required></textarea>

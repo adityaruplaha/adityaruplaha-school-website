@@ -34,20 +34,6 @@ table.hoverable tr:not(:first-child):hover {
     transition: 0.1s;
 }
 
-/* Font Sizes */
-
-table.bigfont {
-    font-size: 26px;
-}
-
-table.mediumfont {
-    font-size: 22px;
-}
-
-table.smallfont {
-    font-size: 18px;
-}
-
 /* Bicolumnar Tables */
 
 table.bicolumn tr td:first-child {

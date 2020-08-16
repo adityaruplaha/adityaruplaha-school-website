@@ -1,0 +1,22 @@
+div.card {
+    margin-bottom: 10px;
+    padding: 0.8em;
+    border-radius: 10px;
+    border: 2px solid grey;
+    background-color: #33393f;
+}
+
+div.cardholder {
+    margin: 10px;
+}
+
+
+div.footercard {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background-color: #494949;
+    height: fit-content;
+    border-top: solid 2px grey;
+    place-items: center;
+}

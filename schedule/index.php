@@ -75,7 +75,7 @@ $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
         </i>
     </p>
     <div class='tab' id='data'>
-        <table class='bordered smallfont autowidth'>
+        <table class='bordered autowidth'>
             <tr>
                 <th>Date</th>
                 <th>Classes</th>

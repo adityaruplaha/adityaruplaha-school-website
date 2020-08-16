@@ -52,12 +52,7 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tabs.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/slider.css' />
-    <link rel='stylesheet' type='text/css' href='telemetry_slider.css' />
     <meta name="viewport" content="width=device-width, initial-scale=0.75">
-    <script src='/sc_a/scripts/post.js'>
-    </script>
-    <script src='telemetry_slider.js'>
-    </script>
 </head>
 
 <body onload="autoload(0)">
@@ -74,7 +69,7 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
         <br />
         This page is not covered by telemetry.
     </p>
-    <table class='nav smallfont'>
+    <table class='nav mediumfont'>
         <tr>
             <td onclick="show(this, 'log')" class='tab_button'>
                 Logs
@@ -84,7 +79,7 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
                 }
                 ?>
             </td>
-            <td onclick="show(this, 'stats')" class='tab_button'>Statistics & Controls</td>
+            <td onclick="show(this, 'stats')" class='tab_button'>Statistics</td>
         </tr>
     </table>
 
@@ -129,7 +124,6 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
                 <th>Last Login</th>
                 <th>Last Action</th>
                 <th>MAR</th>
-                <th>Telemetry Mode</th>
             </tr>
             <?php
             $result = $conn->query(
@@ -141,12 +135,6 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
                 echo "<td>" . $member["LastLogin"] . "</td>";
                 echo "<td>" . $member["LastAction"] . "</td>";
                 echo "<td>" . floatval($member["MAR"]) * 100 . "%</td>";
-                $stu = new \ScA\Student\Student($member["Name"], NULL);
-                $telemetry_privacy = $stu->get_telemetry_privacy();
-                echo "<td class='slider_container'>
-                <input type='range' min='0' max='2' value='{$telemetry_privacy}' class='slider mode{$telemetry_privacy}'
-        id='telemetry_slider' oninput='telemetry_updated(this, {$stu->tgid})'>
-        </td>";
                 echo "</tr>";
             }
             $result->free();

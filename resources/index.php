@@ -8,17 +8,25 @@ use \ScA\Teacher;
 
 $s = TGLogin::from_cookie();
 
-$is_logged_in = ($s != NULL) || (Teacher\is_logged_in());
+$s = TGLogin::from_cookie();
+if ($s != NULL) {
+    $s = new \ScA\Student\Student(NULL, $s->id);
+    if ($s->get_block_resource_access()) {
+        $s = NULL;
+    }
+}
 
 if ($s != NULL) {
-    $s = (new \ScA\Student\Student(NULL, $s->id));
     $s->report_url_visit($_SERVER['PHP_SELF']);
 }
+
+$is_logged_in = ($s != NULL) || (Teacher\is_logged_in());
 
 if (!$is_logged_in) {
     header("Location: ../?nauth");
     exit;
 }
+
 
 require_once "../defs.php";
 

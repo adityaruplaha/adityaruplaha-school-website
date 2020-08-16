@@ -11,7 +11,7 @@ if ($s != NULL) {
 }
 $is_logged_in = ($s != NULL);
 
-if (!$is_logged_in || !$s->has_privileges("Admin")) {
+if (!$is_logged_in || !$s->has_privileges("Super Admin")) {
     header("Location: ../../?nauth");
     exit;
 }
@@ -23,16 +23,16 @@ if (isset($_POST["id"])) {
     }
 }
 
-if (!array_key_exists("telemetry", $_POST) || !isset($_POST["telemetry"])) {
+if (!array_key_exists("block_resource_access", $_POST) || !isset($_POST["block_resource_access"])) {
     die("Invalid parameters.");
 }
 
-$v = intval($_POST["telemetry"]);
+$v = intval($_POST["block_resource_access"]);
 
-if ($v > 2 || $v < 0) {
+if ($v > 1 || $v < 0) {
     die("Out of range.");
 }
 
-$s->set_telemetry_privacy($v);
+$s->set_block_resource_access($v);
 
 echo "Set: " . $v;

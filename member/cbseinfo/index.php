@@ -34,20 +34,20 @@ if (!$is_logged_in) {
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <meta name="viewport" content="width=device-width, initial-scale=0.75">
     <script>
-    function httpGet(theUrl) {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, false); // false for synchronous request
-        xmlHttp.send(null);
-        return xmlHttp.responseText;
-    }
+        function httpGet(theUrl) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", theUrl, false); // false for synchronous request
+            xmlHttp.send(null);
+            return xmlHttp.responseText;
+        }
 
-    function enableOverride() {
-        httpGet("override.php?engage")
-    }
+        function enableOverride() {
+            httpGet("override.php?engage")
+        }
 
-    function disableOverride() {
-        httpGet("override.php")
-    }
+        function disableOverride() {
+            httpGet("override.php")
+        }
     </script>
 </head>
 
@@ -55,7 +55,7 @@ if (!$is_logged_in) {
     <h1>XII Sc A - CBSE Info</h1>
     <hr />
     <div>
-        <table class='center bigfont bicolumn unbordered' style="table-layout: auto;">
+        <table class='center hugefont bicolumn unbordered' style="table-layout: auto;">
             <?php
             function ver_string(bool $ver = NULL)
             {

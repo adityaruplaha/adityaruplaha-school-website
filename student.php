@@ -24,10 +24,11 @@ const TELEMETRY_ENUM = [
 class Privilege
 {
     private const LOOKUP = [
-        0 => "Basic",
-        1 => "Member",
-        2 => "Admin",
-        3 => "Super Admin"
+        "Basic",
+        "Member",
+        "Contributor",
+        "Admin",
+        "Super Admin"
     ];
 
     public $lv;
@@ -61,6 +62,13 @@ class Student
      * @var bool
      */
     public $is_valid;
+
+    /**
+     * Can the student login?
+     * 
+     * @var bool|null NULL when `is_valid` is false.
+     */
+    public $can_login;
 
     public function __construct($name = NULL, $tgid = NULL)
     {
@@ -152,6 +160,24 @@ class Student
     }
 
     /**
+     * Get resource access blocking.
+     * 
+     * 0 => Allow.
+     * 1 => Deny.
+     * 
+     * @return int
+     */
+    public function get_block_resource_access(): int
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("SELECT BlockResourceAccess FROM accounts WHERE `Name` = '{$this->name}'");
+        $row = $r->fetch_row();
+        $r->free();
+        $conn->close();
+        return intval($row[0]);
+    }
+
+    /**
      * Set privacy level of telemetry.
      * 
      * 0 => Record everything.
@@ -166,6 +192,44 @@ class Student
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
         $r = $conn->query("UPDATE accounts SET TelemetryPrivacy = {$mode} WHERE `Name` = '{$this->name}'");
+        $b = (bool) $conn->error;
+        $conn->close();
+        return !$b;
+    }
+
+    /**
+     * Set login blocking.
+     * 
+     * 0 => Allow.
+     * 1 => Block.
+     * 
+     * @param $mode int
+     * 
+     * @return bool Success/Failure
+     */
+    public function set_block_login(int $mode): bool
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("UPDATE accounts SET BlockLogin = {$mode} WHERE `Name` = '{$this->name}'");
+        $b = (bool) $conn->error;
+        $conn->close();
+        return !$b;
+    }
+
+    /**
+     * Set resource access blocking.
+     * 
+     * 0 => Allow.
+     * 1 => Block.
+     * 
+     * @param $mode int
+     * 
+     * @return bool Success/Failure
+     */
+    public function set_block_resource_access(int $mode): bool
+    {
+        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+        $r = $conn->query("UPDATE accounts SET BlockResourceAccess = {$mode} WHERE `Name` = '{$this->name}'");
         $b = (bool) $conn->error;
         $conn->close();
         return !$b;
@@ -432,14 +496,16 @@ class Student
     {
         if (!$this->tgid) {
             $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-            $r = $conn->query("SELECT Telegram_UserID FROM accounts WHERE `Name` = '{$this->name}'");
+            $r = $conn->query("SELECT Telegram_UserID, BlockLogin FROM accounts WHERE `Name` = '{$this->name}'");
             if ($r) {
                 if ($row = $r->fetch_row()) {
                     $this->tgid = $row[0];
+                    $this->can_login = !(bool) intval($row[1]);
                     $this->is_valid = true;
                 } else {
                     $this->name = NULL;
                     $this->tgid = NULL;
+                    $this->can_login = NULL;
                     $this->is_valid = false;
                 }
             }
@@ -449,14 +515,16 @@ class Student
         }
         if (!$this->name) {
             $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-            $r = $conn->query("SELECT Name FROM accounts WHERE `Telegram_UserID` = {$this->tgid}");
+            $r = $conn->query("SELECT Name, BlockLogin FROM accounts WHERE `Telegram_UserID` = {$this->tgid}");
             if ($r) {
                 if ($row = $r->fetch_row()) {
                     $this->name = $row[0];
+                    $this->can_login = !(bool) intval($row[1]);
                     $this->is_valid = true;
                 } else {
                     $this->name = NULL;
                     $this->tgid = NULL;
+                    $this->can_login = NULL;
                     $this->is_valid = false;
                 }
             }
@@ -466,8 +534,11 @@ class Student
         }
 
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT Name FROM accounts WHERE `Name` = '{$this->name}' AND `Telegram_UserID` = {$this->tgid}");
-        $this->is_valid = $r->fetch_row() ? true : false;
+        $r = $conn->query("SELECT Name, BlockLogin FROM accounts WHERE `Name` = '{$this->name}' AND `Telegram_UserID` = {$this->tgid}");
+        if ($row = $r->fetch_row()) {
+            $this->is_valid = true;
+            $this->can_login = !(bool) intval($row[1]);
+        }
         return $this->is_valid;
     }
 }

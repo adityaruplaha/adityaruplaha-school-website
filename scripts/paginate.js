@@ -17,7 +17,7 @@ function paginate(table, rows) {
     var chunks = chunk(elements, rows);
     var i = 0;
     var navbar = document.createElement("table");
-    navbar.classList.add('pgnav', 'unbordered', 'smallfont');
+    navbar.classList.add('pgnav', 'unbordered', 'mediumfont');
     navlist = document.createElement("tr");
     navbar.appendChild(navlist);
     table.parentElement.appendChild(navbar);

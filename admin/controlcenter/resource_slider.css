@@ -1,0 +1,22 @@
+/* The slider itself */
+#resource_slider {
+    background: transparent;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+#resource_slider.mode0::-webkit-slider-thumb {
+    background: #35b339;
+}
+
+#resource_slider.mode0::-moz-range-thumb {
+    background: #35b339;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+#resource_slider.mode1::-webkit-slider-thumb {
+    background: #ca1c10;
+}
+
+#resource_slider.mode1::-moz-range-thumb {
+    background: #ca1c10;
+}

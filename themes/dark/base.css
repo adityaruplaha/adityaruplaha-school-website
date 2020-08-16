@@ -2,21 +2,27 @@ body {
     background-color: #222222;
     font-family: "Arial", "Courier", "Letter Gothic";
     color: #BBBBBB;
+    font-size: clamp(12px, 2vh, 20px);
 }
 
 div {
-    padding: 10px 3px;
+    padding: clamp(10px, 0.8em, 18px) clamp(3px, 0.2em, 10px);
 }
 
 p {
     text-align: center;
-    padding: 10px 3px;
+    padding: clamp(10px, 0.8em, 18px) clamp(3px, 0.2em, 10px);
 }
 
 h1 {
     margin: auto;
-    padding: 10px 0px;
+    padding: clamp(10px, 0.8em, 18px) 0px;
     text-align: center;
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 1.75rem;
 }
 
 hr {
@@ -67,18 +73,34 @@ hr {
     width: 70%;
 }
 
+/* Font Sizes */
+
+.hugefont {
+    font-size: 2rem;
+}
+
+.bigfont {
+    font-size: 1.6rem;
+}
+
+.mediumfont {
+    font-size: 1.2rem;
+}
+
 /* Anchors */
 
-a:link {
+a {
     color: rgb(90, 138, 211);
     text-decoration: none;
     display: inline-block;
-    padding: 14px 25px;
+    padding: clamp(14px, 1.1em, 26px) clamp(20px, 1.4em, 35px);
     border-radius: 10px;
+    font-size: 1em;
 }
 
 a.compact {
-    padding: 2px 5px;
+    padding: initial;
+    border-radius: initial;
 }
 
 a:visited {
@@ -105,19 +127,19 @@ a:active {
 
 a.wip:hover {
     border: 2px solid #FF5555;
-    padding: 11px 22px;
+    padding: clamp(11px, 0.95em, 26px) calc(2 * clamp(11px, 0.95em, 26px));
 }
 
 a.dead:hover {
     border: 2px solid #e67b7b;
     color: #ca7266;
-    padding: 11px 22px;
+    padding: clamp(11px, 0.95em, 26px) calc(2 * clamp(11px, 0.95em, 26px));
 }
 
 a.insecure:hover {
     border: 2px solid #fff56a;
     color: #fff99f;
-    padding: 11px 22px;
+    padding: clamp(11px, 0.95em, 26px) calc(2 * clamp(11px, 0.95em, 26px));
 }
 
 /* Buttons */
@@ -129,7 +151,7 @@ input[type='button'] {
     color: #BBBBBB;
     border-radius: 10px;
     border-style: solid;
-    padding: 14px 25px;
+    padding: clamp(14px, 1.1em, 26px) clamp(20px, 1.4em, 35px);
     font-size: 23px;
 }
 

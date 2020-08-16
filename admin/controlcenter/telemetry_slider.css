@@ -1,29 +1,24 @@
 /* The slider itself */
 #telemetry_slider {
     background: transparent;
-    /* Grey background */
 }
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 #telemetry_slider.mode0::-webkit-slider-thumb {
     background: #54c758;
-    /* Green background */
 }
 
 #telemetry_slider.mode0::-moz-range-thumb {
     background: #54c758;
-    /* Green background */
 }
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 #telemetry_slider.mode1::-webkit-slider-thumb {
     background: #078f0a;
-    /* Green background */
 }
 
 #telemetry_slider.mode1::-moz-range-thumb {
     background: #078f0a;
-    /* Green background */
 }
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */

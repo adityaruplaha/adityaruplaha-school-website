@@ -65,6 +65,7 @@ if (!$is_logged_in) {
                     </tr>
                     <tr>
                     <td><a href='telemetry/'>Telemetry</a></td>
+                    <td><a href='controlcenter/'>Control Center</a></td>
                     </tr>
                 ";
             }
@@ -83,7 +84,7 @@ if (!$is_logged_in) {
     <div>
         <h2 class='center'>Uploads requiring Attention</h2>
         <br />
-        <table class='reducedwidth centercells smallfont bordered'>
+        <table class='reducedwidth centercells mediumfont bordered'>
             <tr>
                 <th>Date</th>
                 <th>URL</th>
@@ -134,7 +135,7 @@ if (!$is_logged_in) {
     <div>
         <h2 class='center'>Recent/Upcoming Uploads</h2>
         <br />
-        <table class='reducedwidth centercells smallfont bordered'>
+        <table class='reducedwidth centercells mediumfont bordered'>
             <tr>
                 <th>Date</th>
                 <th>URL</th>

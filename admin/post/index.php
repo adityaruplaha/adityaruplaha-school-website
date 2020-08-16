@@ -55,7 +55,7 @@ if (!$is_logged_in) {
     }
 
     ?>
-    <table class='nav smallfont'>
+    <table class='nav mediumfont'>
         <tr>
             <td onclick="show(this, 'assignments')" class='tab_button'>Assignments</td>
             <td onclick="show(this, 'resources')" class='tab_button'>Resources</td>
@@ -63,7 +63,7 @@ if (!$is_logged_in) {
     </table>
     <div class='tab' id='assignments'>
         <form action='upload_assignment.php' method='post'>
-            <table class='unbordered bicolumn mediumfont center autowidth'>
+            <table class='unbordered bicolumn bigfont center autowidth'>
                 <tr>
                     <td><label for="Name">Name:</label></td>
                     <td>
@@ -115,7 +115,7 @@ if (!$is_logged_in) {
     </div>
     <div class='tab' id='resources'>
         <form action='upload_resource.php' method='post'>
-            <table class='unbordered bicolumn mediumfont center autowidth'>
+            <table class='unbordered bicolumn bigfont center autowidth'>
                 <tr>
                     <td><label for='Name'>Name:</label></td>
                     <td>
@@ -172,8 +172,8 @@ if (!$is_logged_in) {
         </form>
     </div>
     <script id='remove_get'>
-    window.history.replaceState(null, '', window.location.href.split('?')[0]);
-    document.getElementById('remove_get').remove();
+        window.history.replaceState(null, '', window.location.href.split('?')[0]);
+        document.getElementById('remove_get').remove();
     </script>
 </body>
 

@@ -86,8 +86,8 @@ class TGLogin
             return NULL;
         }
 
-        // Check whether the student is actually real.
-        if (!(new Student(NULL, $id))->is_valid) {
+        // Check whether the student is actually real, and can login.
+        if (!(new Student(NULL, $id))->can_login) {
             TGLogin::logout();
             return NULL;
         }
