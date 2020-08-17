@@ -3,6 +3,8 @@
 namespace ScA\Classes;
 
 require_once "defs.php";
+require_once 'trello/vendor/autoload.php';
+require_once 'trello/secrets.php';
 
 use const ScA\DB;
 use const ScA\DB_HOST;
@@ -93,6 +95,21 @@ class SchedClass
     public function as_colname($encloseby = '`')
     {
         return $encloseby . date("Y-m-d", $this->timestamp) . '_' . $this->subject . $encloseby;
+    }
+
+    /**
+     * Get Trello card object for this SchedClass.
+     * 
+     * @return \Trello\Client
+     */
+    public function get_card()
+    {
+        $client = new \Trello\Client();
+        $client->authenticate(\ScA\Trello\KEY, \ScA\Trello\TOKEN, \Trello\Client::AUTH_URL_CLIENT_ID);
+
+        $link_arr = explode('/', $this->trello);
+        $shortlink = $link_arr[count($link_arr) - 2];
+        return $client->api('card')->show($shortlink);
     }
 
     /**
