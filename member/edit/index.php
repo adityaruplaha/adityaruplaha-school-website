@@ -37,7 +37,7 @@ if (!$is_logged_in) {
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/slider.css' />
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
     <meta name="viewport" content="width=device-width, initial-scale=0.75">
-    <script src='/sc_a/scripts/post.js'>
+    <script src='/sc_a/scripts/http_requests.js'>
     </script>
     <script src='telemetry_slider.js'>
     </script>

@@ -53,7 +53,7 @@ if ($conn->connect_error) {
     <title>XII Sc A - Admin Notes</title>
     <script src='/sc_a/scripts/paginate.js'>
     </script>
-    <script src='/sc_a/scripts/post.js'>
+    <script src='/sc_a/scripts/http_requests.js'>
     </script>
     <script src='/sc_a/scripts/autosize.min.js'>
     </script>
@@ -66,6 +66,7 @@ if ($conn->connect_error) {
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/cards.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/icons.css' />
     <link rel='stylesheet' type='text/css' href='stylesheet.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 </head>
 

@@ -1,4 +1,5 @@
 function edit_note(id, newcontent) {
+    $.ajax
     post("edit_note.php", "Content=" + encodeURIComponent(newcontent) + "&ID=" + id, function () { window.location.reload() })
 }
 

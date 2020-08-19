@@ -53,7 +53,7 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
     <link rel='stylesheet' type='text/css' href='login_slider.css' />
     <link rel='stylesheet' type='text/css' href='resource_slider.css' />
     <meta name="viewport" content="width=device-width, initial-scale=0.75">
-    <script src='/sc_a/scripts/post.js'>
+    <script src='/sc_a/scripts/http_requests.js'>
     </script>
     <script src='script.js'>
     </script>

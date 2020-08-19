@@ -2,6 +2,8 @@
 
 namespace ScA\Classes;
 
+date_default_timezone_set("Asia/Kolkata");
+
 require_once "defs.php";
 require_once 'trello/vendor/autoload.php';
 require_once 'trello/secrets.php';
@@ -27,7 +29,13 @@ const SUBCODES = array(
 
 const SCHEDULE_BEAUTY_MULTILINE = 0xADE0;
 const SCHEDULE_BEAUTY_SINGLELINE = 0xADE1;
+/**
+ * @deprecated
+ */
 const SCHEDULE_BEAUTY_TABULATED = 0xADE2;
+/**
+ * @deprecated
+ */
 const SCHEDULE_BEAUTY_TGMSG_CLASSESON = 0xADE3;
 
 class SchedClass
@@ -100,7 +108,7 @@ class SchedClass
     /**
      * Get Trello card object for this SchedClass.
      * 
-     * @return \Trello\Client
+     * @return \Trello\Api\Card
      */
     public function get_card()
     {
@@ -166,7 +174,7 @@ class SchedClass
         ];
     }
 
-    /**
+    /** 
      * Get beautified string representation  of the SchedClass.
      * 
      * @param SCHEDULE_BEAUTY_* $mode 
