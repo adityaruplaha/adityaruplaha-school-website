@@ -82,6 +82,7 @@ foreach ($SUBCODES as $sub => $v) {
     echo "}";
     echo "</script>";
     ?>
+    <script src="/sc_a/scripts/sorttable.js"></script>
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/select.css' />
@@ -120,8 +121,8 @@ foreach ($SUBCODES as $sub => $v) {
     foreach ($SUBCODES as $sub => $SUB) {
 
         // Query
-        $result = $conn->query("SELECT `Name`, `Notes`, DATE_FORMAT(`AssignedOn`, '%d %M %Y') 'AssignedOn',
-        DATE_FORMAT(`DueOn`, '%d %M %Y') 'DueOn', `URL` FROM {$table} WHERE `Subject` = '{$sub}' ORDER BY `{$table}`.`AssignedOn` ASC");
+        $result = $conn->query("SELECT `Name`, `Notes`, `AssignedOn`,
+        `DueOn`, `URL` FROM {$table} WHERE `Subject` = '{$sub}' ORDER BY `{$table}`.`AssignedOn` ASC");
 
         if (!$result) {
             die("Query to show fields from table failed.");
@@ -129,23 +130,48 @@ foreach ($SUBCODES as $sub => $v) {
 
         echo "
         <div class='tab' id='{$sub}'>
-        <table class='center autowidth semibordered conpact'>
+        <style>
+        table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { 
+            content: \" \\25B4\\25BE\" 
+        }
+        </style>
+        <table class='center autowidth semibordered conpact sortable'>
             <tr>
                 <th>Assignment</th>
                 <th>Assigned On</th>
                 <th>Due On</th>
-                <th>File/URL</th>
-                <th>Notes</th>
+                <th class='sorttable_nosort'>File/URL</th>
+                <th class='sorttable_nosort'>Notes</th>
             </tr>";
 
         while ($assignment = $result->fetch_assoc()) {
             echo "<tr>";
 
             echo "<td>" . $assignment["Name"] . "</td>";
-            echo "<td>" . $assignment["AssignedOn"] . "</td>";
+            echo "<td sorttable_customkey='{$assignment["AssignedOn"]}'>" . strftime('%d %B %Y', strtotime($assignment["AssignedOn"])) . "</td>";
 
-            echo ($d = $assignment["DueOn"]) ? "<td>" . $d . "</td>" : "<td></td>";
-            echo ($l = $assignment["URL"]) ? "<td><a class='compact' href=\"" . $l . "\">Download</a></td>" : "<td></td>";
+            echo ($d = $assignment["DueOn"]) ? "<td sorttable_customkey='{$d}'>" . strftime('%d %B %Y', strtotime($d)) . "</td>" : "<td></td>";
+            if ($l = $resource["URL"]) {
+                if (strpos($l, "https://classroom.google.com/") === 0) {
+                    echo "<td><a class='compact' href=\"" . $l . "\">Join</a></td>";
+                } elseif (strpos($l, "https://trello.com/") === 0) {
+                    echo "<td><a class='compact' href=\"" . $l . "\">Open Card</a></td>";
+                } elseif (strpos($l, "https://res.cloudinary.com/") === 0) {
+                    echo "<td><a class='compact red' href=\"" . $l . "\">[Dead link]</a></td>";
+                } elseif (strpos($l, "https://trello-attachments.s3.amazonaws.com/") === 0) {
+                    echo "<td><a class='compact' href=\"" . $l . "\">Download</a></td>";
+                } elseif (strpos($l, "https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3-vawsum-new-media/") === 0) {
+                    echo "<td><a class='compact' href=\"" . $l . "\">Download</a></td>";
+                } elseif (strpos($l, "http://schoolatweb.byethost7.com/") === 0) {
+                    echo "<td><a class='compact yellow' href=\"" . $l . "\">Download</a></td>";
+                } elseif (strpos($l, "https://drive.google.com/") === 0) {
+                    echo "<td><a class='compact' href=\"" . $l . "\">Open in Drive</a></td>";
+                } else {
+                    echo "<td><a class='compact' href=\"" . $l . "\">Open</a></td>";
+                }
+            } else {
+                echo "<td></td>";
+            }
 
             if ($r = $assignment["Notes"]) {
                 echo "<td class='button' onclick=\"alert(`" . htmlspecialchars($r) . "`);\">Click to view.</td>";

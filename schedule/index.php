@@ -61,12 +61,15 @@ $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
     <title>XII Sc A - Class Schedule</title>
     <script src='/sc_a/scripts/http_requests.js'>
     </script>
+    <script src='/sc_a/scripts/anchorme.min.js'>
+    </script>
     <script src='script.js'>
     </script>
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/modals.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/cards.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
 </head>
 
 <body>
@@ -111,14 +114,14 @@ $subjects = isset($_GET['subs']) ? explode(',', $_GET['subs']) : [];
                 $cl1 = array_shift($cl);
                 echo "<tr>";
                 echo "<td rowspan={$n}>" . date("d F Y (D)", $day->date) . "</td>";
-                echo "<td class='button' onclick='details({$cl1->timestamp}, \"{$cl1->subject}\")'>" . SUBCODES[$cl1->subject] . "</td><td>" . date('h:i A', $cl1->timestamp) .
+                echo "<td class='hoverable' onclick='details({$cl1->timestamp}, \"{$cl1->subject}\")'>" . SUBCODES[$cl1->subject] . "</td><td>" . date('h:i A', $cl1->timestamp) .
                     "</td><td><a href=\"" . $cl1->trello . "\">" . $cl1->trello . "</a></td>";
                 echo "<td rowspan={$n} style='text-align: center;'><a href=\"" . $day->trello . "\">" . $day->trello . "</a></td>";
                 echo "<td rowspan={$n}>" . $u["UploadedBy"] . "</td>";
                 echo "</tr>";
                 foreach ($cl as $c) {
                     echo "<tr>";
-                    echo "<td onclick='details({$c->timestamp}, \"{$c->subject}\")'>" . SUBCODES[$c->subject] . "</td><td>" . date('h:i A', $c->timestamp) .
+                    echo "<td  class='hoverable' onclick='details({$c->timestamp}, \"{$c->subject}\")'>" . SUBCODES[$c->subject] . "</td><td>" . date('h:i A', $c->timestamp) .
                         "</td><td><a href=\"" . $c->trello . "\">" . $c->trello . "</a></td>";
                     echo "</tr>";
                 }

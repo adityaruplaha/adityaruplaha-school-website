@@ -112,7 +112,8 @@ if ($s != NULL) {
         <td colspan=\"2\"><br /></td>
     </tr>
     <tr>
-        <td colspan=\"2\"><a href='/go/?url=https://github.com/adityaruplaha/adityaruplaha-school-website'>Browse Source Code</a></td>
+        <td><a href='/go/?url=https://github.com/adityaruplaha/adityaruplaha-school-website'>Browse Source Code</a></td>
+        <td><a href='policies/'>Policies</a></td>
     </tr>
 </table>";
 
