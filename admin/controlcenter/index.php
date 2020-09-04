@@ -1,12 +1,8 @@
 <?php
 
 require_once "../../login.php";
-require_once "../../teacher/defs.php";
 
 use \ScA\Student\TGLogin\TGLogin;
-use \ScA\Teacher;
-
-$is_teacher = Teacher\is_logged_in();
 
 $s = TGLogin::from_cookie();
 if ($s != NULL) {
@@ -15,7 +11,7 @@ if ($s != NULL) {
         $s = NULL;
     }
 }
-$is_logged_in = ($s != NULL) || $is_teacher;
+$is_logged_in = ($s != NULL);
 
 if (!$is_logged_in) {
     header("Location: ../../?nauth");
@@ -35,8 +31,6 @@ $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
-$limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
 
 ?>
 

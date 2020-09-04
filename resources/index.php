@@ -66,6 +66,52 @@ foreach ($SUBCODES as $sub => $v) {
     }
     $RES[$sub] = $result->fetch_row()[0];
 }
+
+function remote_file_exists($url)
+{
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_NOBODY, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); # handles 301/2 redirects
+    curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return $httpCode == 200;
+}
+
+function starts_with($haystack, $needle)
+{
+    return strpos($haystack, $needle) === 0;
+}
+
+function check_url($url)
+{
+    if (isset($_GET["checkurls"]) && !remote_file_exists($url)) {
+        return ["[Dead Link]", ["red"]];
+    }
+    if (starts_with($url, "https://res.cloudinary.com")) {
+        return ["[Dead Link]", ["red"]];
+    }
+    $ad_classes = [];
+    if (starts_with($url, "http://")) {
+        array_push($ad_classes, "yellow");
+    }
+    if (starts_with($url, "https://classroom.google.com/")) {
+        return ["Join", $ad_classes];
+    } elseif (starts_with($url, "https://trello.com/")) {
+        return ["Open Card", $ad_classes];
+    } elseif (
+        starts_with($url, "https://trello-attachments.s3.amazonaws.com/") ||
+        starts_with($url, "https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3-vawsum-new-media/") ||
+        starts_with($url, "http://schoolatweb.byethost7.com/")
+    ) {
+        return ["Download", $ad_classes];
+    } elseif (starts_with($url, "https://drive.google.com/")) {
+        return ["Open in Drive", $ad_classes];
+    } else {
+        return ["Open", $ad_classes];
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -161,23 +207,8 @@ foreach ($SUBCODES as $sub => $v) {
 
             echo ($d = $resource["GivenOn"]) ? "<td sorttable_customkey='{$d}'>" . strftime('%d %B %Y', strtotime($d)) . "</td>" : "<td></td>";
             if ($l = $resource["URL"]) {
-                if (strpos($l, "https://classroom.google.com/") === 0) {
-                    echo "<td><a class='compact' href=\"" . $l . "\">Join</a></td>";
-                } elseif (strpos($l, "https://trello.com/") === 0) {
-                    echo "<td><a class='compact' href=\"" . $l . "\">Open Card</a></td>";
-                } elseif (strpos($l, "https://res.cloudinary.com/") === 0) {
-                    echo "<td><a class='compact red' href=\"" . $l . "\">[Dead link]</a></td>";
-                } elseif (strpos($l, "https://trello-attachments.s3.amazonaws.com/") === 0) {
-                    echo "<td><a class='compact' href=\"" . $l . "\">Download</a></td>";
-                } elseif (strpos($l, "https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3-vawsum-new-media/") === 0) {
-                    echo "<td><a class='compact' href=\"" . $l . "\">Download</a></td>";
-                } elseif (strpos($l, "http://schoolatweb.byethost7.com/") === 0) {
-                    echo "<td><a class='compact yellow' href=\"" . $l . "\">Download</a></td>";
-                } elseif (strpos($l, "https://drive.google.com/") === 0) {
-                    echo "<td><a class='compact' href=\"" . $l . "\">Open in Drive</a></td>";
-                } else {
-                    echo "<td><a class='compact' href=\"" . $l . "\">Open</a></td>";
-                }
+                list($text, $ad_classes) = check_url($l);
+                echo "<td><a class='compact " . implode(" ", $ad_classes) . "' href=\"" . $l . "\">" . $text . "</a></td>";
             } else {
                 echo "<td></td>";
             }

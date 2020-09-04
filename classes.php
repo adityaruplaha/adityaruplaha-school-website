@@ -93,6 +93,21 @@ class SchedClass
         ];
     }
 
+    public function set_trello_url($conn, $url)
+    {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+        $d = date("Y-m-d", $this->timestamp);
+        $t = date("H:i:s", $this->timestamp);
+        $sql = "UPDATE classes SET Trello = '{$url}' WHERE `Date` = '{$d}' AND `Time` = '{$t}' AND `Subject` = '{$this->subject}'";
+        $b = (bool) $conn->query($sql);
+        if ($b) {
+            $this->trello = $url;
+        }
+        return $b;
+    }
+
     /**
      * Get name of column for this SchedClass.
      * 
