@@ -85,7 +85,7 @@ $due = date("c", $date);
 
 $log->write("Posting card: {$name} @ {$due}");
 $pcc = post_card($name, $due);
-$url = $pcc["shortUrl"];
+$url = $pcc["shortUrl"] . '/';
 $log->write("Posted card: {$url}");
 
 $date_sql = date("Y-m-d", $date);

@@ -45,6 +45,8 @@ class SchedClass
     public $trello;
     public $status;
 
+    private $suffix = "";
+
     /**
      * Construct a new SchedClass.
      * 
@@ -117,23 +119,24 @@ class SchedClass
      */
     public function as_colname($encloseby = '`')
     {
-        $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
         $date = date("Y-m-d", $this->timestamp);
-        $time = date("H:i:s", $this->timestamp);
-        $r = $conn->query("SELECT Time FROM classes WHERE `Date` = '{$date}' AND `Subject` = '{$this->subject}'");
-        $suffix = "";
-        $rows = $r->fetch_all();
-        for ($i = 0; $i < count($rows); $i++) {
-            if ($rows[$i][0] == $time) {
-                if ($i) {
-                    $suffix = '_ad' . $i;
+        if (!$this->suffix) {
+            $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+            $time = date("H:i:s", $this->timestamp);
+            $r = $conn->query("SELECT Time FROM classes WHERE `Date` = '{$date}' AND `Subject` = '{$this->subject}'");
+            $rows = $r->fetch_all();
+            for ($i = 0; $i < count($rows); $i++) {
+                if ($rows[$i][0] == $time) {
+                    if ($i) {
+                        $this->suffix = '_ad' . $i;
+                    }
+                    break;
                 }
-                break;
             }
+            $r->free();
+            $conn->close();
         }
-        $r->free();
-        $conn->close();
-        return $encloseby . $date . '_' . $this->subject . $suffix . $encloseby;
+        return $encloseby . $date . '_' . $this->subject . $this->suffix . $encloseby;
     }
 
     /**

@@ -257,7 +257,11 @@ class Student
             }
         }
         $s = implode(', ', $cols);
-        $r = $conn->query("SELECT {$s} FROM attendance WHERE `Name` = '{$this->name}'");
+        $sql = "SELECT {$s} FROM attendance WHERE `Name` = '{$this->name}'";
+        $r = $conn->query($sql);
+        if (!$r) {
+            error_log("SQL Error [{$conn->errno}]: {$sql} gives {$conn->error}.");
+        }
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();
@@ -302,12 +306,15 @@ class Student
         }
         $cols = [];
         foreach ($classes as $class) {
-            if ($class->status == 'All OK') {
-                $cols[$class->as_colname('`')] = $class;
-            }
+            $cols[$class->as_colname('`')] = $class;
         }
         $s = implode(', ', array_keys($cols));
-        $r = $conn->query("SELECT {$s} FROM attendance WHERE `Name` = '{$this->name}'");
+        $sql = "SELECT {$s} FROM attendance WHERE `Name` = '{$this->name}'";
+        $r = $conn->query($sql);
+        if (!$r) {
+            error_log("SQL Error [{$conn->errno}]: {$sql} gives {$conn->error}.");
+            return NULL;
+        }
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();
@@ -325,7 +332,12 @@ class Student
     public function get_basic_info()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT * FROM info WHERE `Name` = '{$this->name}'");
+        $sql = "SELECT * FROM info WHERE `Name` = '{$this->name}'";
+        $r = $conn->query($sql);
+        if (!$r) {
+            error_log("SQL Error [{$conn->errno}]: {$sql} gives {$conn->error}.");
+            return NULL;
+        }
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();
@@ -341,7 +353,12 @@ class Student
     public function get_games()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT * FROM games WHERE `Name` = '{$this->name}'");
+        $sql = "SELECT * FROM games WHERE `Name` = '{$this->name}'";
+        $r = $conn->query($sql);
+        if (!$r) {
+            error_log("SQL Error [{$conn->errno}]: {$sql} gives {$conn->error}.");
+            return NULL;
+        }
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();
@@ -358,7 +375,12 @@ class Student
     public function get_academic_info()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT Name, ExtraSub, Status FROM academic WHERE `Name` = '{$this->name}'");
+        $sql = "SELECT Name, ExtraSub, Status FROM academic WHERE `Name` = '{$this->name}'";
+        $r = $conn->query($sql);
+        if (!$r) {
+            error_log("SQL Error [{$conn->errno}]: {$sql} gives {$conn->error}.");
+            return NULL;
+        }
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();
@@ -374,7 +396,12 @@ class Student
     public function get_contact_info()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $r = $conn->query("SELECT Name, EMail, Mobile, Mobile2 FROM contact WHERE `Name` = '{$this->name}'");
+        $sql = "SELECT Name, EMail, Mobile, Mobile2 FROM contact WHERE `Name` = '{$this->name}'";
+        $r = $conn->query($sql);
+        if (!$r) {
+            error_log("SQL Error [{$conn->errno}]: {$sql} gives {$conn->error}.");
+            return NULL;
+        }
         $row = $r->fetch_assoc();
         $r->free();
         $conn->close();

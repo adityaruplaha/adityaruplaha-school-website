@@ -50,10 +50,13 @@ function details(timestamp, subject) {
             card_a.innerHTML = "Open Card";
             card_a.classList.add("bigfont");
             header = document.createElement('h2');
-            header.innerHTML = data.name.replace(/^[A-Za-z]+:\s/, '');
+            header.innerHTML = data.name;
+            //header.innerHTML = data.name.replace(/^[A-Za-z]+:\s/, '');
             modal_content.innerHTML = '';
             modal_content.appendChild(header);
+            modal_content.appendChild(document.createElement('hr'));
             modal_content.appendChild(description_box);
+            modal_content.appendChild(document.createElement('hr'));
             modal_content.appendChild(meet_a);
             modal_content.appendChild(card_a);
         } else {
