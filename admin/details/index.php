@@ -73,10 +73,30 @@ if (!$is_logged_in) {
                 <th>Single girl child?</th>
                 <th>Email</th>
                 <th colspan="2">Mobile</th>
-                <th>Additional Subject</th>
+                <th>Subjects</th>
                 <th>Status (Class XI)</th>
             </tr>
             <?php
+
+            function render_sub($sub)
+            {
+                return array(
+                    "phy" => "Physics",
+                    "chem" => "Chemistry",
+                    "math" => "Mathematics",
+                    "cs" => "Computer Science",
+                    "en" => "English",
+                    "pe" => "Physical Education",
+                    "bn" => "Bengali",
+                    "hi" => "Hindi"
+                )[$sub];
+            }
+
+            function render_subs($subs_str)
+            {
+                return implode(", ", array_map("render_sub", explode(",", $subs_str)));
+            }
+
             while ($row = $result->fetch_assoc()) {
                 $academic_info = (new \ScA\Student\Student($row['Name']))->get_academic_info($classes);
                 $basic_info = (new \ScA\Student\Student($row['Name']))->get_basic_info($classes);
@@ -90,20 +110,8 @@ if (!$is_logged_in) {
                 echo "<td>{$contact['EMail']}</td>";
                 echo "<td>{$contact['Mobile']}</td>";
                 echo "<td>{$contact['Mobile2']}</td>";
-                switch ($academic_info['ExtraSub']) {
-                    case "pe":
-                        echo "<td>Physical Education</td>";
-                        break;
-                    case "bn":
-                        echo "<td>Bengali</td>";
-                        break;
-                    case "hi":
-                        echo "<td>Hindi</td>";
-                        break;
-                    default:
-                        echo "<td></td>";
-                        break;
-                }
+                $subs = render_subs($academic_info['Subjects']);
+                echo "<td>{$subs}</td>";
                 switch ($academic_info['Status']) {
                     case "Passed":
                         echo "<td class='green center'>{$academic_info['Status']}</td>";

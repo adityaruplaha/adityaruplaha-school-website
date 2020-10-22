@@ -117,11 +117,13 @@ if ($s != NULL) {
     </tr>
 </table>";
 
+        $telegram_script = '<script async src="https://telegram.org/js/telegram-widget.js?12" data-telegram-login="' . BOT_USERNAME . '" data-size="large" data-auth-url="https://adityaruplaha.ddns.net/sc_a/loginhandler.php" data-request-access="write"></script>';
+
         $not_logged_in_str = "
         {$status_message}
         <p>Telegram user data is never stored on the server.<br/>Your data is secure.</p><fieldset>You should see a button to login with Telegram.<br/><br/>If you don't, try using 1.1.1.1 or any other VPN from Play Store.<br/>
         <a href='https://play.google.com/store/apps/details?id=com.cloudflare.onedotonedotonedotone'>Get 1.1.1.1 on Google Play</a></fieldset>
-        <p align=center id='tglogin'><script async src=\"https://telegram.org/js/telegram-widget.js?2\" data-telegram-login='" . BOT_USERNAME . "' data-size='large' data-auth-url='loginhandler.php'></script></p>
+        <p align=center id='tglogin'>{$telegram_script}</p>
         ";
 
         if ($is_logged_in) {

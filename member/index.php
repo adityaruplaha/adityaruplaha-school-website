@@ -56,6 +56,26 @@ if (!$is_logged_in) {
             <div class='deconstructed_pancake_card'>
                 <table class='autowidth unbordered center bicolumn bigfont'>
                     <?php
+
+                    function render_sub($sub)
+                    {
+                        return array(
+                            "phy" => "Physics",
+                            "chem" => "Chemistry",
+                            "math" => "Mathematics",
+                            "cs" => "Computer Science",
+                            "en" => "English",
+                            "pe" => "Physical Education",
+                            "bn" => "Bengali",
+                            "hi" => "Hindi"
+                        )[$sub];
+                    }
+
+                    function render_subs($subs_str)
+                    {
+                        return implode(", ", array_map("render_sub", explode(",", $subs_str)));
+                    }
+
                     $contact = $s->get_contact_info();
                     $mob = $contact["Mobile"];
                     echo "<tr>";
@@ -76,6 +96,10 @@ if (!$is_logged_in) {
                         echo "<td style='text-align: right;'>Mobile No.(s):</td><td style='text-align: left;'>{$mob}</td>";
                         echo "</tr>";
                     }
+                    $subs = render_subs($s->get_academic_info()['Subjects']);
+                    echo "<tr>";
+                    echo "<td style='text-align: right;'>Subjects:</td><td style='text-align: left;'>{$subs}</td>";
+                    echo "</tr>";
                     ?>
                 </table>
             </div>

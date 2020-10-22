@@ -247,8 +247,15 @@ class Student
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
         $r = NULL;
+        $subs = $this->get_subjects();
         if (!$classes) {
-            $classes = SchedClass::get_classes_from($conn, strtotime("2020-04-03"));
+            $classes = SchedClass::get_classes_from($conn, strtotime("2020-04-03"), $subs);
+        } else {
+            foreach ($classes as $key => $value) {
+                if (array_search($value->subject, $subs) === false) {
+                    unset($classes[$key]);
+                }
+            }
         }
         $cols = [];
         foreach ($classes as $class) {
@@ -367,7 +374,7 @@ class Student
 
 
     /**
-     * Get info in the form `{Name, ExtraSub, Status}`.
+     * Get info in the form `{Name, Subjects, Status}`.
      *  
      * @return array|null Associative array 
      * 
@@ -375,7 +382,7 @@ class Student
     public function get_academic_info()
     {
         $conn = new \mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-        $sql = "SELECT Name, ExtraSub, Status FROM academic WHERE `Name` = '{$this->name}'";
+        $sql = "SELECT * FROM academic WHERE `Name` = '{$this->name}'";
         $r = $conn->query($sql);
         if (!$r) {
             error_log("SQL Error [{$conn->errno}]: {$sql} gives {$conn->error}.");
@@ -385,6 +392,31 @@ class Student
         $r->free();
         $conn->close();
         return $row;
+    }
+
+    /**
+     * Get subjects as a list.
+     *  
+     * @return array Subjects
+     * 
+     */
+    public function get_subjects()
+    {
+        $subs = explode(',', $this->get_academic_info()["Subjects"]);
+        if (($key = array_search("phy", $subs)) !== false) {
+            unset($subs[$key]);
+            array_push($subs, "phy1");
+            array_push($subs, "phy2");
+        }
+        if (($key = array_search("chem", $subs)) !== false) {
+            unset($subs[$key]);
+            array_push($subs, "chem1");
+            array_push($subs, "chem2");
+        }
+        if (($key = array_search("pe", $subs)) !== false) {
+            array_push($subs, "pe0");
+        }
+        return $subs;
     }
 
     /**
