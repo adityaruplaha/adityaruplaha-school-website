@@ -1,10 +1,10 @@
 <?php
 
 require_once "../login.php";
-require_once "../teacher/defs.php";
+
 
 use \ScA\Student\TGLogin\TGLogin;
-use \ScA\Teacher;
+
 
 $s = TGLogin::from_cookie();
 
@@ -20,7 +20,7 @@ if ($s != NULL) {
     $s->report_url_visit($_SERVER['PHP_SELF']);
 }
 
-$is_logged_in = ($s != NULL) || (Teacher\is_logged_in());
+$is_logged_in = ($s != NULL);
 
 if (!$is_logged_in) {
     header("Location: ../?nauth");

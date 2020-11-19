@@ -122,7 +122,7 @@ if (!$is_logged_in) {
                         </a>
                     </td>
                     <?php
-                    if ($s->has_privileges("Admin") || $is_teacher) {
+                    if ($s->has_privileges("Admin")) {
                         echo "
                     <td><a href='../admin/'>Open Admin Portal</a></td>
                 ";

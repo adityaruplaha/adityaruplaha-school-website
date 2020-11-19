@@ -2,14 +2,14 @@
 
 require_once "login.php";
 require_once "student.php";
-require_once "teacher/defs.php";
+
 
 use \ScA\Student\TGLogin\TGLogin;
-use \ScA\Teacher;
+
 
 $s = TGLogin::from_cookie();
-$is_teacher = Teacher\is_logged_in();
-$is_logged_in = ($s != NULL) || $is_teacher;
+
+$is_logged_in = ($s != NULL);
 
 if ($s != NULL) {
     $s = (new \ScA\Student\Student(NULL, $s->id));
@@ -47,16 +47,6 @@ if ($s != NULL) {
         }
         echo "
         {$s->name} <a href='loginhandler.php?logout'>Logout</a></td>
-        </tr>
-        </table>
-        <hr/>
-        ";
-    } elseif ($is_teacher) {
-        echo "
-        <table class='invbicolumn fullwidth mediumfont'>
-        <tr>
-        <td style='text-align: left;'><a href='teacher/'>Open Teachers' Portal</a></td>
-        <td style='text-align: right;'>Hello, Teacher.</td>
         </tr>
         </table>
         <hr/>

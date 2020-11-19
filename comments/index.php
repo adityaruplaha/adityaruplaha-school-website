@@ -16,7 +16,7 @@ if ($s != NULL) {
     $s->report_url_visit($_SERVER['PHP_SELF']);
 }
 
-$is_logged_in = ($s != NULL) || $is_teacher;
+$is_logged_in = ($s != NULL);
 
 if (!$is_logged_in) {
     header("Location: ../?nauth");
@@ -49,12 +49,11 @@ if (!$is_logged_in) {
     </p>
     <hr />
     <div style="width: 100%">
-        <script async src="https://comments.app/js/widget.js?3" data-comments-app-website="n_vAYrFA" data-limit="5"
-            data-dislikes="1" data-outlined="1" data-colorful="1" data-dark="1"></script>
+        <script async src="https://comments.app/js/widget.js?3" data-comments-app-website="n_vAYrFA" data-limit="5" data-dislikes="1" data-outlined="1" data-colorful="1" data-dark="1"></script>
     </div>
     <script id='remove_get'>
-    window.history.replaceState(null, '', window.location.href.split('?')[0]);
-    document.getElementById('remove_get').remove();
+        window.history.replaceState(null, '', window.location.href.split('?')[0]);
+        document.getElementById('remove_get').remove();
     </script>
 </body>
 

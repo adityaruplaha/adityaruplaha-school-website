@@ -1,12 +1,12 @@
 <?php
 
 require_once "../../login.php";
-require_once "../../teacher/defs.php";
+
 
 use \ScA\Student\TGLogin\TGLogin;
-use \ScA\Teacher;
 
-$is_teacher = Teacher\is_logged_in();
+
+
 
 $s = TGLogin::from_cookie();
 if ($s != NULL) {
@@ -20,7 +20,7 @@ if ($s != NULL) {
     $s->report_url_visit($_SERVER['PHP_SELF']);
 }
 
-$is_logged_in = ($s != NULL) || $is_teacher;
+$is_logged_in = ($s != NULL);
 
 if (!$is_logged_in) {
     header("Location: ../../?nauth");
@@ -107,8 +107,8 @@ if ($conn->connect_error) {
         </table>
     </div>
     <script>
-    paginate(document.getElementById('logs_table'), 40)
-    show_page('logs_table', 0);
+        paginate(document.getElementById('logs_table'), 40)
+        show_page('logs_table', 0);
     </script>
 </body>
 

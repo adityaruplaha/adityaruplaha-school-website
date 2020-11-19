@@ -1,10 +1,10 @@
 <?php
 
 require_once "../login.php";
-require_once "../teacher/defs.php";
+
 
 use \ScA\Student\TGLogin\TGLogin;
-use \ScA\Teacher;
+
 
 $s = TGLogin::from_cookie();
 
@@ -16,7 +16,7 @@ if ($s != NULL) {
     }
 }
 
-$is_logged_in = ($s != NULL) || (Teacher\is_logged_in());
+$is_logged_in = ($s != NULL);
 
 if ($s != NULL) {
     $s->report_url_visit($_SERVER['PHP_SELF']);
@@ -37,12 +37,12 @@ if (!$is_logged_in) {
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <style>
-    img.icon {
-        height: 30px;
-        width: 30px;
-        display: inline-block;
-        vertical-align: middle;
-    }
+        img.icon {
+            height: 30px;
+            width: 30px;
+            display: inline-block;
+            vertical-align: middle;
+        }
     </style>
 </head>
 

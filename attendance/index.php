@@ -1,14 +1,14 @@
 <?php
 
 require_once "../login.php";
-require_once "../teacher/defs.php";
+
 
 use \ScA\Student\TGLogin\TGLogin;
-use \ScA\Teacher;
+
 
 $s = TGLogin::from_cookie();
 
-$is_logged_in = ($s != NULL) || (Teacher\is_logged_in());
+$is_logged_in = ($s != NULL);
 
 if ($s != NULL) {
     $s = (new \ScA\Student\Student(NULL, $s->id));
@@ -289,8 +289,8 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         ?>
     </div>
     <script>
-    paginate(document.getElementById('summary_table'), 40)
-    show_page('summary_table', 0);
+        paginate(document.getElementById('summary_table'), 40)
+        show_page('summary_table', 0);
     </script>
 </body>
 
