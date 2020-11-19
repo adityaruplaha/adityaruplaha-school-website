@@ -60,7 +60,7 @@ if (!$is_logged_in) {
                     <tr>
                         <td colspan=2><br /></td>
                     </tr>
-                    <td><a href='broadcast/'>Broadcast to Telegram</a></td>
+                    <td><a href='#' class='dead'>Broadcast to Telegram</a></td>
                     <td><a href='cbseinfo/'>Check CBSE Info</a></td>                    
                     </tr>
                     <tr>
