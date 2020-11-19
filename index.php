@@ -106,7 +106,7 @@ if ($s != NULL) {
     </tr>
     <tr>
         <td><a href='/go/?url=https://t.me/joinchat/AAAAAEhiLVecUgh9hZynzw'>Telegram Channel</a></td>
-        <td><a href='/go/?url=https://trello.com/b/xS4L8vFx/'>Trello Board</a></td>
+        <td><a href='comments/'>Comments</a></td>
     </tr>
     <tr>
         <td colspan=\"2\"><br /></td>
