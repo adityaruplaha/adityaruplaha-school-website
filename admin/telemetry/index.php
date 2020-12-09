@@ -48,11 +48,17 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
     <title>XII Sc A - Telemetry</title>
     <script src='/sc_a/scripts/tab.js'>
     </script>
+    <script src='/sc_a/scripts/renderjson.js'>
+    </script>
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/base.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tables.css' />
     <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/tabs.css' />
-    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/slider.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/cards.css' />
+    <link rel='stylesheet' type='text/css' href='/sc_a/themes/dark/modals.css' />
+    <link rel='stylesheet' type='text/css' href='stylesheet.css' />
     <meta name="viewport" content="width=device-width, initial-scale=0.75">
+    <script src='script.js'>
+    </script>
 </head>
 
 <body onload="autoload(0)">
@@ -84,7 +90,7 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
     </table>
 
     <div class='tab' id='log'>
-        <table class='semibordered center autowidth hoverable'>
+        <table class='semibordered center autowidth'>
             <tr>
                 <th>Timestamp</th>
                 <th>Member</th>
@@ -96,7 +102,7 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
             $lc = $limit ? "LIMIT {$limit}" : "";
             $result = $conn->query("SELECT * FROM telemetry ORDER BY `telemetry`.`Timestamp` DESC {$lc}");
             while ($member = $result->fetch_assoc()) {
-                echo "<tr>";
+                echo "<tr class='hoverable'>";
 
                 echo "<td>" . $member["Timestamp"] . "</td>";
                 echo "<td>" . $member["Member"] . "</td>";
@@ -105,8 +111,8 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
 
                 $r = $member["Data"];
                 if ($r && $r != '{}' && $r != 'null') {
-                    $r = str_replace("\n", "\n<br/>", htmlspecialchars($r));
-                    echo "<td class='code'>{$r}</td>";
+                    //$r = str_replace("\n", "\n<br/>", htmlspecialchars($r));
+                    echo "<td class='code' onclick='render_json({$r});'>{$r}</td>";
                 } else {
                     echo "<td></td>";
                 }
@@ -118,7 +124,7 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
         </table>
     </div>
     <div class='tab' id='stats'>
-        <table class='semibordered center autowidth hoverable'>
+        <table class='semibordered center autowidth'>
             <tr>
                 <th>Member</th>
                 <th>Last Login</th>
@@ -127,10 +133,10 @@ $limit = isset($_GET["LIMIT"]) ? intval($_GET["LIMIT"]) : 200
             </tr>
             <?php
             $result = $conn->query(
-                "SELECT Name, LAST_LOGIN(Name) 'LastLogin', LAST_ACTION(Name) 'LastAction', MEMBER_ACTION_RATIO(Name) 'MAR' FROM info"
+                "SELECT Name, LAST_LOGIN(Name) 'LastLogin', LAST_ACTION(Name) 'LastAction', MEMBER_ACTION_RATIO(Name) 'MAR' FROM info ORDER BY Name"
             );
             while ($member = $result->fetch_assoc()) {
-                echo "<tr>";
+                echo "<tr class='hoverable'>";
                 echo "<td>" . $member["Name"] . "</td>";
                 echo "<td>" . $member["LastLogin"] . "</td>";
                 echo "<td>" . $member["LastAction"] . "</td>";

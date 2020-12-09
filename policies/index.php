@@ -170,6 +170,11 @@ if (!$is_logged_in) {
                     License</a>)
             </li>
             <li>
+                <a class='compact' href='https://github.com/caldwell/renderjson'>Renderjson</a> by David Caldwell.
+                (<a class='compact' href="https://en.wikipedia.org/wiki/ISC_license">ISC
+                    License</a>)
+            </li>
+            <li>
                 <a class='compact' href='https://iconify.design'>Iconify</a>
                 (<a class='compact' href="https://opensource.org/licenses/Apache-2.0">Apache License 2.0</a>)
             </li>

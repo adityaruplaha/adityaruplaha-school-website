@@ -241,6 +241,22 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
 
     <div class='tab' id='stusum'>
 
+        <p>
+            <i>
+                If you're in the <span class='green'>green</span>, you have no reason to scream.<br/>
+                If you're in the <span class='red'>red</span>, give up, you're basically dead.<br/>
+                If you're in the <span class='yellow'>yellow</span>, you still have time, my good fellow.<br/>
+                If you're in the <span class='lime'>lime</span>, you will probably be fine.<br/>
+            </i>
+            <br/>
+            <br/>
+            Read <a class='compact'
+            href='https://www.educationworld.in/cbse-board-exam-2021-attendance-relaxation-for-classes-10-12-students/'>
+            this</a>.<br/>
+            TL;DR: You <i>might</i> be OK if you have
+            <span class='lime'>atleast 60%</span>
+            attendance,<br/>but you really should have <span class='green'>75%+</span> to be free of all worries.
+        </p>
         <?php
 
         $sql = "SELECT Name FROM {$table}";
@@ -274,6 +290,9 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             if ($n > 75) {
                 $n = number_format($n, 2);
                 echo "<td class ='green' style='text-align: center;'>{$n}%</td>";
+            } elseif ($n > 60) {
+                $n = number_format($n, 2);
+                echo "<td class ='lime' style='text-align: center;'>{$n}%</td>";
             } elseif ($n > 40) {
                 $n = number_format($n, 2);
                 echo "<td class ='yellow' style='text-align: center;'>{$n}%</td>";

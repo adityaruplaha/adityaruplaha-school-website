@@ -77,7 +77,7 @@ if ($conn->connect_error) {
             </tr>
             <?php
             $result = $conn->query(
-                "SELECT Name, LAST_LOGIN(Name) 'LastLogin', LAST_ACTION(Name) 'LastAction', MEMBER_ACTION_RATIO(Name) 'MAR' FROM info"
+                "SELECT Name, LAST_LOGIN(Name) 'LastLogin', LAST_ACTION(Name) 'LastAction', MEMBER_ACTION_RATIO(Name) 'MAR' FROM info ORDER BY Name"
             );
             while ($member = $result->fetch_assoc()) {
                 echo "<tr>";

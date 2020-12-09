@@ -1,0 +1,43 @@
+.renderjson a {
+    text-decoration: none;
+}
+
+.renderjson .disclosure {
+    color: rgb(228, 101, 63);
+    font-size: 150%;
+    padding: initial;
+    border-radius: initial;
+    display: none;
+}
+
+.renderjson .syntax {
+    color: grey;
+}
+
+.renderjson .string {
+    color: rgb(206, 81, 81);
+}
+
+.renderjson .number {
+    color: cyan;
+}
+
+.renderjson .boolean {
+    color: plum;
+}
+
+.renderjson .key {
+    color: lightblue;
+}
+
+.renderjson .keyword {
+    color: lightgoldenrodyellow;
+}
+
+.renderjson .object.syntax {
+    color: lightseagreen;
+}
+
+.renderjson .array.syntax {
+    color: lightsalmon;
+}

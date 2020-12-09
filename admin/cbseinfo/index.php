@@ -79,7 +79,7 @@ if (!$is_logged_in) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $sql = "SELECT Name FROM info";
+            $sql = "SELECT Name FROM info ORDER BY Name";
             $result = $conn->query($sql);
             if (!$result) {
                 die("Failed to get names.");
