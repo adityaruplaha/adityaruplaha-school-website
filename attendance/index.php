@@ -36,8 +36,6 @@ $to = min($to, strtotime("today"));
 
 $using_date_range = isset($_GET['from']);
 
-$table = 'attendance';
-
 use ScA\Classes\SchedClass;
 
 use const ScA\DB;
@@ -47,6 +45,37 @@ use const ScA\DB_USER;
 
 use const ScA\Classes\SCHEDULE_BEAUTY_MULTILINE;
 use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
+
+$conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Get names using magic and ugly string manipulation
+
+// Remove the number from eg. phy1
+function clean_subjects($sub) {
+    return str_replace(["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"], "", $sub);
+}
+
+// Create the final WHERE clause
+$subs_sql_condition = implode(' OR ', array_map(function ($sub) {
+    return "`Subjects` LIKE '%{$sub}%'";
+},
+// Clean and remove duplicates
+array_unique(array_map("clean_subjects", $subjects)
+)));
+
+$sql = "SELECT Name FROM `academic` WHERE {$subs_sql_condition}";
+$result = $conn->query($sql);
+if (!$result) {
+    die("Failed to load name list.<br/>SQL: ");
+    echo $sql;
+}
+$names = array_map(function ($row) {return $row["Name"];}, $result->fetch_all(MYSQLI_ASSOC));
+$result->free();
 
 ?>
 
@@ -143,13 +172,6 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
 
         <?php
 
-        $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB);
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
         $classes = [];
         if ($using_date_range) {
             $classes = SchedClass::get_classes_between($conn, $from, $to, $subjects);
@@ -164,15 +186,10 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             }
             echo "</tr>\n";
 
-            $sql = "SELECT Name FROM {$table}";
-            $result = $conn->query($sql);
-            if (!$result) {
-                die("Query to show fields from table failed. Error Code: E_A01.");
-            }
-            while ($row = $result->fetch_assoc()) {
-                $att = (new \ScA\Student\Student($row['Name']))->get_attendance_data($classes);
+            foreach ($names as $name) {
+                $att = (new \ScA\Student\Student($name))->get_attendance_data($classes);
                 echo "<tr>";
-                echo "<td>" . $row['Name'] . "</td>";
+                echo "<td>" . $name . "</td>";
                 foreach ($att as list($class, $present)) {
                     if ($present === NULL) {
                         echo "<td></td>";
@@ -186,7 +203,6 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
                 }
                 echo "</tr>";
             }
-            $result->free();
             echo "</table>";
         } else {
             echo "No data to show.";
@@ -258,15 +274,7 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             attendance,<br/>but you really should have <span class='green'>75%+</span> to be free of all worries.
         </p>
         <?php
-
-        $sql = "SELECT Name FROM {$table}";
-
-        // Query
-        $result = $conn->query($sql);
-        if (!$result) {
-            die("Query to show fields from table failed. Error Code: E_A03.");
-        }
-
+        
         echo "<table class='semibordered center autowidth'><tr>";
         echo "<th>Name</th>";
         echo "<th class='green'>P</th>";
@@ -274,12 +282,12 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
         echo "<th>Total</th>";
         echo "<th>Attendance %</th>";
         echo "</tr>";
-        while ($row = $result->fetch_assoc()) {
-            $stu = (new \ScA\Student\Student($row['Name']));
+        foreach ($names as $name) {
+            $stu = (new \ScA\Student\Student($name));
             $classes = SchedClass::get_classes_between($conn, $from, $to, $subjects);
             $att = $stu->get_attendance_summary($classes);
             echo "<tr>";
-            echo "<td>{$row['Name']}</td>";
+            echo "<td>{$name}</td>";
             $p = str_pad($att['P'], 2, '0', STR_PAD_LEFT);
             echo "<td style='text-align: center;'>{$p}</td>";
             $a = str_pad($att['A'], 2, '0', STR_PAD_LEFT);
@@ -302,7 +310,6 @@ use const ScA\Classes\SCHEDULE_BEAUTY_SINGLELINE;
             }
             echo "</tr>";
         }
-        $result->free();
         $conn->close();
         echo "</table>";
         ?>
