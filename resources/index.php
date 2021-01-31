@@ -5,13 +5,10 @@ require_once "../login.php";
 
 use \ScA\Student\TGLogin\TGLogin;
 
-
-$s = TGLogin::from_cookie();
-
 $s = TGLogin::from_cookie();
 if ($s != NULL) {
     $s = new \ScA\Student\Student(NULL, $s->id);
-    if ($s->get_block_resource_access()) {
+    if ($s->get_block_resource_access() || !$s->has_privileges("Member")) {
         $s = NULL;
     }
 }

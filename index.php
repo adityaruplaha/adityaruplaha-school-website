@@ -83,7 +83,7 @@ if ($s != NULL) {
         <td><a href='/go/?url=http://schoolatweb.byethost7.com/bdmi/online_index.php' class='insecure'>School
                 Portal</a>
         </td>
-        <td><a href='/go/?url=https://play.google.com/store/apps/details?id=com.bdmi.vawsum'>School App</a>
+        <td><a class='dead' href='#'>School App</a>
         </td>
     </tr>
     <tr>
@@ -92,7 +92,7 @@ if ($s != NULL) {
     </tr>
     <tr>
         <td><a href='resources/'>Resources</a></td>
-        <td><a href='assignments/'>Assignments</a></td>
+        <td><a class='dead' href='#'>Assignments</a></td>
     </tr>
     <tr>
         <td><a href='/go/?url=https://t.me/joinchat/AAAAAEhiLVecUgh9hZynzw'>Telegram Channel</a></td>
