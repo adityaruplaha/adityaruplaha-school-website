@@ -76,7 +76,7 @@ if ($s != NULL) {
         {$status_message}
     <table class='unbordered centercells reducedwidth bigfont'>
     <tr>
-        <td><a href='/go/?url=https://chat.whatsapp.com/I1kdbGC1xfA5ZaPNbSgtCS'>Offical Group</a></td>
+        <td><a class='dead' href='#'>Offical Group</a></td>
         <td><a href='contact/'>Contact Teachers</a></td>
     </tr>
     <tr>
@@ -87,16 +87,16 @@ if ($s != NULL) {
         </td>
     </tr>
     <tr>
-        <td><a href='schedule/'>Class Schedule</a></td>
+        <td><a class='dead' href='schedule/'>Class Schedule</a></td>
         <td><a href='attendance/'>Attendance</a></td>
     </tr>
     <tr>
-        <td><a href='resources/'>Resources</a></td>
-        <td><a class='dead' href='#'>Assignments</a></td>
+        <td><a class='dead' href='resources/'>Resources</a></td>
+        <td><a class='dead' href='assignments/'>Assignments</a></td>
     </tr>
     <tr>
-        <td><a href='/go/?url=https://t.me/joinchat/AAAAAEhiLVecUgh9hZynzw'>Telegram Channel</a></td>
-        <td><a href='comments/'>Comments</a></td>
+        <td><a class='dead' href='#'>Telegram Channel</a></td>
+        <td><a class='dead' href='#'>Comments</a></td>
     </tr>
     <tr>
         <td colspan=\"2\"><br /></td>

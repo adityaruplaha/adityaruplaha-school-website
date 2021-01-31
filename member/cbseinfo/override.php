@@ -11,6 +11,8 @@ if ($s != NULL) {
 }
 $is_logged_in = ($s != NULL);
 
+Deprecate\disable_page();
+
 if (!$is_logged_in) {
     header("Location: ../../?nauth");
     exit;

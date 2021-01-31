@@ -13,6 +13,8 @@ if ($s != NULL) {
     }
 }
 
+Deprecate\disable_page();
+
 if ($s != NULL) {
     $s->report_url_visit($_SERVER['PHP_SELF']);
 }

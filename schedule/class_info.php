@@ -2,13 +2,13 @@
 
 require_once "../login.php";
 
-
 use \ScA\Student\TGLogin\TGLogin;
-
 
 $s = TGLogin::from_cookie();
 
 $is_logged_in = ($s != NULL);
+
+Deprecate\disable_page();
 
 if ($s != NULL) {
     $s = (new \ScA\Student\Student(NULL, $s->id));

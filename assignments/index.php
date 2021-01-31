@@ -10,6 +10,8 @@ $s = TGLogin::from_cookie();
 
 $is_logged_in = ($s != NULL);
 
+Deprecate\disable_page();
+
 if ($s != NULL) {
     $s = (new \ScA\Student\Student(NULL, $s->id));
     $s->report_url_visit($_SERVER['PHP_SELF']);
